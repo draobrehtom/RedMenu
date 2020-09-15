@@ -16,6 +16,7 @@ namespace RedMenuClient.menus
     {
         private static Menu menu = new Menu("Weapons Menu", $"Weapon & Ammo Options");
         private static bool setupDone = false;
+        private static Menu allWeaponsMenu = new Menu("All Weapons", "A list of all weapons");
 
         private static void SetupMenu()
         {
@@ -24,18 +25,20 @@ namespace RedMenuClient.menus
 
             MenuItem dropWeaponBtn = new MenuItem("Drop Weapon", "Remove the currently selected weapon from your inventory.");
 
-            int initialMenuItems = 0;
-
             if (PermissionsManager.IsAllowed(Permission.WMDropWeapon))
             {
                 menu.AddMenuItem(dropWeaponBtn);
-                ++initialMenuItems;
             }
+
+            MenuItem allWeapons = new MenuItem("All Weapons", "A list of all weapons.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+            MenuController.AddSubmenu(menu, allWeaponsMenu);
+            menu.AddMenuItem(allWeapons);
+            MenuController.BindMenuItem(menu, allWeaponsMenu, allWeapons);
 
             foreach (var name in data.WeaponsData.WeaponHashes)
             {
                 MenuItem item = new MenuItem(name);
-                menu.AddMenuItem(item);
+                allWeaponsMenu.AddMenuItem(item);
             }
 
             menu.OnItemSelect += (m, item, index) =>
@@ -47,11 +50,12 @@ namespace RedMenuClient.menus
                     GetCurrentPedWeapon(ped, ref weapon, true, 0, true);
                     RemoveWeaponFromPed(ped, weapon, true, 0);
                 }
-                else
-                {
-                    uint model = (uint)GetHashKey(data.WeaponsData.WeaponHashes[index - initialMenuItems]);
-                    GiveWeaponToPed_2(PlayerPedId(), model, 500, true, false, 0, false, 0.5f, 1.0f, 0, false, 0f, false);
-                }
+            };
+
+            allWeaponsMenu.OnItemSelect += (m, item, index) =>
+            {
+                uint model = (uint)GetHashKey(data.WeaponsData.WeaponHashes[index]);
+                GiveWeaponToPed_2(PlayerPedId(), model, 500, true, false, 0, false, 0.5f, 1.0f, 0, false, 0f, false);
             };
         }
 
