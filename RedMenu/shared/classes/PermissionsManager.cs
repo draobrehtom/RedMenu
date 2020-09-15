@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,8 +29,10 @@ namespace RedMenuShared
         PMSelectPlayerModel,
         PMSelectOutfit,
         PMCustomizeMpPeds,
+        PMScenarios,
 
         // Weapons Menu
+        WMDropWeapon,
         WMMenu,
         WMGetAllWeapons,
         WMGetSingleWeapon,

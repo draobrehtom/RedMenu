@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +22,16 @@ namespace RedMenuClient.menus
             if (setupDone) return;
             setupDone = true;
 
+            MenuItem dropWeaponBtn = new MenuItem("Drop Weapon", "Remove the currently selected weapon from your inventory.");
+
+            int initialMenuItems = 0;
+
+            if (PermissionsManager.IsAllowed(Permission.WMDropWeapon))
+            {
+                menu.AddMenuItem(dropWeaponBtn);
+                ++initialMenuItems;
+            }
+
             foreach (var name in data.WeaponsData.WeaponHashes)
             {
                 MenuItem item = new MenuItem(name);
@@ -30,8 +40,18 @@ namespace RedMenuClient.menus
 
             menu.OnItemSelect += (m, item, index) =>
             {
-                uint model = (uint)GetHashKey(data.WeaponsData.WeaponHashes[index]);
-                GiveWeaponToPed_2(PlayerPedId(), model, 500, true, false, 0, false, 0.5f, 1.0f, 0, false, 0f, false);
+                if (item == dropWeaponBtn)
+                {
+                    int ped = PlayerPedId();
+                    uint weapon = 0;
+                    GetCurrentPedWeapon(ped, ref weapon, true, 0, true);
+                    RemoveWeaponFromPed(ped, weapon, true, 0);
+                }
+                else
+                {
+                    uint model = (uint)GetHashKey(data.WeaponsData.WeaponHashes[index - initialMenuItems]);
+                    GiveWeaponToPed_2(PlayerPedId(), model, 500, true, false, 0, false, 0.5f, 1.0f, 0, false, 0f, false);
+                }
             };
         }
 

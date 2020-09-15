@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +9,7 @@ using static CitizenFX.Core.Native.API;
 using CitizenFX.Core.Native;
 using RedMenuShared;
 using RedMenuClient.util;
+using System.Net;
 
 namespace RedMenuClient.menus
 {
@@ -17,6 +18,7 @@ namespace RedMenuClient.menus
         private static Menu menu = new Menu("Player Menu", "Player Related Options");
         private static bool setupDone = false;
         private static Menu appearanceMenu = new Menu("Ped Appearance", "Player Customization");
+        private static Menu scenarioMenu = new Menu("Scenarios", "Scenarios");
 
         private static void SetupMenu()
         {
@@ -116,10 +118,14 @@ namespace RedMenuClient.menus
                     List<string> males = new List<string>();
                     List<string> females = new List<string>();
                     List<string> cutscene = new List<string>();
+                    List<string> animals = new List<string>();
+                    List<string> horses = new List<string>();
                     List<string> other = new List<string>();
                     MenuListItem malePeds = new MenuListItem("Males", males, 0, "Select a male ped model.");
                     MenuListItem femalePeds = new MenuListItem("Females", females, 0, "Select a female ped model.");
                     MenuListItem cutscenePeds = new MenuListItem("Cutscene", cutscene, 0, "Select a cutscene ped model.");
+                    MenuListItem animalPeds = new MenuListItem("Animals", animals, 0, "Select an animal ped model.");
+                    MenuListItem horsePeds = new MenuListItem("Horses", horses, 0, "Select a horse ped model.");
                     MenuListItem otherPeds = new MenuListItem("Other", other, 0, "Select a ped model.");
                     for (int i = 0; i < data.PedModels.MalePedHashes.Count(); i++)
                     {
@@ -133,6 +139,14 @@ namespace RedMenuClient.menus
                     {
                         cutscene.Add($"{data.PedModels.CutscenePedHashes[i]} ({i + 1}/{data.PedModels.CutscenePedHashes.Count()})");
                     }
+                    for (int i = 0; i < data.PedModels.AnimalHashes.Count(); i++)
+                    {
+                        animals.Add($"{data.PedModels.AnimalHashes[i]} ({i + 1}/{data.PedModels.AnimalHashes.Count()})");
+                    }
+                    for (int i = 0; i < data.PedModels.HorseHashes.Count(); i++)
+                    {
+                        horses.Add($"{data.PedModels.HorseHashes[i]} ({i + 1}/{data.PedModels.HorseHashes.Count()}");
+                    }
                     for (int i = 0; i < data.PedModels.OtherPedHashes.Count(); i++)
                     {
                         other.Add($"{data.PedModels.OtherPedHashes[i]} ({i + 1}/{data.PedModels.OtherPedHashes.Count()})");
@@ -142,6 +156,8 @@ namespace RedMenuClient.menus
                     appearanceMenu.AddMenuItem(femalePeds);
                     appearanceMenu.AddMenuItem(otherPeds);
                     appearanceMenu.AddMenuItem(cutscenePeds);
+                    appearanceMenu.AddMenuItem(animalPeds);
+                    appearanceMenu.AddMenuItem(horsePeds);
 
                     appearanceMenu.OnListItemSelect += async (m, item, listIndex, itemIndex) =>
                     {
@@ -161,6 +177,14 @@ namespace RedMenuClient.menus
                         else if (item == otherPeds)
                         {
                             model = (uint)GetHashKey(data.PedModels.OtherPedHashes[listIndex]);
+                        }
+                        else if (item == animalPeds)
+                        {
+                            model = (uint)GetHashKey(data.PedModels.AnimalHashes[listIndex]);
+                        }
+                        else if (item == horsePeds)
+                        {
+                            model = (uint)GetHashKey(data.PedModels.HorseHashes[listIndex]);
                         }
 
                         if (IsModelInCdimage(model))
@@ -185,6 +209,7 @@ namespace RedMenuClient.menus
                 if (PermissionsManager.IsAllowed(Permission.PMSelectOutfit))
                 {
                     appearanceMenu.AddMenuItem(playerOutfit);
+                    MenuController.AddSubmenu(menu, appearanceMenu);
                 }
 
                 if (PermissionsManager.IsAllowed(Permission.PMCustomizeMpPeds))
@@ -571,6 +596,42 @@ namespace RedMenuClient.menus
                     MenuController.BindMenuItem(appearanceMenu, femaleCustomMenu, femaleCustom);
                     MenuController.BindMenuItem(appearanceMenu, maleCustomMenu, maleCustom);
                 }
+            }
+            if (PermissionsManager.IsAllowed(Permission.PMScenarios))
+            {
+                MenuItem scenarioMenuBtn = new MenuItem("Scenarios", "Player scenario options.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                MenuController.AddSubmenu(menu, scenarioMenu);
+                menu.AddMenuItem(scenarioMenuBtn);
+                MenuController.BindMenuItem(menu, scenarioMenu, scenarioMenuBtn);
+
+                MenuItem stopScenario = new MenuItem("Stop Scenario", "Stop any active scenarios.");
+                scenarioMenu.AddMenuItem(stopScenario);
+
+                scenarioMenu.OnItemSelect += (m, item, index) =>
+                {
+                    if (item == stopScenario)
+                    {
+                        ClearPedTasks(PlayerPedId(), 0, 0);
+                    }
+                };
+
+                Menu allScenariosMenu = new Menu("All Scenarios", "A list of all scenarios.");
+                MenuItem allScenarios = new MenuItem("All Scenarios", "A list of all scenarios.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                MenuController.AddSubmenu(scenarioMenu, allScenariosMenu);
+                scenarioMenu.AddMenuItem(allScenarios);
+                MenuController.BindMenuItem(scenarioMenu, allScenariosMenu, allScenarios);
+
+                foreach (var name in data.ScenarioData.ScenarioHashes)
+                {
+                    MenuItem item = new MenuItem(name);
+                    allScenariosMenu.AddMenuItem(item);
+                }
+
+                allScenariosMenu.OnItemSelect += (m, item, index) =>
+                {
+                    uint hash = (uint)GetHashKey(data.ScenarioData.ScenarioHashes[index]);
+                    TaskStartScenarioInPlace(PlayerPedId(), (int)hash, 0, 1, 0, 0, 0);
+                };
             }
 
             menu.OnDynamicListItemSelect += (m, item, currentItem) =>
