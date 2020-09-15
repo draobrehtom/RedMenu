@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +11,10 @@ namespace RedMenuClient.data
         public static List<string> WeaponHashes { get; } = new List<string>()
         {
             "WEAPON_MOONSHINEJUG",
+            "WEAPON_KIT_BINOCULARS",
+            "WEAPON_KIT_CAMERA",
+            "WEAPON_MELEE_LANTERN",
+            "WEAPON_MELEE_DAVY_LANTERN",
             "WEAPON_MELEE_LANTERN_ELECTRIC",
             "WEAPON_MELEE_TORCH",
             "WEAPON_MELEE_BROKEN_SWORD",
@@ -35,8 +39,9 @@ namespace RedMenuClient.data
             "WEAPON_MELEE_MACHETE",
             "WEAPON_THROWN_TOMAHAWK",
             "WEAPON_THROWN_TOMAHAWK_ANCIENT",
-            //"WEAPON_PISTOL_M1899",
+            "WEAPON_PISTOL_M1899",
             "WEAPON_PISTOL_MAUSER",
+            "WEAPON_PISTOL_MAUSER_DRUNK",
             "WEAPON_PISTOL_SEMIAUTO",
             "WEAPON_PISTOL_VOLCANIC",
             "WEAPON_REPEATER_CARBINE",
@@ -44,9 +49,14 @@ namespace RedMenuClient.data
             "WEAPON_RIFLE_VARMINT",
             "WEAPON_REPEATER_WINCHESTER",
             "WEAPON_REVOLVER_CATTLEMAN",
+            "WEAPON_REVOLVER_CATTLEMAN_JOHN",
+            "WEAPON_REVOLVER_CATTLEMAN_MEXICAN",
+            "WEAPON_REVOLVER_CATTLEMAN_PIG",
             "WEAPON_REVOLVER_DOUBLEACTION",
+            "WEAPON_REVOLVER_DOUBLEACTION_EXOTIC",
             "WEAPON_REVOLVER_LEMAT",
             "WEAPON_REVOLVER_SCHOFIELD",
+            "WEAPON_REVOLVER_SCHOFIELD_CALLOWAY",
             "WEAPON_RIFLE_BOLTACTION",
             "WEAPON_SNIPERRIFLE_CARCANO",
             "WEAPON_SNIPERRIFLE_ROLLINGBLOCK",
@@ -56,6 +66,7 @@ namespace RedMenuClient.data
             "WEAPON_SHOTGUN_REPEATING",
             "WEAPON_SHOTGUN_SAWEDOFF",
             "WEAPON_SHOTGUN_SEMIAUTO",
+            "WEAPON_SHOTGUN_SEMIAUTO_HOSEA",
             "WEAPON_BOW",
             "WEAPON_THROWN_DYNAMITE",
             "WEAPON_THROWN_MOLOTOV",
