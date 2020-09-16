@@ -44,7 +44,8 @@ namespace RedMenuShared
 
         // Teleport Menu
         TMMenu,
-        TMTeleportToWaypoint
+        TMTeleportToWaypoint,
+        TMLocations
     }
 
 
