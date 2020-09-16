@@ -24,10 +24,16 @@ namespace RedMenuClient.menus
             setupDone = true;
 
             MenuItem dropWeaponBtn = new MenuItem("Drop Weapon", "Remove the currently selected weapon from your inventory.");
+            MenuItem refillAmmo = new MenuItem("Refill Ammo", "Get the maximum amount of ammo for the currently selected weapon.");
 
             if (PermissionsManager.IsAllowed(Permission.WMDropWeapon))
             {
                 menu.AddMenuItem(dropWeaponBtn);
+            }
+
+            if (PermissionsManager.IsAllowed(Permission.WMRefillAmmo))
+            {
+                menu.AddMenuItem(refillAmmo);
             }
 
             MenuItem allWeapons = new MenuItem("All Weapons", "A list of all weapons.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
@@ -49,6 +55,13 @@ namespace RedMenuClient.menus
                     uint weapon = 0;
                     GetCurrentPedWeapon(ped, ref weapon, true, 0, true);
                     RemoveWeaponFromPed(ped, weapon, true, 0);
+                }
+                else if (item == refillAmmo)
+                {
+                    int ped = PlayerPedId();
+                    uint weapon = 0;
+                    GetCurrentPedWeapon(ped, ref weapon, true, 0, true);
+                    SetPedAmmo(ped, weapon, 500);
                 }
             };
 

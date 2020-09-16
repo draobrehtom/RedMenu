@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,6 +49,19 @@ namespace RedMenuClient.menus
 
                 mainMenu.AddMenuItem(submenuBtn);
                 MenuController.BindMenuItem(mainMenu, WeaponsMenu.GetMenu(), submenuBtn);
+            }
+
+            // Teleport Menu
+            if (PermissionsManager.IsAllowed(Permission.TMMenu))
+            {
+                MenuController.AddSubmenu(mainMenu, TeleportMenu.GetMenu());
+                MenuItem submenuBtn = new MenuItem("Teleport Menu", "Teleport related options.")
+                {
+                    RightIcon = MenuItem.Icon.ARROW_RIGHT
+                };
+
+                mainMenu.AddMenuItem(submenuBtn);
+                MenuController.BindMenuItem(mainMenu, TeleportMenu.GetMenu(), submenuBtn);
             }
 
 

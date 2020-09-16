@@ -33,13 +33,18 @@ namespace RedMenuShared
 
         // Weapons Menu
         WMDropWeapon,
+        WMRefillAmmo,
         WMMenu,
         WMGetAllWeapons,
         WMGetSingleWeapon,
         WMRemoveAllWeapons,
         WMRemoveCurrentWeapon,
         WMMaxAmmo,
-        WMGiveAmmo
+        WMGiveAmmo,
+
+        // Teleport Menu
+        TMMenu,
+        TMTeleportToWaypoint
     }
 
 
@@ -71,6 +76,10 @@ namespace RedMenuShared
             if (permissionName.StartsWith("WM"))
             {
                 return prefix + ".WeaponsMenu." + permissionName.Substring(2);
+            }
+            if (permissionName.StartsWith("TM"))
+            {
+                return prefix + ".TeleportMenu." + permissionName.Substring(2);
             }
             return null;
         }
