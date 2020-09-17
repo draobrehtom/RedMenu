@@ -25,6 +25,19 @@ namespace RedMenuClient.menus
 
             MenuController.AddMenu(mainMenu);
 
+            // Online Players Menu
+            if (PermissionsManager.IsAllowed(Permission.OPMMenu))
+            {
+                MenuController.AddSubmenu(mainMenu, OnlinePlayersMenu.GetMenu());
+                MenuItem submenuBtn = new MenuItem("Online Players", "List of players in the server.")
+                {
+                    RightIcon = MenuItem.Icon.ARROW_RIGHT
+                };
+
+                mainMenu.AddMenuItem(submenuBtn);
+                MenuController.BindMenuItem(mainMenu, OnlinePlayersMenu.GetMenu(), submenuBtn);
+            }
+
             // Player Menu
             if (PermissionsManager.IsAllowed(Permission.PMMenu))
             {

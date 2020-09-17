@@ -14,6 +14,9 @@ namespace RedMenuShared
     /// </summary>
     public enum Permission
     {
+        // Online Players Menu
+        OPMMenu,
+
         // Player Menu
         PMMenu,
         PMRestoreHealth,
@@ -70,6 +73,10 @@ namespace RedMenuShared
         private static string GetAceNameFromPermission(string permissionName)
         {
             const string prefix = "RedMenu";
+            if (permissionName.StartsWith("OPM"))
+            {
+                return prefix + ".OnlinePlayersMenu." + permissionName.Substring(3);
+            }
             if (permissionName.StartsWith("PM"))
             {
                 return prefix + ".PlayerMenu." + permissionName.Substring(2);
