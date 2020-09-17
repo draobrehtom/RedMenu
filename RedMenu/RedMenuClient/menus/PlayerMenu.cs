@@ -20,6 +20,27 @@ namespace RedMenuClient.menus
         private static Menu appearanceMenu = new Menu("Ped Appearance", "Player Customization");
         private static Menu scenarioMenu = new Menu("Scenarios", "Scenarios");
 
+        private static void AddScenarioSubmenu(List<string> hashes, string title, string description)
+        {
+            Menu submenu = new Menu(title, description);
+            MenuItem button = new MenuItem(title, description) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+            MenuController.AddSubmenu(scenarioMenu, submenu);
+            scenarioMenu.AddMenuItem(button);
+            MenuController.BindMenuItem(scenarioMenu, submenu, button);
+
+            foreach (var name in hashes)
+            {
+                MenuItem item = new MenuItem(name);
+                submenu.AddMenuItem(item);
+            }
+
+            submenu.OnItemSelect += (m, item, index) =>
+            {
+                uint hash = (uint)GetHashKey(hashes[index]);
+                TaskStartScenarioInPlace(PlayerPedId(), (int)hash, 0, 1, 0, 0, 0);
+            };
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -615,23 +636,12 @@ namespace RedMenuClient.menus
                     }
                 };
 
-                Menu allScenariosMenu = new Menu("All Scenarios", "A list of all scenarios.");
-                MenuItem allScenarios = new MenuItem("All Scenarios", "A list of all scenarios.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
-                MenuController.AddSubmenu(scenarioMenu, allScenariosMenu);
-                scenarioMenu.AddMenuItem(allScenarios);
-                MenuController.BindMenuItem(scenarioMenu, allScenariosMenu, allScenarios);
-
-                foreach (var name in data.ScenarioData.ScenarioHashes)
-                {
-                    MenuItem item = new MenuItem(name);
-                    allScenariosMenu.AddMenuItem(item);
-                }
-
-                allScenariosMenu.OnItemSelect += (m, item, index) =>
-                {
-                    uint hash = (uint)GetHashKey(data.ScenarioData.ScenarioHashes[index]);
-                    TaskStartScenarioInPlace(PlayerPedId(), (int)hash, 0, 1, 0, 0, 0);
-                };
+                AddScenarioSubmenu(data.ScenarioData.ScenarioHashes, "All Scenarios", "A list of all scenarios.");
+                AddScenarioSubmenu(data.ScenarioData.CatScenarioHashes, "Cat Scenarios", "Scenarios for cat peds.");
+                AddScenarioSubmenu(data.ScenarioData.BearScenarioHashes, "Bear Scenarios", "Scenarios for bear peds.");
+                AddScenarioSubmenu(data.ScenarioData.DogScenarioHashes, "Dog Scenarios", "Scenarios for dog peds.");
+                AddScenarioSubmenu(data.ScenarioData.FoxScenarioHashes, "Fox Scenarios", "Scenarios for fox peds.");
+                AddScenarioSubmenu(data.ScenarioData.PigScenarioHashes, "Pig Scenarios", "Scenarios for pig peds.");
             }
 
             menu.OnDynamicListItemSelect += (m, item, currentItem) =>

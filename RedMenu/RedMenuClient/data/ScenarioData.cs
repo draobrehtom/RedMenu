@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -1448,5 +1448,98 @@ namespace RedMenuClient.data
             "WORLD_VEHICLE_MINECART_COAL_SHOVEL_MALE"
         };
 
+        public static List<string> BearScenarioHashes = new List<string>()
+        {
+            "WORLD_ANIMAL_BEAR_EAT_CARCASS",
+            "WORLD_ANIMAL_BEAR_EATING_BERRIES",
+            "WORLD_ANIMAL_BEAR_FORAGING_GROUND",
+            "WORLD_ANIMAL_BEAR_INJURED_ON_GROUND",
+            "WORLD_ANIMAL_BEAR_RESTING",
+            "WORLD_ANIMAL_BEAR_SITTING",
+            "WORLD_ANIMAL_BEAR_SLEEPING",
+            "WORLD_ANIMAL_BEAR_SNIFFING_GROUND",
+            "WORLD_ANIMAL_BEARBLACK_EAT_CARCASS",
+            "WORLD_ANIMAL_BEARBLACK_EATING_BERRIES",
+            "WORLD_ANIMAL_BEARBLACK_FORAGING_GROUND",
+            "WORLD_ANIMAL_BEARBLACK_INJURED_ON_GROUND",
+            "WORLD_ANIMAL_BEARBLACK_RESTING",
+            "WORLD_ANIMAL_BEARBLACK_SITTING",
+            "WORLD_ANIMAL_BEARBLACK_SLEEPING",
+            "WORLD_ANIMAL_BEARBLACK_SNIFFING_GROUND"
+        };
+
+        public static List<string> CatScenarioHashes = new List<string>()
+        {
+            "WORLD_ANIMAL_CAT_CLAW_SHARPEN",
+            "WORLD_ANIMAL_CAT_DRINKING",
+            "WORLD_ANIMAL_CAT_EATING",
+            "WORLD_ANIMAL_CAT_RESTING",
+            "WORLD_ANIMAL_CAT_SITTING",
+            "WORLD_ANIMAL_CAT_SLEEPING"
+        };
+
+        public static List<string> DogScenarioHashes = new List<string>()
+        {
+            "WORLD_ANIMAL_DOG_BARK_GROWL",
+            "WORLD_ANIMAL_DOG_BARKING_GROUND",
+            "WORLD_ANIMAL_DOG_BARKING_UP",
+            "WORLD_ANIMAL_DOG_BARKING_VICIOUS",
+            "WORLD_ANIMAL_DOG_BEGGING",
+            "WORLD_ANIMAL_DOG_DIGGING",
+            "WORLD_ANIMAL_DOG_DRINK_GROUND",
+            "WORLD_ANIMAL_DOG_EATING_GROUND",
+            "WORLD_ANIMAL_DOG_GUARD_GROWL",
+            "WORLD_ANIMAL_DOG_HOWLING",
+            "WORLD_ANIMAL_DOG_HOWLING_SITTING",
+            "WORLD_ANIMAL_DOG_INJURED_ON_GROUND",
+            "WORLD_ANIMAL_DOG_MARK_TERRITORY_A",
+            "WORLD_ANIMAL_DOG_POOPING",
+            "WORLD_ANIMAL_DOG_RESTING",
+            "WORLD_ANIMAL_DOG_ROLL_GROUND",
+            "WORLD_ANIMAL_DOG_SITTING",
+            "WORLD_ANIMAL_DOG_SLEEPING",
+            "WORLD_ANIMAL_DOG_SNIFFING_GROUND"
+        };
+
+        public static List<string> FoxScenarioHashes = new List<string>()
+        {
+            "WORLD_ANIMAL_FOX_DIGGING",
+            "WORLD_ANIMAL_FOX_DRINK_GROUND",
+            "WORLD_ANIMAL_FOX_EATING_GROUND",
+            "WORLD_ANIMAL_FOX_FLEE",
+            "WORLD_ANIMAL_FOX_INJURED_ON_GROUND",
+            "WORLD_ANIMAL_FOX_RESTING",
+            "WORLD_ANIMAL_FOX_SITTING",
+            "WORLD_ANIMAL_FOX_SLEEPING"
+        };
+
+        public static List<string> HorseScenarioHashes = new List<string>()
+        {
+            "WORLD_ANIMAL_HORSE_DRINK_GROUND",
+            "WORLD_ANIMAL_HORSE_DRINK_GROUND_DOMESTIC",
+            "WORLD_ANIMAL_HORSE_GRAZING",
+            "WORLD_ANIMAL_HORSE_GRAZING_CAMP",
+            "WORLD_ANIMAL_HORSE_GRAZING_DOMESTIC",
+            "WORLD_ANIMAL_HORSE_INJURED_ON_GROUND",
+            "WORLD_ANIMAL_HORSE_INJURED_ON_GROUND_RIGHT",
+            "WORLD_ANIMAL_HORSE_RESTING_DOMESTIC",
+            "WORLD_ANIMAL_HORSE_SLEEPING",
+            "WORLD_ANIMAL_HORSE_SLEEPING_DOMESTIC",
+            "WORLD_ANIMAL_HORSE_WALLOW"
+        };
+
+        public static List<string> PigScenarioHashes = new List<string>()
+        {
+            "WORLD_ANIMAL_PIG_DRINK_GROUND",
+            "WORLD_ANIMAL_PIG_DRINK_TROUGH",
+            "WORLD_ANIMAL_PIG_EAT_CARCASS",
+            "WORLD_ANIMAL_PIG_EAT_TROUGH",
+            "WORLD_ANIMAL_PIG_GRAZING",
+            "WORLD_ANIMAL_PIG_INJURED_ON_GROUND",
+            "WORLD_ANIMAL_PIG_RESTING",
+            "WORLD_ANIMAL_PIG_ROLL_MUD",
+            "WORLD_ANIMAL_PIG_SITTING",
+            "WORLD_ANIMAL_PIG_SLEEPING"
+        };
     }
 }
