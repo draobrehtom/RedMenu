@@ -41,7 +41,7 @@ namespace RedMenuClient.data
             new TeleportLocation("Mexico", -2140.34f, -3398.57f, 33.06f, 252.34f),
             new TeleportLocation("Rhodes", 1240.31f, -1289.46f, 76.91f, 301.61f),
             new TeleportLocation("Saint Denis", 2715.28f, -1431.62f, 46.08f, 24.32f),
-            new TeleportLocation("Sisika Penitentiary", 2715.28f, -1431.62f, 46.08f, 24.32f),
+            new TeleportLocation("Sisika Penitentiary", 3350.55f, -642.22f, 45.29f, 0f),
             new TeleportLocation("Strawberry", -1743.25f, -412.08f, 155.45f, 32.19f),
             new TeleportLocation("Thieves Landing", -1393.38f, -2233.62f, 43.35f, 147.97f),
             new TeleportLocation("Tumbleweed", -5432.90f, -2947.03f, 0.64f, 80.80f),
