@@ -636,10 +636,12 @@ namespace RedMenuClient.menus
                             if (hash != 0)
                             {
                                 Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), hash, true, true, false);
+                                currentMpClothes[itemIndex] = hash;
                             }
                             else
                             {
                                 Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), hash, true, true, false);
+                                currentMpClothes[itemIndex] = hash;
                             }
                         };
                     }
@@ -651,84 +653,6 @@ namespace RedMenuClient.menus
 
                     MenuController.BindMenuItem(appearanceMenu, femaleCustomMenu, femaleCustom);
                     MenuController.BindMenuItem(appearanceMenu, maleCustomMenu, maleCustom);
-
-                    if (PermissionsManager.IsAllowed(Permission.PMSavedOutfits))
-                    {
-                        MenuItem savedOutfits = new MenuItem("Saved Outfits", "Save and load outfits for MP peds.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
-                        Menu savedOutfitsMenu = new Menu("Saved Outfits", "Save and load outfits for MP peds.");
-                        MenuController.AddSubmenu(appearanceMenu, savedOutfitsMenu);
-                        appearanceMenu.AddMenuItem(savedOutfits);
-                        MenuController.BindMenuItem(appearanceMenu, savedOutfitsMenu, savedOutfits);
-
-                        for (int i = 0; i <= 38; ++i)
-                        {
-                            currentMpClothes[i] = 0;
-                        }
-
-                        for (int i = 1; i <= 9; ++i)
-                        {
-                            int outfitIndex = i;
-
-                            if (!StorageManager.TryGet("SavedOutfits_" + outfitIndex + "_name", out string outfitName))
-                            {
-                                outfitName = "Outfit " + outfitIndex;
-                            }
-
-                            MenuItem savedOutfit = new MenuItem(outfitName) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
-                            savedOutfitsMenu.AddMenuItem(savedOutfit);
-
-                            Menu savedOutfitOptionsMenu = new Menu(outfitName);
-                            MenuController.AddSubmenu(savedOutfitsMenu, savedOutfitOptionsMenu);
-                            MenuController.BindMenuItem(savedOutfitsMenu, savedOutfitOptionsMenu, savedOutfit);
-
-                            MenuItem load = new MenuItem("Load", "Load this outfit.");
-                            MenuItem save = new MenuItem("Save", "Save current outfit to this slot.");
-                            MenuItem rename = new MenuItem("Rename", "Rename this outfit slot.");
-                            savedOutfitOptionsMenu.AddMenuItem(load);
-                            savedOutfitOptionsMenu.AddMenuItem(save);
-                            savedOutfitOptionsMenu.AddMenuItem(rename);
-
-                            savedOutfitOptionsMenu.OnItemSelect += async (m, item, index) =>
-                            {
-                                if (item == load)
-                                {
-                                    int[] keys = currentMpClothes.Keys.ToArray();
-
-                                    for (int j = 0; j < keys.Length; ++j)
-                                    {
-                                        if (StorageManager.TryGet("SavedOutfits_" + outfitIndex + "_" + keys[j], out int hash))
-                                        {
-                                            Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), (uint)hash, true, true, false);
-                                            currentMpClothes[keys[j]] = (uint)hash;
-                                        }
-                                        else
-                                        {
-                                            currentMpClothes[keys[j]] = 0;
-                                        }
-                                    }
-                                }
-                                else if (item == save)
-                                {
-                                    string overwrite = await GetUserInput("Enter YES to overwrite " + outfitName, "", 3);
-
-                                    if (overwrite == "YES")
-                                    {
-                                        foreach (KeyValuePair<int, uint> entry in currentMpClothes)
-                                        {
-                                            StorageManager.Save("SavedOutfits_" + outfitIndex + "_" + entry.Key, (int)entry.Value, true);
-                                        }
-                                    }
-                                }
-                                else if (item == rename)
-                                {
-                                    string newName = await GetUserInput("Outfit name", outfitName, 20);
-                                    StorageManager.Save("SavedOutfits_" + outfitIndex + "_name", newName, true);
-                                    savedOutfit.Text = newName;
-                                    savedOutfitOptionsMenu.MenuTitle = newName;
-                                }
-                            };
-                        }
-                    }
                 }
 
                 if (PermissionsManager.IsAllowed(Permission.PMSavedPeds))
@@ -739,11 +663,16 @@ namespace RedMenuClient.menus
                     appearanceMenu.AddMenuItem(savedPeds);
                     MenuController.BindMenuItem(appearanceMenu, savedPedsMenu, savedPeds);
 
+                    for (int i = 0; i <= 38; ++i)
+                    {
+                        currentMpClothes[i] = 0;
+                    }
+
                     for (int i = 1; i <= 9; ++i)
                     {
                         int pedIndex = i;
 
-                        if (!StorageManager.TryGet("SavedPeds_" + pedIndex + "_name", out string pedName))
+                        if (!StorageManager.TryGet("SavedPed_" + pedIndex + "_name", out string pedName))
                         {
                             pedName = "Ped " + pedIndex;
                         }
@@ -757,7 +686,7 @@ namespace RedMenuClient.menus
 
                         MenuItem load = new MenuItem("Load", "Load this ped.");
                         MenuItem save = new MenuItem("Save", "Save current ped to this slot.");
-                        MenuItem rename = new MenuItem("Rename", "Rename this ped slot.");
+                        MenuItem rename = new MenuItem("Rename", "Rename this slot.");
                         savedPedOptionsMenu.AddMenuItem(load);
                         savedPedOptionsMenu.AddMenuItem(save);
                         savedPedOptionsMenu.AddMenuItem(rename);
@@ -770,6 +699,7 @@ namespace RedMenuClient.menus
                                 {
                                     outfit = 0;
                                 }
+
                                 if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_model", out int model))
                                 {
                                     if (GetEntityModel(PlayerPedId()) != model)
@@ -787,11 +717,28 @@ namespace RedMenuClient.menus
                                             playerOutfit.CurrentItem = outfit.ToString();
 
                                             ResetCurrentMpClothes();
+
+                                            await BaseScript.Delay(0);
                                         }
                                         else
                                         {
                                             Debug.WriteLine($"^1[ERROR] This ped model is not present in the game files {model}.^7");
                                         }
+                                    }
+                                }
+
+                                int[] keys = currentMpClothes.Keys.ToArray();
+
+                                for (int j = 0; j < keys.Length; ++j)
+                                {
+                                    if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_mp_" + keys[j], out int hash))
+                                    {
+                                        Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), (uint)hash, true, true, false);
+                                        currentMpClothes[keys[j]] = (uint)hash;
+                                    }
+                                    else
+                                    {
+                                        currentMpClothes[keys[j]] = 0;
                                     }
                                 }
                             }
@@ -803,11 +750,15 @@ namespace RedMenuClient.menus
                                 {
                                     StorageManager.Save("SavedPeds_" + pedIndex + "_model", GetEntityModel(PlayerPedId()), true);
                                     StorageManager.Save("SavedPeds_" + pedIndex + "_outfit", Int32.Parse(playerOutfit.CurrentItem), true);
+                                    foreach (KeyValuePair<int, uint> entry in currentMpClothes)
+                                    {
+                                        StorageManager.Save("SavedPeds_" + pedIndex + "_mp_" + entry.Key, (int)entry.Value, true);
+                                    }
                                 }
                             }
                             else if (item == rename)
                             {
-                                string newName = await GetUserInput("Ped name", pedName, 20);
+                                string newName = await GetUserInput("Enter ped name", pedName, 20);
                                 StorageManager.Save("SavedPeds_" + pedIndex + "_name", newName, true);
                                 savedPed.Text = newName;
                                 savedPedOptionsMenu.MenuTitle = newName;
