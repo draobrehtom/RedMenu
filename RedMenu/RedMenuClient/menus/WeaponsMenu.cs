@@ -18,6 +18,27 @@ namespace RedMenuClient.menus
         private static bool setupDone = false;
         private static Menu allWeaponsMenu = new Menu("All Weapons", "A list of all weapons");
 
+        private static void AddWeaponsSubmenu(List<string> hashes, string title, string description)
+        {
+            Menu submenu = new Menu(title, description);
+            MenuItem button = new MenuItem(title, description) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+            MenuController.AddSubmenu(menu, submenu);
+            menu.AddMenuItem(button);
+            MenuController.BindMenuItem(menu, submenu, button);
+
+            foreach (var name in hashes)
+            {
+                MenuItem item = new MenuItem(name);
+                submenu.AddMenuItem(item);
+            }
+
+            submenu.OnItemSelect += (m, item, index) =>
+            {
+                uint model = (uint)GetHashKey(hashes[index]);
+                GiveWeaponToPed_2(PlayerPedId(), model, 500, true, false, 0, false, 0.5f, 1.0f, 0, false, 0f, false);
+            };
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -36,16 +57,16 @@ namespace RedMenuClient.menus
                 menu.AddMenuItem(refillAmmo);
             }
 
-            MenuItem allWeapons = new MenuItem("All Weapons", "A list of all weapons.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
-            MenuController.AddSubmenu(menu, allWeaponsMenu);
-            menu.AddMenuItem(allWeapons);
-            MenuController.BindMenuItem(menu, allWeaponsMenu, allWeapons);
-
-            foreach (var name in data.WeaponsData.WeaponHashes)
-            {
-                MenuItem item = new MenuItem(name);
-                allWeaponsMenu.AddMenuItem(item);
-            }
+            AddWeaponsSubmenu(data.WeaponsData.WeaponHashes, "All Weapons", "A list of all weapons.");
+            AddWeaponsSubmenu(data.WeaponsData.ItemHashes, "Items", "A list of equippable items.");
+            AddWeaponsSubmenu(data.WeaponsData.MeleeHashes, "Melee", "A list of melee weapons.");
+            AddWeaponsSubmenu(data.WeaponsData.PistolHashes, "Pistols", "A list of pistols.");
+            AddWeaponsSubmenu(data.WeaponsData.RepeaterHashes, "Repeaters", "A list of repeaters.");
+            AddWeaponsSubmenu(data.WeaponsData.RevolverHashes, "Revolvers", "A list of revolvers.");
+            AddWeaponsSubmenu(data.WeaponsData.RifleHashes, "Rifles", "A list of rifles.");
+            AddWeaponsSubmenu(data.WeaponsData.ShotgunHashes, "Shotguns", "A list of shotguns.");
+            AddWeaponsSubmenu(data.WeaponsData.SniperHashes, "Sniper Rifles", "A list of sniper rifles.");
+            AddWeaponsSubmenu(data.WeaponsData.ThrownHashes, "Throwables", "A list of throwable weapons.");
 
             menu.OnItemSelect += (m, item, index) =>
             {
@@ -65,11 +86,7 @@ namespace RedMenuClient.menus
                 }
             };
 
-            allWeaponsMenu.OnItemSelect += (m, item, index) =>
-            {
-                uint model = (uint)GetHashKey(data.WeaponsData.WeaponHashes[index]);
-                GiveWeaponToPed_2(PlayerPedId(), model, 500, true, false, 0, false, 0.5f, 1.0f, 0, false, 0f, false);
-            };
+
         }
 
         public static Menu GetMenu()
