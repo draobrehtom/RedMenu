@@ -702,28 +702,25 @@ namespace RedMenuClient.menus
 
                                 if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_model", out int model))
                                 {
-                                    if (GetEntityModel(PlayerPedId()) != model)
+                                    if (IsModelInCdimage((uint)model))
                                     {
-                                        if (IsModelInCdimage((uint)model))
+                                        RequestModel((uint)model, false);
+                                        while (!HasModelLoaded((uint)model))
                                         {
-                                            RequestModel((uint)model, false);
-                                            while (!HasModelLoaded((uint)model))
-                                            {
-                                                await BaseScript.Delay(0);
-                                            }
-                                            SetPlayerModel(PlayerId(), model, 0);
-                                            SetPedOutfitPreset(PlayerPedId(), outfit, 0);
-                                            SetModelAsNoLongerNeeded((uint)model);
-                                            playerOutfit.CurrentItem = outfit.ToString();
-
-                                            ResetCurrentMpClothes();
-
                                             await BaseScript.Delay(0);
                                         }
-                                        else
-                                        {
-                                            Debug.WriteLine($"^1[ERROR] This ped model is not present in the game files {model}.^7");
-                                        }
+                                        SetPlayerModel(PlayerId(), model, 0);
+                                        SetPedOutfitPreset(PlayerPedId(), outfit, 0);
+                                        SetModelAsNoLongerNeeded((uint)model);
+                                        playerOutfit.CurrentItem = outfit.ToString();
+
+                                        ResetCurrentMpClothes();
+
+                                        await BaseScript.Delay(0);
+                                    }
+                                    else
+                                    {
+                                        Debug.WriteLine($"^1[ERROR] This ped model is not present in the game files {model}.^7");
                                     }
                                 }
 
