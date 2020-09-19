@@ -20,6 +20,8 @@ namespace RedMenuClient.menus
         private static Menu appearanceMenu = new Menu("Ped Appearance", "Player Customization");
         private static Menu scenarioMenu = new Menu("Scenarios", "Scenarios");
 
+        private static Dictionary<int, uint> currentMpClothes = new Dictionary<int, uint>();
+
         private static void AddScenarioSubmenu(List<string> hashes, string title, string description)
         {
             Menu submenu = new Menu(title, description);
@@ -63,6 +65,14 @@ namespace RedMenuClient.menus
             }
         }
 
+        private static void ResetCurrentMpClothes()
+        {
+            int[] keys = currentMpClothes.Keys.ToArray();
+            for (int i = 0; i < keys.Length; ++i)
+            {
+                currentMpClothes[keys[i]] = 0;
+            }
+        }
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -241,6 +251,8 @@ namespace RedMenuClient.menus
                             SetPedOutfitPreset(PlayerPedId(), 0, 0);
                             SetModelAsNoLongerNeeded(model);
                             playerOutfit.CurrentItem = "0";
+
+                            ResetCurrentMpClothes();
                         }
                         else
                         {
@@ -262,12 +274,6 @@ namespace RedMenuClient.menus
 
                     Menu femaleCustomMenu = new Menu("Customization", "MP Female Customization");
                     Menu maleCustomMenu = new Menu("Customization", "MP Male Customization");
-
-                    Dictionary<int, uint> currentMpClothes = new Dictionary<int, uint>();
-                    for (int i = 0; i <= 38; ++i)
-                    {
-                        currentMpClothes[i] = 0;
-                    }
 
                     MenuController.AddSubmenu(appearanceMenu, femaleCustomMenu);
                     MenuController.AddSubmenu(appearanceMenu, maleCustomMenu);
@@ -654,6 +660,11 @@ namespace RedMenuClient.menus
                         appearanceMenu.AddMenuItem(savedOutfits);
                         MenuController.BindMenuItem(appearanceMenu, savedOutfitsMenu, savedOutfits);
 
+                        for (int i = 0; i <= 38; ++i)
+                        {
+                            currentMpClothes[i] = 0;
+                        }
+
                         for (int i = 1; i <= 9; ++i)
                         {
                             int outfitIndex = i;
@@ -774,6 +785,8 @@ namespace RedMenuClient.menus
                                             SetPedOutfitPreset(PlayerPedId(), outfit, 0);
                                             SetModelAsNoLongerNeeded((uint)model);
                                             playerOutfit.CurrentItem = outfit.ToString();
+
+                                            ResetCurrentMpClothes();
                                         }
                                         else
                                         {
