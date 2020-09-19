@@ -25,9 +25,10 @@ namespace RedMenuClient.menus
 
             var players = API.GetActivePlayers();
 
-            foreach (var id in players)
+            foreach (var player in players)
             {
-                string name = GetPlayerName(id);
+                int id = GetPlayerServerId(player);
+                string name = GetPlayerName(player);
                 MenuItem item = new MenuItem(id.ToString() + ": " + name);
                 menu.AddMenuItem(item);
             }
