@@ -59,6 +59,7 @@ namespace RedMenuClient.menus
 
             AddWeaponsSubmenu(data.WeaponsData.WeaponHashes, "All Weapons", "A list of all weapons.");
             AddWeaponsSubmenu(data.WeaponsData.ItemHashes, "Items", "A list of equippable items.");
+            AddWeaponsSubmenu(data.WeaponsData.BowHashes, "Bows", "A list of bows.");
             AddWeaponsSubmenu(data.WeaponsData.MeleeHashes, "Melee", "A list of melee weapons.");
             AddWeaponsSubmenu(data.WeaponsData.PistolHashes, "Pistols", "A list of pistols.");
             AddWeaponsSubmenu(data.WeaponsData.RepeaterHashes, "Repeaters", "A list of repeaters.");

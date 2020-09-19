@@ -163,5 +163,9 @@ namespace RedMenuClient.data
             "WEAPON_SHOTGUN_SEMIAUTO",
             "WEAPON_SHOTGUN_SEMIAUTO_HOSEA"
         };
+        public static List<string> BowHashes { get; } = new List<string>()
+        {
+            "WEAPON_BOW"
+        };
     }
 }
