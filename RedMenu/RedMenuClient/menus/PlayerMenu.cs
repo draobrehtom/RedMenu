@@ -790,8 +790,11 @@ namespace RedMenuClient.menus
                 AddScenarioSubmenu(data.ScenarioData.CatScenarioHashes, "Cat Scenarios", "Scenarios for cat peds.");
                 AddScenarioSubmenu(data.ScenarioData.BearScenarioHashes, "Bear Scenarios", "Scenarios for bear peds.");
                 AddScenarioSubmenu(data.ScenarioData.DogScenarioHashes, "Dog Scenarios", "Scenarios for dog peds.");
+                AddScenarioSubmenu(data.ScenarioData.EagleScenarioHashes, "Eagle Scenarios", "Scenarios for eagle peds.");
                 AddScenarioSubmenu(data.ScenarioData.FoxScenarioHashes, "Fox Scenarios", "Scenarios for fox peds.");
+                AddScenarioSubmenu(data.ScenarioData.GoatScenarios, "Goat Scenarios", "Scenarios for goat peds.");
                 AddScenarioSubmenu(data.ScenarioData.PigScenarioHashes, "Pig Scenarios", "Scenarios for pig peds.");
+                AddScenarioSubmenu(data.ScenarioData.SheepScenarioHashes, "Sheep Scenarios", "Scenarios for sheep peds.");
             }
 
             menu.OnDynamicListItemSelect += (m, item, currentItem) =>

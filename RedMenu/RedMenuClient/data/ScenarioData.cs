@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -1501,6 +1503,15 @@ namespace RedMenuClient.data
             "WORLD_ANIMAL_DOG_SNIFFING_GROUND"
         };
 
+        public static List<string> EagleScenarioHashes = new List<string>()
+        {
+            "WORLD_ANIMAL_EAGLE_DRINK_GROUND",
+            "WORLD_ANIMAL_EAGLE_EATING_GROUND",
+            "WORLD_ANIMAL_EAGLE_EATING_GROUND_FROM_GROUND",
+            "WORLD_ANIMAL_EAGLE_EATING_PERCHED",
+            "WORLD_ANIMAL_EAGLE_ON_PERCH"
+        };
+
         public static List<string> FoxScenarioHashes = new List<string>()
         {
             "WORLD_ANIMAL_FOX_DIGGING",
@@ -1540,6 +1551,44 @@ namespace RedMenuClient.data
             "WORLD_ANIMAL_PIG_ROLL_MUD",
             "WORLD_ANIMAL_PIG_SITTING",
             "WORLD_ANIMAL_PIG_SLEEPING"
+        };
+
+        public static List<string> SheepScenarioHashes = new List<string>()
+        {
+            "WORLD_ANIMAL_SHEEP_DRINKING",
+            "WORLD_ANIMAL_SHEEP_EATING_GROUND",
+            "WORLD_ANIMAL_SHEEP_GRAZING",
+            "WORLD_ANIMAL_SHEEP_INJURED_ON_GROUND",
+            "WORLD_ANIMAL_SHEEP_RESTING",
+            "WORLD_ANIMAL_SHEEP_SLEEPING"
+        };
+
+        public static List<string> WolfScenarios = new List<string>()
+        {
+            "WORLD_ANIMAL_WOLF_DRINKING",
+            "WORLD_ANIMAL_WOLF_EAT_CORPSE",
+            "WORLD_ANIMAL_WOLF_EATING",
+            "WORLD_ANIMAL_WOLF_HOWLING",
+            "WORLD_ANIMAL_WOLF_HOWLING_SITTING",
+            "WORLD_ANIMAL_WOLF_INJURED_ON_GROUND",
+            "WORLD_ANIMAL_WOLF_MARK_TERRITORY",
+            "WORLD_ANIMAL_WOLF_RESTING",
+            "WORLD_ANIMAL_WOLF_SITTING",
+            "WORLD_ANIMAL_WOLF_SLEEPING",
+            "WORLD_ANIMAL_WOLF_SNIFFING_GROUND"
+        };
+
+        public static List<string> GoatScenarios = new List<string>()
+        {
+            "WORLD_ANIMAL_GOAT_DRINK_GROUND",
+            "WORLD_ANIMAL_GOAT_DRINK_GROUND_DOMESTIC",
+            "WORLD_ANIMAL_GOAT_GRAZING",
+            "WORLD_ANIMAL_GOAT_GRAZING_DOMESTIC",
+            "WORLD_ANIMAL_GOAT_INJURED_ON_GROUND",
+            "WORLD_ANIMAL_GOAT_RESTING",
+            "WORLD_ANIMAL_GOAT_RESTING_DOMESTIC",
+            "WORLD_ANIMAL_GOAT_SLEEPING",
+            "WORLD_ANIMAL_GOAT_SLEEPING_DOMESTIC"
         };
     }
 }
