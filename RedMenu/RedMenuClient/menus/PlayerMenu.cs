@@ -41,6 +41,28 @@ namespace RedMenuClient.menus
             };
         }
 
+        private static async Task<string> GetUserInput(string windowTitle, string defaultText, int maxInputLength)
+        {
+            var spacer = "\t";
+            AddTextEntry($"{GetCurrentResourceName().ToUpper()}_WINDOW_TITLE", $"{windowTitle ?? "Enter"}:{spacer}(MAX {maxInputLength} Characters)");
+            DisplayOnscreenKeyboard(1, $"{GetCurrentResourceName().ToUpper()}_WINDOW_TITLE", "", defaultText ?? "", "", "", "", maxInputLength); await BaseScript.Delay(0);
+            while (true)
+            {
+                int keyboardStatus = UpdateOnscreenKeyboard();
+                switch (keyboardStatus)
+                {
+                    case 3:
+                    case 2:
+                        return null;
+                    case 1:
+                        return GetOnscreenKeyboardResult();
+                    default:
+                        await BaseScript.Delay(0);
+                        break;
+                }
+            }
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -637,17 +659,24 @@ namespace RedMenuClient.menus
                     {
                         int pedIndex = i;
 
-                        MenuItem savedPed = new MenuItem("Ped " + pedIndex) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                        if (!StorageManager.TryGet("SavedPeds_" + pedIndex + "_name", out string pedName))
+                        {
+                            pedName = "Ped " + pedIndex;
+                        }
+
+                        MenuItem savedPed = new MenuItem(pedName) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
                         savedPedsMenu.AddMenuItem(savedPed);
 
-                        Menu savedPedOptionsMenu = new Menu("Saved Ped " + pedIndex);
+                        Menu savedPedOptionsMenu = new Menu(pedName);
                         MenuController.AddSubmenu(savedPedsMenu, savedPedOptionsMenu);
                         MenuController.BindMenuItem(savedPedsMenu, savedPedOptionsMenu, savedPed);
 
                         MenuItem load = new MenuItem("Load", "Load this ped.");
                         MenuItem save = new MenuItem("Save", "Save current ped to this slot.");
+                        MenuItem rename = new MenuItem("Rename", "Rename this ped slot.");
                         savedPedOptionsMenu.AddMenuItem(load);
                         savedPedOptionsMenu.AddMenuItem(save);
+                        savedPedOptionsMenu.AddMenuItem(rename);
 
                         savedPedOptionsMenu.OnItemSelect += async (m, item, index) =>
                         {
@@ -685,6 +714,13 @@ namespace RedMenuClient.menus
                                 StorageManager.Save("SavedPeds_" + pedIndex + "_model", GetEntityModel(PlayerPedId()), true);
                                 StorageManager.Save("SavedPeds_" + pedIndex + "_outfit", Int32.Parse(playerOutfit.CurrentItem), true);
                             }
+                            else if (item == rename)
+                            {
+                                string newName = await GetUserInput("Ped name", pedName, 20);
+                                StorageManager.Save("SavedPeds_" + pedIndex + "_name", newName, true);
+                                savedPed.Text = newName;
+                                savedPedOptionsMenu.MenuTitle = newName;
+                            }
                         };
                     }
                 }
@@ -701,19 +737,26 @@ namespace RedMenuClient.menus
                     {
                         int outfitIndex = i;
 
-                        MenuItem savedOutfit = new MenuItem("Outfit " + outfitIndex) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                        if (!StorageManager.TryGet("SavedOutfits_" + outfitIndex + "_name", out string outfitName))
+                        {
+                            outfitName = "Outfit " + outfitIndex;
+                        }
+
+                        MenuItem savedOutfit = new MenuItem(outfitName) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
                         savedOutfitsMenu.AddMenuItem(savedOutfit);
 
-                        Menu savedOutfitOptionsMenu = new Menu("Saved Outfit " + outfitIndex);
+                        Menu savedOutfitOptionsMenu = new Menu(outfitName);
                         MenuController.AddSubmenu(savedOutfitsMenu, savedOutfitOptionsMenu);
                         MenuController.BindMenuItem(savedOutfitsMenu, savedOutfitOptionsMenu, savedOutfit);
 
                         MenuItem load = new MenuItem("Load", "Load this outfit.");
                         MenuItem save = new MenuItem("Save", "Save current outfit to this slot.");
+                        MenuItem rename = new MenuItem("Rename", "Rename this outfit slot.");
                         savedOutfitOptionsMenu.AddMenuItem(load);
                         savedOutfitOptionsMenu.AddMenuItem(save);
+                        savedOutfitOptionsMenu.AddMenuItem(rename);
 
-                        savedOutfitOptionsMenu.OnItemSelect += (m, item, index) =>
+                        savedOutfitOptionsMenu.OnItemSelect += async (m, item, index) =>
                         {
                             if (item == load)
                             {
@@ -732,6 +775,13 @@ namespace RedMenuClient.menus
                                 {
                                     StorageManager.Save("SavedOutfits_" + outfitIndex + "_" + entry.Key, (int)entry.Value, true);
                                 }
+                            }
+                            else if (item == rename)
+                            {
+                                string newName = await GetUserInput("Outfit name", outfitName, 20);
+                                StorageManager.Save("SavedOutfits_" + outfitIndex + "_name", newName, true);
+                                savedOutfit.Text = newName;
+                                savedOutfitOptionsMenu.MenuTitle = newName;
                             }
                         };
                     }
