@@ -32,6 +32,8 @@ namespace RedMenuShared
         PMSelectPlayerModel,
         PMSelectOutfit,
         PMCustomizeMpPeds,
+        PMSavedPeds,
+        PMSavedOutfits,
         PMScenarios,
 
         // Weapons Menu

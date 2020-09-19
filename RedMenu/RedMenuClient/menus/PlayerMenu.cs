@@ -233,6 +233,12 @@ namespace RedMenuClient.menus
                     MenuController.AddSubmenu(menu, appearanceMenu);
                 }
 
+                Dictionary<int, uint> currentMpClothes = new Dictionary<int, uint>();
+                for (int i = 1; i <= 38; ++i)
+                {
+                    currentMpClothes[i] = 0;
+                }
+
                 if (PermissionsManager.IsAllowed(Permission.PMCustomizeMpPeds))
                 {
                     MenuItem femaleCustom = new MenuItem("MP Female Customization", "Customize your MP female ped.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
@@ -420,6 +426,7 @@ namespace RedMenuClient.menus
                             if (hash != 0)
                             {
                                 Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), hash, true, true, false);
+                                currentMpClothes[itemIndex] = hash;
                             }
                         };
                     }
@@ -617,7 +624,120 @@ namespace RedMenuClient.menus
                     MenuController.BindMenuItem(appearanceMenu, femaleCustomMenu, femaleCustom);
                     MenuController.BindMenuItem(appearanceMenu, maleCustomMenu, maleCustom);
                 }
+
+                if (PermissionsManager.IsAllowed(Permission.PMSavedPeds))
+                {
+                    MenuItem savedPeds = new MenuItem("Saved Peds", "Save and load peds.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                    Menu savedPedsMenu = new Menu("Saved Peds", "Save and load peds.");
+                    MenuController.AddSubmenu(appearanceMenu, savedPedsMenu);
+                    appearanceMenu.AddMenuItem(savedPeds);
+                    MenuController.BindMenuItem(appearanceMenu, savedPedsMenu, savedPeds);
+
+                    for (int i = 1; i <= 9; ++i)
+                    {
+                        int pedIndex = i;
+
+                        MenuItem savedPed = new MenuItem("Ped " + pedIndex) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                        savedPedsMenu.AddMenuItem(savedPed);
+
+                        Menu savedPedOptionsMenu = new Menu("Saved Ped " + pedIndex);
+                        MenuController.AddSubmenu(savedPedsMenu, savedPedOptionsMenu);
+                        MenuController.BindMenuItem(savedPedsMenu, savedPedOptionsMenu, savedPed);
+
+                        MenuItem load = new MenuItem("Load", "Load this ped.");
+                        MenuItem save = new MenuItem("Save", "Save current ped to this slot.");
+                        savedPedOptionsMenu.AddMenuItem(load);
+                        savedPedOptionsMenu.AddMenuItem(save);
+
+                        savedPedOptionsMenu.OnItemSelect += async (m, item, index) =>
+                        {
+                            if (item == load)
+                            {
+                                if (!StorageManager.TryGet("SavedPeds_" + pedIndex + "_outfit", out int outfit))
+                                {
+                                    outfit = 0;
+                                }
+                                if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_model", out int model))
+                                {
+                                    if (GetEntityModel(PlayerPedId()) != model)
+                                    {
+                                        if (IsModelInCdimage((uint)model))
+                                        {
+                                            RequestModel((uint)model, false);
+                                            while (!HasModelLoaded((uint)model))
+                                            {
+                                                await BaseScript.Delay(0);
+                                            }
+                                            SetPlayerModel(PlayerId(), model, 0);
+                                            SetPedOutfitPreset(PlayerPedId(), outfit, 0);
+                                            SetModelAsNoLongerNeeded((uint)model);
+                                            playerOutfit.CurrentItem = outfit.ToString();
+                                        }
+                                        else
+                                        {
+                                            Debug.WriteLine($"^1[ERROR] This ped model is not present in the game files {model}.^7");
+                                        }
+                                    }
+                                }
+                            }
+                            else if (item == save)
+                            {
+                                StorageManager.Save("SavedPeds_" + pedIndex + "_model", GetEntityModel(PlayerPedId()), true);
+                                StorageManager.Save("SavedPeds_" + pedIndex + "_outfit", Int32.Parse(playerOutfit.CurrentItem), true);
+                            }
+                        };
+                    }
+                }
+
+                if (PermissionsManager.IsAllowed(Permission.PMSavedOutfits))
+                {
+                    MenuItem savedOutfits = new MenuItem("Saved Outfits", "Save and load outfits.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                    Menu savedOutfitsMenu = new Menu("Saved Outfits", "Save and load outfits.");
+                    MenuController.AddSubmenu(appearanceMenu, savedOutfitsMenu);
+                    appearanceMenu.AddMenuItem(savedOutfits);
+                    MenuController.BindMenuItem(appearanceMenu, savedOutfitsMenu, savedOutfits);
+
+                    for (int i = 1; i <= 9; ++i)
+                    {
+                        int outfitIndex = i;
+
+                        MenuItem savedOutfit = new MenuItem("Outfit " + outfitIndex) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                        savedOutfitsMenu.AddMenuItem(savedOutfit);
+
+                        Menu savedOutfitOptionsMenu = new Menu("Saved Outfit " + outfitIndex);
+                        MenuController.AddSubmenu(savedOutfitsMenu, savedOutfitOptionsMenu);
+                        MenuController.BindMenuItem(savedOutfitsMenu, savedOutfitOptionsMenu, savedOutfit);
+
+                        MenuItem load = new MenuItem("Load", "Load this outfit.");
+                        MenuItem save = new MenuItem("Save", "Save current outfit to this slot.");
+                        savedOutfitOptionsMenu.AddMenuItem(load);
+                        savedOutfitOptionsMenu.AddMenuItem(save);
+
+                        savedOutfitOptionsMenu.OnItemSelect += (m, item, index) =>
+                        {
+                            if (item == load)
+                            {
+                                foreach (KeyValuePair<int, uint> entry in currentMpClothes)
+                                {
+                                    if (StorageManager.TryGet("SavedOutfits_" + outfitIndex + "_" + entry.Key, out int hash))
+                                    {
+                                        Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), (uint)hash, true, true, false);
+
+                                    }
+                                }
+                            }
+                            else if (item == save)
+                            {
+                                foreach (KeyValuePair<int, uint> entry in currentMpClothes)
+                                {
+                                    StorageManager.Save("SavedOutfits_" + outfitIndex + "_" + entry.Key, (int)entry.Value, true);
+                                }
+                            }
+                        };
+                    }
+                }
             }
+
             if (PermissionsManager.IsAllowed(Permission.PMScenarios))
             {
                 MenuItem scenarioMenuBtn = new MenuItem("Scenarios", "Player scenario options.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
