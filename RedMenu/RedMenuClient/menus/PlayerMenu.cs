@@ -672,7 +672,7 @@ namespace RedMenuClient.menus
                     {
                         int pedIndex = i;
 
-                        if (!StorageManager.TryGet("SavedPed_" + pedIndex + "_name", out string pedName))
+                        if (!StorageManager.TryGet("SavedPeds_" + pedIndex + "_name", out string pedName))
                         {
                             pedName = "Ped " + pedIndex;
                         }
