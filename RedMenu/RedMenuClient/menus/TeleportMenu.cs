@@ -19,6 +19,27 @@ namespace RedMenuClient.menus
         private static Menu menu = new Menu("Player Menu", "Player Related Options");
         private static Menu locationsMenu = new Menu("Locations", "A list of locations to teleport to.");
         private static bool setupDone = false;
+
+        private static int GetTeleportTarget()
+        {
+            int ped = PlayerPedId();
+            int veh = GetVehiclePedIsIn(ped, false);
+            int mnt = GetMount(ped);
+
+            if (veh != 0)
+            {
+                return veh;
+            }
+            else if (mnt != 0)
+            {
+                return mnt;
+            }
+            else
+            {
+                return ped;
+            }
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -47,7 +68,7 @@ namespace RedMenuClient.menus
                 locationsMenu.OnItemSelect += (m, item, index) =>
                 {
                     TeleportLocation loc = data.TeleportData.TeleportLocations[index];
-                    int ped = PlayerPedId();
+                    int ped = GetTeleportTarget();
                     FreezeEntityPosition(ped, true);
                     SetEntityCoords(ped, loc.X, loc.Y, loc.Z, false, false, false, false);
                     SetEntityHeading(ped, loc.H);
@@ -61,7 +82,7 @@ namespace RedMenuClient.menus
                 {
                     if (IsWaypointActive())
                     {
-                        int ped = PlayerPedId();
+                        int ped = GetTeleportTarget();
                         FreezeEntityPosition(ped, true);
                         Vector3 waypoint = GetWaypointCoords();
                         SetEntityCoords(ped, waypoint.X, waypoint.Y, 1000.0f, false, false, false, false);

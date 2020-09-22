@@ -18,6 +18,27 @@ namespace RedMenuClient.menus
     {
         private static Menu menu = new Menu("Online Players", "Players in the server");
         private static bool setupDone = false;
+
+        private static int GetTeleportTarget()
+        {
+            int ped = PlayerPedId();
+            int veh = GetVehiclePedIsIn(ped, false);
+            int mnt = GetMount(ped);
+
+            if (veh != 0)
+            {
+                return veh;
+            }
+            else if (mnt != 0)
+            {
+                return mnt;
+            }
+            else
+            {
+                return ped;
+            }
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -35,7 +56,7 @@ namespace RedMenuClient.menus
 
             menu.OnItemSelect += (m, item, index) =>
             {
-                int ped = PlayerPedId();
+                int ped = GetTeleportTarget();
                 int target = GetPlayerPed(players[index]);
                 Vector3 coords = GetEntityCoords(target, true, true);
                 float h = GetEntityHeading(target);
