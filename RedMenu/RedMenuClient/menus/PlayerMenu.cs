@@ -716,7 +716,7 @@ namespace RedMenuClient.menus
 
                                         ResetCurrentMpClothes();
 
-                                        await BaseScript.Delay(0);
+                                        await BaseScript.Delay(250);
                                     }
                                     else
                                     {
