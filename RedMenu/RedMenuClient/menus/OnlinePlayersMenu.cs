@@ -65,11 +65,23 @@ namespace RedMenuClient.menus
                 SetEntityHeading(ped, h);
                 FreezeEntityPosition(ped, false);
             };
+
+            menu.OnMenuOpen += (m) =>
+            {
+                UpdatePlayerlist();
+            };
         }
         public static Menu GetMenu()
         {
             SetupMenu();
             return menu;
+        }
+
+        public static void UpdatePlayerlist()
+        {
+            menu.ClearMenuItems();
+            setupDone = false;
+            SetupMenu();
         }
     }
 }
