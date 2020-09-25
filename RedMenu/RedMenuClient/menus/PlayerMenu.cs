@@ -22,13 +22,13 @@ namespace RedMenuClient.menus
 
         private static Dictionary<int, uint> currentMpClothes = new Dictionary<int, uint>();
 
-        private static void AddScenarioSubmenu(List<string> hashes, string title, string description)
+        private static void AddScenarioSubmenu(Menu menu, List<string> hashes, string title, string description)
         {
             Menu submenu = new Menu(title, description);
             MenuItem button = new MenuItem(title, description) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
-            MenuController.AddSubmenu(scenarioMenu, submenu);
-            scenarioMenu.AddMenuItem(button);
-            MenuController.BindMenuItem(scenarioMenu, submenu, button);
+            MenuController.AddSubmenu(menu, submenu);
+            menu.AddMenuItem(button);
+            MenuController.BindMenuItem(menu, submenu, button);
 
             foreach (var name in hashes)
             {
@@ -783,15 +783,27 @@ namespace RedMenuClient.menus
                     }
                 };
 
-                AddScenarioSubmenu(data.ScenarioData.ScenarioHashes, "All Scenarios", "A list of all scenarios.");
-                AddScenarioSubmenu(data.ScenarioData.CatScenarioHashes, "Cat Scenarios", "Scenarios for cat peds.");
-                AddScenarioSubmenu(data.ScenarioData.BearScenarioHashes, "Bear Scenarios", "Scenarios for bear peds.");
-                AddScenarioSubmenu(data.ScenarioData.DogScenarioHashes, "Dog Scenarios", "Scenarios for dog peds.");
-                AddScenarioSubmenu(data.ScenarioData.EagleScenarioHashes, "Eagle Scenarios", "Scenarios for eagle peds.");
-                AddScenarioSubmenu(data.ScenarioData.FoxScenarioHashes, "Fox Scenarios", "Scenarios for fox peds.");
-                AddScenarioSubmenu(data.ScenarioData.GoatScenarios, "Goat Scenarios", "Scenarios for goat peds.");
-                AddScenarioSubmenu(data.ScenarioData.PigScenarioHashes, "Pig Scenarios", "Scenarios for pig peds.");
-                AddScenarioSubmenu(data.ScenarioData.SheepScenarioHashes, "Sheep Scenarios", "Scenarios for sheep peds.");
+                AddScenarioSubmenu(scenarioMenu, data.ScenarioData.ScenarioHashes, "All Scenarios", "A list of all scenarios.");
+
+                Menu animalScenariosMenu = new Menu("Animal Scenarios", "Scenarios for animal peds.");
+                MenuItem animalScenarios = new MenuItem("Animal Scenarios", "Scenarios for animal peds.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                MenuController.AddSubmenu(scenarioMenu, animalScenariosMenu);
+                scenarioMenu.AddMenuItem(animalScenarios);
+                MenuController.BindMenuItem(scenarioMenu, animalScenariosMenu, animalScenarios);
+
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.BearScenarioHashes, "Bear Scenarios", "Scenarios for bear peds.");
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.CatScenarioHashes, "Cat Scenarios", "Scenarios for cat peds.");
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.DeerScenarioHashes, "Deer Scenarios", "Scenarios for deer peds.");
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.DogScenarioHashes, "Dog Scenarios", "Scenarios for dog peds.");
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.EagleScenarioHashes, "Eagle Scenarios", "Scenarios for eagle peds.");
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.ElkScenarioHashes, "Elk Scenarios", "Scenarios for elk peds.");
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.FoxScenarioHashes, "Fox Scenarios", "Scenarios for fox peds.");
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.HorseScenarioHashes, "Horse Scenarios", "Scenarios for horse peds.");
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.GoatScenarioHashes, "Goat Scenarios", "Scenarios for goat peds.");
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.MooseScenarioHashes, "Moose Scenarios", "Scenarios for moose peds.");
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.PigScenarioHashes, "Pig Scenarios", "Scenarios for pig peds.");
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.SheepScenarioHashes, "Sheep Scenarios", "Scenarios for sheep peds.");
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.WolfScenarioHashes, "Wolf Scenarios", "Scenarios for wolf peds.");
             }
 
             menu.OnDynamicListItemSelect += (m, item, currentItem) =>

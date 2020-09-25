@@ -1563,7 +1563,7 @@ namespace RedMenuClient.data
             "WORLD_ANIMAL_SHEEP_SLEEPING"
         };
 
-        public static List<string> WolfScenarios = new List<string>()
+        public static List<string> WolfScenarioHashes = new List<string>()
         {
             "WORLD_ANIMAL_WOLF_DRINKING",
             "WORLD_ANIMAL_WOLF_EAT_CORPSE",
@@ -1578,7 +1578,7 @@ namespace RedMenuClient.data
             "WORLD_ANIMAL_WOLF_SNIFFING_GROUND"
         };
 
-        public static List<string> GoatScenarios = new List<string>()
+        public static List<string> GoatScenarioHashes = new List<string>()
         {
             "WORLD_ANIMAL_GOAT_DRINK_GROUND",
             "WORLD_ANIMAL_GOAT_DRINK_GROUND_DOMESTIC",
@@ -1589,6 +1589,40 @@ namespace RedMenuClient.data
             "WORLD_ANIMAL_GOAT_RESTING_DOMESTIC",
             "WORLD_ANIMAL_GOAT_SLEEPING",
             "WORLD_ANIMAL_GOAT_SLEEPING_DOMESTIC"
+        };
+
+        public static List<string> DeerScenarioHashes = new List<string>()
+        {
+            "WORLD_ANIMAL_BUCK_INJURED_ON_GROUND",
+            "WORLD_ANIMAL_DEER_DRINKING",
+            "WORLD_ANIMAL_DEER_FLEE",
+            "WORLD_ANIMAL_DEER_GRAZING",
+            "WORLD_ANIMAL_DEER_GRAZING_WANDERS",
+            "WORLD_ANIMAL_DEER_INJURED_ON_GROUND",
+            "WORLD_ANIMAL_DEER_RESTING",
+            "WORLD_ANIMAL_DEER_SLEEPING",
+            "WORLD_ANIMAL_DEER_TREE_RUB"
+        };
+
+        public static List<string> MooseScenarioHashes = new List<string>()
+        {
+            "WORLD_ANIMAL_MOOSE_DRINK_GROUND",
+            "WORLD_ANIMAL_MOOSE_DRINK_WADING",
+            "WORLD_ANIMAL_MOOSE_EAT_LEAVES",
+            "WORLD_ANIMAL_MOOSE_GRAZING",
+            "WORLD_ANIMAL_MOOSE_INJURED_ON_GROUND",
+            "WORLD_ANIMAL_MOOSE_RESTING"
+        };
+
+        public static List<string> ElkScenarioHashes = new List<string>()
+        {
+            "WORLD_ANIMAL_ELK_DRINK_WADING",
+            "WORLD_ANIMAL_ELK_DRINKING",
+            "WORLD_ANIMAL_ELK_EATING_LEAVES",
+            "WORLD_ANIMAL_ELK_GRAZING",
+            "WORLD_ANIMAL_ELK_INJURED_ON_GROUND",
+            "WORLD_ANIMAL_ELK_RESTING",
+            "WORLD_ANIMAL_ELK_SLEEPING"
         };
     }
 }
