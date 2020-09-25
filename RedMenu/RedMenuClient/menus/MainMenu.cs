@@ -68,7 +68,7 @@ namespace RedMenuClient.menus
             if (PermissionsManager.IsAllowed(Permission.TMMenu))
             {
                 MenuController.AddSubmenu(mainMenu, TeleportMenu.GetMenu());
-                MenuItem submenuBtn = new MenuItem("Teleport Menu", "Teleport related options.")
+                MenuItem submenuBtn = new MenuItem("Teleport Menu", "Teleport options.")
                 {
                     RightIcon = MenuItem.Icon.ARROW_RIGHT
                 };

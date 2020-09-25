@@ -16,7 +16,7 @@ namespace RedMenuClient.menus
 {
     class TeleportMenu
     {
-        private static Menu menu = new Menu("Player Menu", "Player Related Options");
+        private static Menu menu = new Menu("Teleport Menu", "Teleport options.");
         private static Menu locationsMenu = new Menu("Locations", "A list of locations to teleport to.");
         private static bool setupDone = false;
 
