@@ -803,6 +803,7 @@ namespace RedMenuClient.menus
                 AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.MooseScenarioHashes, "Moose Scenarios", "Scenarios for moose peds.");
                 AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.PigScenarioHashes, "Pig Scenarios", "Scenarios for pig peds.");
                 AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.SheepScenarioHashes, "Sheep Scenarios", "Scenarios for sheep peds.");
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.SkunkScenarioHashes, "Skunk Scenarios", "Scenarios for skunk peds.");
                 AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.WolfScenarioHashes, "Wolf Scenarios", "Scenarios for wolf peds.");
             }
 

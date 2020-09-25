@@ -1624,5 +1624,12 @@ namespace RedMenuClient.data
             "WORLD_ANIMAL_ELK_RESTING",
             "WORLD_ANIMAL_ELK_SLEEPING"
         };
+
+        public static List<string> SkunkScenarioHashes = new List<string>()
+        {
+            "WORLD_ANIMAL_SKUNK_DIGGING",
+            "WORLD_ANIMAL_SKUNK_EATING",
+            "WORLD_ANIMAL_SKUNK_FLEE_HOLE"
+        };
     }
 }
