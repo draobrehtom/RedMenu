@@ -36,6 +36,7 @@ namespace RedMenuClient.data
             new TeleportLocation("Colter", -1361.96f, 2392.64f, 306.61f, 332.11f),
             new TeleportLocation("Emerald Ranch", 1518.24f, 429.25f, 90.68f, 153.84f),
             new TeleportLocation("Guarma", 1513.24f, -7214.59f, 50.12f, 334.03f),
+            new TeleportLocation("Lagras", 2099.73f, -583.10f, 41.55f, 209.05f),
             new TeleportLocation("Manzanita Post", -1948.67f, -1621.65f, 116.08f, 76.63f),
             new TeleportLocation("McFarland Ranch", -2499.87f, -2446.45f, 60.15f, 283.89f),
             new TeleportLocation("Mexico", -2140.34f, -3398.57f, 33.06f, 252.34f),
