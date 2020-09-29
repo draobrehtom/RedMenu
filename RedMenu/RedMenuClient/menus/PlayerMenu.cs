@@ -320,6 +320,7 @@ namespace RedMenuClient.menus
                         List<string> rings2 = new List<string>();
                         //List<string> beard = new List<string>();
                         List<string> buckles2 = new List<string>();
+                        List<string> eyes = new List<string>();
                         foreach (var k in data.FemaleCustomization.spurs) { spurs.Add($"({data.FemaleCustomization.spurs.IndexOf(k) + 1}/{data.FemaleCustomization.spurs.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.pants) { pants.Add($"({data.FemaleCustomization.pants.IndexOf(k) + 1}/{data.FemaleCustomization.pants.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.shirts) { shirts.Add($"({data.FemaleCustomization.shirts.IndexOf(k) + 1}/{data.FemaleCustomization.shirts.Count()}) 0x{k.ToString("X08")}"); }
@@ -360,6 +361,7 @@ namespace RedMenuClient.menus
                         foreach (var k in data.FemaleCustomization.rings2) { rings2.Add($"({data.FemaleCustomization.rings2.IndexOf(k) + 1}/{data.FemaleCustomization.rings2.Count()}) 0x{k.ToString("X08")}"); }
                         //foreach (var k in data.FemaleCustomization.beard) { buckles2.Add($"({data.FemaleCustomization.beard.IndexOf(k) + 1}/{data.FemaleCustomization.beard.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.buckles2) { buckles2.Add($"({data.FemaleCustomization.buckles2.IndexOf(k) + 1}/{data.FemaleCustomization.buckles2.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.FemaleCustomization.eyes) { eyes.Add($"({data.FemaleCustomization.eyes.IndexOf(k) + 1}/{data.FemaleCustomization.eyes.Count()}) 0x{k.ToString("X08")}"); }
 
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Spurs", spurs, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Pants", pants, 0));
@@ -401,6 +403,7 @@ namespace RedMenuClient.menus
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Rings 2", rings2, 0));
                         //femaleCustomMenu.AddMenuItem(new MenuListItem("Beard", beard, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Buckles 2", buckles2, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Eyes", eyes, 0));
 
                         femaleCustomMenu.OnListIndexChange += (m, item, oldIndex, newIndex, itemIndex) =>
                         {
@@ -447,6 +450,7 @@ namespace RedMenuClient.menus
                                 case 37: hash = data.FemaleCustomization.rings2[newIndex]; break;
                                 //case 38: hash = data.FemaleCustomization.beard[newIndex]; break;
                                 case 38: hash = data.FemaleCustomization.buckles2[newIndex]; break;
+                                case 39: hash = data.FemaleCustomization.eyes[newIndex]; break;
                                 default:
                                     hash = 0;
                                     break;
@@ -502,6 +506,7 @@ namespace RedMenuClient.menus
                         List<string> rings2 = new List<string>();
                         List<string> beard = new List<string>();
                         List<string> buckles2 = new List<string>();
+                        List<string> eyes = new List<string>();
                         foreach (var k in data.MaleCustomization.spurs) { spurs.Add($"({data.MaleCustomization.spurs.IndexOf(k) + 1}/{data.MaleCustomization.spurs.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.pants) { pants.Add($"({data.MaleCustomization.pants.IndexOf(k) + 1}/{data.MaleCustomization.pants.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.shirts) { shirts.Add($"({data.MaleCustomization.shirts.IndexOf(k) + 1}/{data.MaleCustomization.shirts.Count()}) 0x{k.ToString("X08")}"); }
@@ -542,6 +547,7 @@ namespace RedMenuClient.menus
                         foreach (var k in data.MaleCustomization.rings2) { rings2.Add($"({data.MaleCustomization.rings2.IndexOf(k) + 1}/{data.MaleCustomization.rings2.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.beard) { buckles2.Add($"({data.MaleCustomization.beard.IndexOf(k) + 1}/{data.MaleCustomization.beard.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.buckles2) { buckles2.Add($"({data.MaleCustomization.buckles2.IndexOf(k) + 1}/{data.MaleCustomization.buckles2.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.MaleCustomization.eyes) { eyes.Add($"({data.MaleCustomization.eyes.IndexOf(k) + 1}/{data.MaleCustomization.eyes.Count()}) 0x{k.ToString("X08")}"); }
 
                         maleCustomMenu.AddMenuItem(new MenuListItem("Spurs", spurs, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Pants", pants, 0));
@@ -583,6 +589,7 @@ namespace RedMenuClient.menus
                         maleCustomMenu.AddMenuItem(new MenuListItem("Rings 2", rings2, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Beard", beard, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Buckles 2", buckles2, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Eyes", eyes, 0));
 
                         maleCustomMenu.OnListIndexChange += (m, item, oldIndex, newIndex, itemIndex) =>
                         {
@@ -629,6 +636,7 @@ namespace RedMenuClient.menus
                                 case 36: hash = data.MaleCustomization.rings2[newIndex]; break;
                                 case 37: hash = data.MaleCustomization.beard[newIndex]; break;
                                 case 38: hash = data.MaleCustomization.buckles2[newIndex]; break;
+                                case 39: hash = data.MaleCustomization.eyes[newIndex]; break;
                                 default:
                                     hash = 0;
                                     break;
@@ -663,7 +671,7 @@ namespace RedMenuClient.menus
                     appearanceMenu.AddMenuItem(savedPeds);
                     MenuController.BindMenuItem(appearanceMenu, savedPedsMenu, savedPeds);
 
-                    for (int i = 0; i <= 38; ++i)
+                    for (int i = 0; i <= 39; ++i)
                     {
                         currentMpClothes[i] = 0;
                     }

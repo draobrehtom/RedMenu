@@ -5357,6 +5357,29 @@ namespace RedMenuClient.data
 
         };
 
+        // Eyes - EA24B45E
+        public static List<uint> eyes = new List<uint>()
+        {
+            0x25468DBA,
+            0x33CD2AC7,
+            0x375030AD,
+            0x6239867F,
+            0x83BECAA9,
+            0x877DD107,
+            0x921BE763,
+            0x9466EAD9,
+            0xA9131431,
+            0xAD96379C,
+            0xB580AE2C,
+            0xB7FD4C6A,
+            0xB9D4B5B4,
+            0xC60AE885,
+            0xCDAFDD6A,
+            0xDCBE7B87,
+            0xE0EE03E6,
+            0xEFCDBC06
+        };
+
     }
 
     public static class MaleCustomization
@@ -10571,5 +10594,27 @@ namespace RedMenuClient.data
 
         };
 
+        // Eyes - 
+        public static List<uint> eyes = new List<uint>()
+        {
+            0x13A24745,
+            0x247E612D,
+            0x264B6C97,
+            0x2C5A58C,
+            0x3F7D1C52,
+            0x5C89591A,
+            0x5CF8D749,
+            0x6B3773C6,
+            0x6F1CFE41,
+            0x766A0A2B,
+            0x82D625BB,
+            0x9100BA34,
+            0x95174A3D,
+            0xA34F5ED1,
+            0xB6B30598,
+            0xB8931134,
+            0xED74F31B,
+            0xF0390073
+        };
     }
 }
