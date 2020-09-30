@@ -305,7 +305,7 @@ namespace RedMenuClient.menus
                         List<string> suspenders = new List<string>();
                         List<string> gauntlets = new List<string>();
                         List<string> bags = new List<string>();
-                        List<string> unk1 = new List<string>();
+                        List<string> teeth = new List<string>();
                         List<string> hats = new List<string>();
                         List<string> gunBelts = new List<string>();
                         List<string> skirts = new List<string>();
@@ -314,13 +314,12 @@ namespace RedMenuClient.menus
                         List<string> bodyStyle = new List<string>();
                         List<string> offHandHolsters = new List<string>();
                         List<string> coats2 = new List<string>();
-                        List<string> unk2 = new List<string>();
+                        List<string> eyes = new List<string>();
                         List<string> gloves = new List<string>();
                         List<string> gunBeltAccessory = new List<string>();
                         List<string> rings2 = new List<string>();
                         //List<string> beard = new List<string>();
                         List<string> buckles2 = new List<string>();
-                        List<string> eyes = new List<string>();
                         foreach (var k in data.FemaleCustomization.spurs) { spurs.Add($"({data.FemaleCustomization.spurs.IndexOf(k) + 1}/{data.FemaleCustomization.spurs.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.pants) { pants.Add($"({data.FemaleCustomization.pants.IndexOf(k) + 1}/{data.FemaleCustomization.pants.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.shirts) { shirts.Add($"({data.FemaleCustomization.shirts.IndexOf(k) + 1}/{data.FemaleCustomization.shirts.Count()}) 0x{k.ToString("X08")}"); }
@@ -346,7 +345,7 @@ namespace RedMenuClient.menus
                         foreach (var k in data.FemaleCustomization.suspenders) { suspenders.Add($"({data.FemaleCustomization.suspenders.IndexOf(k) + 1}/{data.FemaleCustomization.suspenders.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.gauntlets) { gauntlets.Add($"({data.FemaleCustomization.gauntlets.IndexOf(k) + 1}/{data.FemaleCustomization.gauntlets.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.bags) { bags.Add($"({data.FemaleCustomization.bags.IndexOf(k) + 1}/{data.FemaleCustomization.bags.Count()}) 0x{k.ToString("X08")}"); }
-                        foreach (var k in data.FemaleCustomization.unk1) { unk1.Add($"({data.FemaleCustomization.unk1.IndexOf(k) + 1}/{data.FemaleCustomization.unk1.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.FemaleCustomization.teeth) { teeth.Add($"({data.FemaleCustomization.teeth.IndexOf(k) + 1}/{data.FemaleCustomization.teeth.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.hats) { hats.Add($"({data.FemaleCustomization.hats.IndexOf(k) + 1}/{data.FemaleCustomization.hats.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.gunBelts) { gunBelts.Add($"({data.FemaleCustomization.gunBelts.IndexOf(k) + 1}/{data.FemaleCustomization.gunBelts.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.skirts) { skirts.Add($"({data.FemaleCustomization.skirts.IndexOf(k) + 1}/{data.FemaleCustomization.skirts.Count()}) 0x{k.ToString("X08")}"); }
@@ -355,13 +354,12 @@ namespace RedMenuClient.menus
                         foreach (var k in data.FemaleCustomization.bodyStyle) { bodyStyle.Add($"({data.FemaleCustomization.bodyStyle.IndexOf(k) + 1}/{data.FemaleCustomization.bodyStyle.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.offHandHolsters) { offHandHolsters.Add($"({data.FemaleCustomization.offHandHolsters.IndexOf(k) + 1}/{data.FemaleCustomization.offHandHolsters.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.coats2) { coats2.Add($"({data.FemaleCustomization.coats2.IndexOf(k) + 1}/{data.FemaleCustomization.coats2.Count()}) 0x{k.ToString("X08")}"); }
-                        foreach (var k in data.FemaleCustomization.unk2) { unk2.Add($"({data.FemaleCustomization.unk2.IndexOf(k) + 1}/{data.FemaleCustomization.unk2.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.FemaleCustomization.eyes) { eyes.Add($"({data.FemaleCustomization.eyes.IndexOf(k) + 1}/{data.FemaleCustomization.eyes.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.gloves) { gloves.Add($"({data.FemaleCustomization.gloves.IndexOf(k) + 1}/{data.FemaleCustomization.gloves.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.gunBeltAccessory) { gunBeltAccessory.Add($"({data.FemaleCustomization.gunBeltAccessory.IndexOf(k) + 1}/{data.FemaleCustomization.gunBeltAccessory.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.rings2) { rings2.Add($"({data.FemaleCustomization.rings2.IndexOf(k) + 1}/{data.FemaleCustomization.rings2.Count()}) 0x{k.ToString("X08")}"); }
                         //foreach (var k in data.FemaleCustomization.beard) { buckles2.Add($"({data.FemaleCustomization.beard.IndexOf(k) + 1}/{data.FemaleCustomization.beard.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.buckles2) { buckles2.Add($"({data.FemaleCustomization.buckles2.IndexOf(k) + 1}/{data.FemaleCustomization.buckles2.Count()}) 0x{k.ToString("X08")}"); }
-                        foreach (var k in data.FemaleCustomization.eyes) { eyes.Add($"({data.FemaleCustomization.eyes.IndexOf(k) + 1}/{data.FemaleCustomization.eyes.Count()}) 0x{k.ToString("X08")}"); }
 
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Spurs", spurs, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Pants", pants, 0));
@@ -388,7 +386,7 @@ namespace RedMenuClient.menus
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Suspenders", suspenders, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Gauntlets", gauntlets, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Bags", bags, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Unknown 1", unk1, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Teeth", teeth, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Hats", hats, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Gun Belts", gunBelts, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Skirts", skirts, 0));
@@ -397,13 +395,12 @@ namespace RedMenuClient.menus
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Body Style", bodyStyle, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Off-Hand Holsters", offHandHolsters, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Coats 2", coats2, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Unknown 2", unk2, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Eyes", eyes, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Gloves", gloves, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Gun Belt Accessory", gunBeltAccessory, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Rings 2", rings2, 0));
                         //femaleCustomMenu.AddMenuItem(new MenuListItem("Beard", beard, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Buckles 2", buckles2, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Eyes", eyes, 0));
 
                         femaleCustomMenu.OnListIndexChange += (m, item, oldIndex, newIndex, itemIndex) =>
                         {
@@ -435,7 +432,7 @@ namespace RedMenuClient.menus
                                 case 22: hash = data.FemaleCustomization.suspenders[newIndex]; break;
                                 case 23: hash = data.FemaleCustomization.gauntlets[newIndex]; break;
                                 case 24: hash = data.FemaleCustomization.bags[newIndex]; break;
-                                case 25: hash = data.FemaleCustomization.unk1[newIndex]; break;
+                                case 25: hash = data.FemaleCustomization.teeth[newIndex]; break;
                                 case 26: hash = data.FemaleCustomization.hats[newIndex]; break;
                                 case 27: hash = data.FemaleCustomization.gunBelts[newIndex]; break;
                                 case 28: hash = data.FemaleCustomization.skirts[newIndex]; break;
@@ -444,13 +441,12 @@ namespace RedMenuClient.menus
                                 case 31: hash = data.FemaleCustomization.bodyStyle[newIndex]; break;
                                 case 32: hash = data.FemaleCustomization.offHandHolsters[newIndex]; break;
                                 case 33: hash = data.FemaleCustomization.coats2[newIndex]; break;
-                                case 34: hash = data.FemaleCustomization.unk2[newIndex]; break;
+                                case 34: hash = data.FemaleCustomization.eyes[newIndex]; break;
                                 case 35: hash = data.FemaleCustomization.gloves[newIndex]; break;
                                 case 36: hash = data.FemaleCustomization.gunBeltAccessory[newIndex]; break;
                                 case 37: hash = data.FemaleCustomization.rings2[newIndex]; break;
                                 //case 38: hash = data.FemaleCustomization.beard[newIndex]; break;
                                 case 38: hash = data.FemaleCustomization.buckles2[newIndex]; break;
-                                case 39: hash = data.FemaleCustomization.eyes[newIndex]; break;
                                 default:
                                     hash = 0;
                                     break;
@@ -459,6 +455,64 @@ namespace RedMenuClient.menus
                             {
                                 Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), hash, true, true, false);
                                 currentMpClothes[itemIndex] = hash;
+                            }
+                        };
+
+                        femaleCustomMenu.OnListItemSelect += (m, listItem, selectedIndex, itemIndex) =>
+                        {
+                            uint hash;
+                            switch (itemIndex)
+                            {
+                                case 0: hash = 0x18729F39; break;
+                                case 1: hash = 0x1D4C528A; break;
+                                case 2: hash = 0x2026C46D; break;
+                                case 3: hash = 0x3107499B; break;
+                                case 4: hash = 0x378AD10C; break;
+                                case 5: hash = 0x3C1A74CD; break;
+                                case 6: hash = 0x3F7F3587; break;
+                                case 7: hash = 0x485EE834; break;
+                                case 8: hash = 0x514ADCEA; break;
+                                case 9: hash = 0x05E47CA6; break;
+                                case 10: hash = 0x5FC29285; break;
+                                case 11: hash = 0x0662AC34; break;
+                                case 12: hash = 0x72E6EF74; break;
+                                case 13: hash = 0x7505EF42; break;
+                                case 14: hash = 0x777EC6EF; break;
+                                case 15: hash = 0x79D7DF96; break;
+                                case 16: hash = 0x7A6BBD0B; break;
+                                case 17: hash = 0x7A96FACA; break;
+                                case 18: hash = 0x7BC10759; break;
+                                case 19: hash = 0x823687F5; break;
+                                case 20: hash = 0x83887E88; break;
+                                case 21: hash = 0x864B03AE; break;
+                                case 22: hash = 0x877A2CF7; break;
+                                case 23: hash = 0x91CE9B20; break;
+                                case 24: hash = 0x94504D26; break;
+                                case 25: hash = 0x96EDAE5C; break;
+                                case 26: hash = 0x9925C067; break;
+                                case 27: hash = 0x9B2C8B89; break;
+                                case 28: hash = 0xA0E3AB7F; break;
+                                case 29: hash = 0xA6D134C6; break;
+                                case 30: hash = 0xAF14310B; break;
+                                case 31: hash = 0x0B3966C9; break;
+                                case 32: hash = 0xB6B6122D; break;
+                                case 33: hash = 0xE06D30CE; break;
+                                case 34: hash = 0xEA24B45E; break;
+                                case 35: hash = 0xEABE0032; break;
+                                case 36: hash = 0xF1542D11; break;
+                                case 37: hash = 0xF16A1D23; break;
+                                case 38: hash = 0xFAE9107F; break;
+                                case 39: hash = 0xEA24B45E; break;
+                                default:
+                                    hash = 0;
+                                    break;
+                            }
+
+                            if (hash != 0)
+                            {
+                                Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), hash, 0);
+                                Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
+                                currentMpClothes[itemIndex] = 0;
                             }
                         };
                     }
@@ -491,7 +545,7 @@ namespace RedMenuClient.menus
                         List<string> suspenders = new List<string>();
                         List<string> gauntlets = new List<string>();
                         List<string> bags = new List<string>();
-                        List<string> unk1 = new List<string>();
+                        List<string> teeth = new List<string>();
                         List<string> hats = new List<string>();
                         List<string> gunBelts = new List<string>();
                         //List<string> skirts = new List<string>();
@@ -500,13 +554,12 @@ namespace RedMenuClient.menus
                         List<string> bodyStyle = new List<string>();
                         List<string> offHandHolsters = new List<string>();
                         List<string> coats2 = new List<string>();
-                        List<string> unk2 = new List<string>();
+                        List<string> eyes = new List<string>();
                         List<string> gloves = new List<string>();
                         List<string> gunBeltAccessory = new List<string>();
                         List<string> rings2 = new List<string>();
                         List<string> beard = new List<string>();
                         List<string> buckles2 = new List<string>();
-                        List<string> eyes = new List<string>();
                         foreach (var k in data.MaleCustomization.spurs) { spurs.Add($"({data.MaleCustomization.spurs.IndexOf(k) + 1}/{data.MaleCustomization.spurs.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.pants) { pants.Add($"({data.MaleCustomization.pants.IndexOf(k) + 1}/{data.MaleCustomization.pants.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.shirts) { shirts.Add($"({data.MaleCustomization.shirts.IndexOf(k) + 1}/{data.MaleCustomization.shirts.Count()}) 0x{k.ToString("X08")}"); }
@@ -532,7 +585,7 @@ namespace RedMenuClient.menus
                         foreach (var k in data.MaleCustomization.suspenders) { suspenders.Add($"({data.MaleCustomization.suspenders.IndexOf(k) + 1}/{data.MaleCustomization.suspenders.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.gauntlets) { gauntlets.Add($"({data.MaleCustomization.gauntlets.IndexOf(k) + 1}/{data.MaleCustomization.gauntlets.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.bags) { bags.Add($"({data.MaleCustomization.bags.IndexOf(k) + 1}/{data.MaleCustomization.bags.Count()}) 0x{k.ToString("X08")}"); }
-                        foreach (var k in data.MaleCustomization.unk1) { unk1.Add($"({data.MaleCustomization.unk1.IndexOf(k) + 1}/{data.MaleCustomization.unk1.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.MaleCustomization.teeth) { teeth.Add($"({data.MaleCustomization.teeth.IndexOf(k) + 1}/{data.MaleCustomization.teeth.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.hats) { hats.Add($"({data.MaleCustomization.hats.IndexOf(k) + 1}/{data.MaleCustomization.hats.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.gunBelts) { gunBelts.Add($"({data.MaleCustomization.gunBelts.IndexOf(k) + 1}/{data.MaleCustomization.gunBelts.Count()}) 0x{k.ToString("X08")}"); }
                         //foreach (var k in data.MaleCustomization.skirts) { skirts.Add($"({data.MaleCustomization.skirts.IndexOf(k) + 1}/{data.MaleCustomization.skirts.Count()}) 0x{k.ToString("X08")}"); }
@@ -541,13 +594,12 @@ namespace RedMenuClient.menus
                         foreach (var k in data.MaleCustomization.bodyStyle) { bodyStyle.Add($"({data.MaleCustomization.bodyStyle.IndexOf(k) + 1}/{data.MaleCustomization.bodyStyle.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.offHandHolsters) { offHandHolsters.Add($"({data.MaleCustomization.offHandHolsters.IndexOf(k) + 1}/{data.MaleCustomization.offHandHolsters.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.coats2) { coats2.Add($"({data.MaleCustomization.coats2.IndexOf(k) + 1}/{data.MaleCustomization.coats2.Count()}) 0x{k.ToString("X08")}"); }
-                        foreach (var k in data.MaleCustomization.unk2) { unk2.Add($"({data.MaleCustomization.unk2.IndexOf(k) + 1}/{data.MaleCustomization.unk2.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.MaleCustomization.eyes) { eyes.Add($"({data.MaleCustomization.eyes.IndexOf(k) + 1}/{data.MaleCustomization.eyes.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.gloves) { gloves.Add($"({data.MaleCustomization.gloves.IndexOf(k) + 1}/{data.MaleCustomization.gloves.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.gunBeltAccessory) { gunBeltAccessory.Add($"({data.MaleCustomization.gunBeltAccessory.IndexOf(k) + 1}/{data.MaleCustomization.gunBeltAccessory.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.rings2) { rings2.Add($"({data.MaleCustomization.rings2.IndexOf(k) + 1}/{data.MaleCustomization.rings2.Count()}) 0x{k.ToString("X08")}"); }
-                        foreach (var k in data.MaleCustomization.beard) { buckles2.Add($"({data.MaleCustomization.beard.IndexOf(k) + 1}/{data.MaleCustomization.beard.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.MaleCustomization.beard) { beard.Add($"({data.MaleCustomization.beard.IndexOf(k) + 1}/{data.MaleCustomization.beard.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.buckles2) { buckles2.Add($"({data.MaleCustomization.buckles2.IndexOf(k) + 1}/{data.MaleCustomization.buckles2.Count()}) 0x{k.ToString("X08")}"); }
-                        foreach (var k in data.MaleCustomization.eyes) { eyes.Add($"({data.MaleCustomization.eyes.IndexOf(k) + 1}/{data.MaleCustomization.eyes.Count()}) 0x{k.ToString("X08")}"); }
 
                         maleCustomMenu.AddMenuItem(new MenuListItem("Spurs", spurs, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Pants", pants, 0));
@@ -574,7 +626,7 @@ namespace RedMenuClient.menus
                         maleCustomMenu.AddMenuItem(new MenuListItem("Suspenders", suspenders, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Gauntlets", gauntlets, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Bags", bags, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Unknown 1", unk1, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Teeth", teeth, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Hats", hats, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Gun Belts", gunBelts, 0));
                         //maleCustomMenu.AddMenuItem(new MenuListItem("Skirts", skirts, 0));
@@ -583,13 +635,12 @@ namespace RedMenuClient.menus
                         maleCustomMenu.AddMenuItem(new MenuListItem("Body Style", bodyStyle, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Off-Hand Holsters", offHandHolsters, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Coats 2", coats2, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Unknown 2", unk2, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Eyes", eyes, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Gloves", gloves, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Gun Belt Accessory", gunBeltAccessory, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Rings 2", rings2, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Beard", beard, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Buckles 2", buckles2, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Eyes", eyes, 0));
 
                         maleCustomMenu.OnListIndexChange += (m, item, oldIndex, newIndex, itemIndex) =>
                         {
@@ -621,7 +672,7 @@ namespace RedMenuClient.menus
                                 case 22: hash = data.MaleCustomization.suspenders[newIndex]; break;
                                 case 23: hash = data.MaleCustomization.gauntlets[newIndex]; break;
                                 case 24: hash = data.MaleCustomization.bags[newIndex]; break;
-                                case 25: hash = data.MaleCustomization.unk1[newIndex]; break;
+                                case 25: hash = data.MaleCustomization.teeth[newIndex]; break;
                                 case 26: hash = data.MaleCustomization.hats[newIndex]; break;
                                 case 27: hash = data.MaleCustomization.gunBelts[newIndex]; break;
                                 //case 28: hash = data.MaleCustomization.skirts[newIndex]; break;
@@ -630,13 +681,12 @@ namespace RedMenuClient.menus
                                 case 30: hash = data.MaleCustomization.bodyStyle[newIndex]; break;
                                 case 31: hash = data.MaleCustomization.offHandHolsters[newIndex]; break;
                                 case 32: hash = data.MaleCustomization.coats2[newIndex]; break;
-                                case 33: hash = data.MaleCustomization.unk2[newIndex]; break;
+                                case 33: hash = data.MaleCustomization.eyes[newIndex]; break;
                                 case 34: hash = data.MaleCustomization.gloves[newIndex]; break;
                                 case 35: hash = data.MaleCustomization.gunBeltAccessory[newIndex]; break;
                                 case 36: hash = data.MaleCustomization.rings2[newIndex]; break;
                                 case 37: hash = data.MaleCustomization.beard[newIndex]; break;
                                 case 38: hash = data.MaleCustomization.buckles2[newIndex]; break;
-                                case 39: hash = data.MaleCustomization.eyes[newIndex]; break;
                                 default:
                                     hash = 0;
                                     break;
@@ -646,10 +696,63 @@ namespace RedMenuClient.menus
                                 Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), hash, true, true, false);
                                 currentMpClothes[itemIndex] = hash;
                             }
-                            else
+                        };
+
+                        maleCustomMenu.OnListItemSelect += (m, listItem, selectedIndex, itemIndex) =>
+                        {
+                            uint hash;
+                            switch (itemIndex)
                             {
-                                Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), hash, true, true, false);
-                                currentMpClothes[itemIndex] = hash;
+                                case 0: hash = 0x18729F39; break;
+                                case 1: hash = 0x1D4C528A; break;
+                                case 2: hash = 0x2026C46D; break;
+                                case 3: hash = 0x3107499B; break;
+                                case 4: hash = 0x378AD10C; break;
+                                case 5: hash = 0x3C1A74CD; break;
+                                case 6: hash = 0x3F7F3587; break;
+                                case 7: hash = 0x485EE834; break;
+                                case 8: hash = 0x514ADCEA; break;
+                                case 9: hash = 0x05E47CA6; break;
+                                case 10: hash = 0x5FC29285; break;
+                                case 11: hash = 0x0662AC34; break;
+                                case 12: hash = 0x72E6EF74; break;
+                                case 13: hash = 0x7505EF42; break;
+                                case 14: hash = 0x777EC6EF; break;
+                                case 15: hash = 0x79D7DF96; break;
+                                case 16: hash = 0x7A6BBD0B; break;
+                                case 17: hash = 0x7A96FACA; break;
+                                case 18: hash = 0x7BC10759; break;
+                                case 19: hash = 0x823687F5; break;
+                                case 20: hash = 0x83887E88; break;
+                                case 21: hash = 0x864B03AE; break;
+                                case 22: hash = 0x877A2CF7; break;
+                                case 23: hash = 0x91CE9B20; break;
+                                case 24: hash = 0x94504D26; break;
+                                case 25: hash = 0x96EDAE5C; break;
+                                case 26: hash = 0x9925C067; break;
+                                case 27: hash = 0x9B2C8B89; break;
+                                //case 28: hash = 0xA0E3AB7F; break;
+                                case 28: hash = 0xA6D134C6; break;
+                                case 29: hash = 0xAF14310B; break;
+                                case 30: hash = 0x0B3966C9; break;
+                                case 31: hash = 0xB6B6122D; break;
+                                case 32: hash = 0xE06D30CE; break;
+                                case 33: hash = 0xEA24B45E; break;
+                                case 34: hash = 0xEABE0032; break;
+                                case 35: hash = 0xF1542D11; break;
+                                case 36: hash = 0xF16A1D23; break;
+                                case 37: hash = 0xFAE9107F; break;
+                                case 38: hash = 0xF8016BCA; break;
+                                default:
+                                    hash = 0;
+                                    break;
+                            }
+
+                            if (hash != 0)
+                            {
+                                Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), hash, 0);
+                                Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
+                                currentMpClothes[itemIndex] = 0;
                             }
                         };
                     }
@@ -671,7 +774,7 @@ namespace RedMenuClient.menus
                     appearanceMenu.AddMenuItem(savedPeds);
                     MenuController.BindMenuItem(appearanceMenu, savedPedsMenu, savedPeds);
 
-                    for (int i = 0; i <= 39; ++i)
+                    for (int i = 0; i <= 38; ++i)
                     {
                         currentMpClothes[i] = 0;
                     }
