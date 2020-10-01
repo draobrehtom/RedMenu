@@ -21,6 +21,7 @@ namespace RedMenuClient.menus
         private static Menu scenarioMenu = new Menu("Scenarios", "Scenarios");
 
         private static Dictionary<int, uint> currentMpClothes = new Dictionary<int, uint>();
+        private static Dictionary<uint, float> currentFacialFeatures = new Dictionary<uint, float>();
 
         private static void AddScenarioSubmenu(Menu menu, List<string> hashes, string title, string description)
         {
@@ -71,6 +72,15 @@ namespace RedMenuClient.menus
             for (int i = 0; i < keys.Length; ++i)
             {
                 currentMpClothes[keys[i]] = 0;
+            }
+        }
+
+        private static void ResetCurrentFacialFeatures()
+        {
+            uint[] keys = currentFacialFeatures.Keys.ToArray();
+            for (int i = 0; i < keys.Length; ++i)
+            {
+                currentFacialFeatures[keys[i]] = 0;
             }
         }
         private static void SetupMenu()
@@ -253,6 +263,7 @@ namespace RedMenuClient.menus
                             playerOutfit.CurrentItem = "0";
 
                             ResetCurrentMpClothes();
+                            ResetCurrentFacialFeatures();
                         }
                         else
                         {
@@ -764,6 +775,40 @@ namespace RedMenuClient.menus
 
                     MenuController.BindMenuItem(appearanceMenu, femaleCustomMenu, femaleCustom);
                     MenuController.BindMenuItem(appearanceMenu, maleCustomMenu, maleCustom);
+
+
+                    Menu facialFeaturesMenu = new Menu("Facial Features", "Customize facial features");
+                    MenuItem facialFeatures = new MenuItem("Facial Features", "Customize facial features") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                    appearanceMenu.AddMenuItem(facialFeatures);
+                    MenuController.AddSubmenu(appearanceMenu, facialFeaturesMenu);
+                    MenuController.BindMenuItem(appearanceMenu, facialFeaturesMenu, facialFeatures);
+
+                    foreach (data.FacialFeature feature in data.FacialFeatureData.FacialFeatures)
+                    {
+                        List<string> values = new List<string>();
+                        int index = 0;
+                        for (int f = feature.Min; f <= feature.Max; f = f + feature.Step)
+                        {
+                            values.Add((f * feature.Factor).ToString("0.0"));
+
+                            if (f == feature.Value)
+                            {
+                                index = values.Count - 1;
+                            }
+                        }
+
+                        MenuListItem item = new MenuListItem(feature.Name, values, index);
+                        facialFeaturesMenu.AddMenuItem(item);
+
+                        currentFacialFeatures[feature.Index] = feature.Value;
+                    }
+
+                    facialFeaturesMenu.OnListIndexChange += (m, listItem, oldIndex, newIndex, itemIndex) => {
+                        float v = float.Parse(listItem.ListItems[newIndex]);
+                        Function.Call((Hash)0x5653AB26C82938CF, PlayerPedId(), data.FacialFeatureData.FacialFeatures[itemIndex].Index, v);
+                        Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
+                        currentFacialFeatures[data.FacialFeatureData.FacialFeatures[itemIndex].Index] = v;
+                    };
                 }
 
                 if (PermissionsManager.IsAllowed(Permission.PMSavedPeds))
@@ -826,8 +871,9 @@ namespace RedMenuClient.menus
                                         playerOutfit.CurrentItem = outfit.ToString();
 
                                         ResetCurrentMpClothes();
+                                        ResetCurrentFacialFeatures();
 
-                                        await BaseScript.Delay(250);
+                                        await BaseScript.Delay(500);
                                     }
                                     else
                                     {
@@ -849,6 +895,18 @@ namespace RedMenuClient.menus
                                         currentMpClothes[keys[j]] = 0;
                                     }
                                 }
+
+                                uint[] ffkeys = currentFacialFeatures.Keys.ToArray();
+
+                                for (int j = 0; j < ffkeys.Length; ++j)
+                                {
+                                    if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_ff_" + ffkeys[j], out float value))
+                                    {
+                                        Function.Call((Hash)0x5653AB26C82938CF, PlayerPedId(), ffkeys[j], value);
+                                    }
+                                }
+
+                                Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
                             }
                             else if (item == save)
                             {
@@ -861,6 +919,10 @@ namespace RedMenuClient.menus
                                     foreach (KeyValuePair<int, uint> entry in currentMpClothes)
                                     {
                                         StorageManager.Save("SavedPeds_" + pedIndex + "_mp_" + entry.Key, (int)entry.Value, true);
+                                    }
+                                    foreach (KeyValuePair<uint, float> entry in currentFacialFeatures)
+                                    {
+                                        StorageManager.Save("SavedPeds_" + pedIndex + "_ff_" + entry.Key, entry.Value, true);
                                     }
                                 }
                             }

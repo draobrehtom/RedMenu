@@ -10571,4 +10571,72 @@ namespace RedMenuClient.data
 
         };
     }
+
+    public class FacialFeature
+    {
+        public string Name { get; }
+        public uint Index { get; }
+        public int Min { get; }
+        public int Max { get; }
+        public int Step { get; }
+        public int Value { get; }
+        public float Factor { get; }
+
+        public FacialFeature(string name, uint index, int min, int max, int step, int value, float factor)
+        {
+            Name = name;
+            Index = index;
+            Min = min;
+            Max = max;
+            Step = step;
+            Value = value;
+            Factor = factor;
+        }
+    }
+
+    public static class FacialFeatureData
+    {
+        public static List<FacialFeature> FacialFeatures = new List<FacialFeature>()
+        {
+            new FacialFeature("Head Width",       0x84D6, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Eyebrow Height",   0x3303, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Eyebrow Width",    0x2FF9, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Eyebrow Depth",    0x4AD1, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Ear Width",        0xC04F, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Ear Angle",        0xB6CE, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Ear Height",       0x2844, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Earlobe Size",     0xED30, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Cheekbone Height", 0x6A0B, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Cheekbone Width",  0xABCF, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Cheekbone Depth",  0x358D, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Jaw Height",       0x8D0A, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Jaw Width",        0xEBAE, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Jaw Depth",        0x1DF6, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Chin Height",      0x3C0F, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Chin Width",       0xC3B2, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Chin Depth",       0xE323, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Eyelid Height",    0x8B2B, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Eyelid Width",     0x1B6B, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Eye Depth",        0xEE44, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Eye Angle",        0xD266, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Eye Distance",     0xA54E, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Eye Height",       0xDDFB, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Nose Width",       0x6E7F, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Nose Size",        0x3471, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Nose Height",      0x03F5, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Nose Angle",       0x34B1, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Nose Curvature",   0xF156, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Nostril Distance", 0x561E, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Mouth Width",      0xF065, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Mouth Depth",      0xAA69, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Mouth X Pos",      0x7AC3, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Mouth Y Pos",      0x410D, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Upper Lip Height", 0x1A00, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Upper Lip Width",  0x91C1, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Upper Lip Depth",  0xC375, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Lower Lip Height", 0xBB4D, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Lower Lip Width",  0xB0B0, -50, 50, 1, 0, 0.1f),
+            new FacialFeature("Lower Lip Depth",  0x5D16, -50, 50, 1, 0, 0.1f)
+        };
+    }
 }
