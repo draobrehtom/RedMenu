@@ -10639,4 +10639,41 @@ namespace RedMenuClient.data
             new FacialFeature("Lower Lip Depth",  0x5D16, -50, 50, 1, 0, 0.1f)
         };
     }
+
+    public static class BodyCustomization
+    {
+        public static List<int> BodySizes = new List<int>()
+        {
+            61606861,
+            -1241887289,
+            -369348190,
+            32611963,
+            -20262001
+        };
+
+        public static List<int> WaistSizes = new List<int>()
+        {
+            -2045421226,
+            -1745814259,
+            -325933489,
+            -1065791927,
+            -844699484,
+            -1273449080,
+            927185840,
+            149872391,
+            399015098,
+            -644349862,
+            1745919061,
+            1004225511,
+            1278600348,
+            502499352,
+            -2093198664,
+            -1837436619,
+            1736416063,
+            2040610690,
+            -1173634986,
+            -867801909,
+            1960266524
+        };
+    }
 }

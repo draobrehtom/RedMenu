@@ -22,6 +22,7 @@ namespace RedMenuClient.menus
 
         private static Dictionary<int, uint> currentMpClothes = new Dictionary<int, uint>();
         private static Dictionary<uint, float> currentFacialFeatures = new Dictionary<uint, float>();
+        private static Dictionary<int, int> currentBodySettings = new Dictionary<int, int>();
 
         private static void AddScenarioSubmenu(Menu menu, List<string> hashes, string title, string description)
         {
@@ -83,6 +84,16 @@ namespace RedMenuClient.menus
                 currentFacialFeatures[keys[i]] = 0;
             }
         }
+
+        private static void ResetCurrentBodySettings()
+        {
+            int[] keys = currentBodySettings.Keys.ToArray();
+            for (int i = 0; i < keys.Length; ++i)
+            {
+                currentBodySettings[keys[i]] = 0;
+            }
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -264,6 +275,7 @@ namespace RedMenuClient.menus
 
                             ResetCurrentMpClothes();
                             ResetCurrentFacialFeatures();
+                            ResetCurrentBodySettings();
                         }
                         else
                         {
@@ -777,6 +789,41 @@ namespace RedMenuClient.menus
                     MenuController.BindMenuItem(appearanceMenu, maleCustomMenu, maleCustom);
 
 
+                    Menu bodyCustomizationMenu = new Menu("Body", "Customize MP character body");
+                    MenuItem bodyCustomization = new MenuItem("MP Body Customization", "Customize MP character body") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                    appearanceMenu.AddMenuItem(bodyCustomization);
+                    MenuController.AddSubmenu(appearanceMenu, bodyCustomizationMenu);
+                    MenuController.BindMenuItem(appearanceMenu, bodyCustomizationMenu, bodyCustomization);
+
+                    List<string> bodySizes = new List<string>();
+                    List<string> waistSizes = new List<String>();
+                    foreach (var k in data.BodyCustomization.BodySizes) { bodySizes.Add($"({data.BodyCustomization.BodySizes.IndexOf(k) + 1}/{data.BodyCustomization.BodySizes.Count()}) 0x{k.ToString("X08")}"); }
+                    foreach (var k in data.BodyCustomization.WaistSizes) { waistSizes.Add($"({data.BodyCustomization.WaistSizes.IndexOf(k) + 1}/{data.BodyCustomization.WaistSizes.Count()}) 0x{k.ToString("X08")}"); }
+
+                    bodyCustomizationMenu.AddMenuItem(new MenuListItem("Body Size", bodySizes, 0));
+                    bodyCustomizationMenu.AddMenuItem(new MenuListItem("Waist Size", waistSizes, 0));
+
+                    bodyCustomizationMenu.OnListIndexChange += (m, item, oldIndex, newIndex, itemIndex) =>
+                    {
+                        int hash;
+                        switch (itemIndex)
+                        {
+                            case 0: hash = data.BodyCustomization.BodySizes[newIndex]; break;
+                            case 1: hash = data.BodyCustomization.WaistSizes[newIndex]; break;
+                            default:
+                                hash = 0;
+                                break;
+                        }
+
+                        if (hash != 0)
+                        {
+                            Function.Call((Hash)0x1902C4CFCC5BE57C, PlayerPedId(), hash);
+                            Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
+                            currentBodySettings[itemIndex] = hash;
+                        }
+                    };
+
+
                     Menu facialFeaturesMenu = new Menu("Facial Features", "Customize facial features");
                     MenuItem facialFeatures = new MenuItem("Facial Features", "Customize facial features") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
                     appearanceMenu.AddMenuItem(facialFeatures);
@@ -872,6 +919,7 @@ namespace RedMenuClient.menus
 
                                         ResetCurrentMpClothes();
                                         ResetCurrentFacialFeatures();
+                                        ResetCurrentBodySettings();
 
                                         await BaseScript.Delay(500);
                                     }
@@ -906,6 +954,16 @@ namespace RedMenuClient.menus
                                     }
                                 }
 
+                                int[] bckeys = currentBodySettings.Keys.ToArray();
+
+                                for (int j = 0; j < bckeys.Length; ++j)
+                                {
+                                    if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_bc_" + bckeys[j], out int hash))
+                                    {
+                                        Function.Call((Hash)0x1902C4CFCC5BE57C, PlayerPedId(), hash);
+                                    }
+                                }
+
                                 Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
                             }
                             else if (item == save)
@@ -923,6 +981,10 @@ namespace RedMenuClient.menus
                                     foreach (KeyValuePair<uint, float> entry in currentFacialFeatures)
                                     {
                                         StorageManager.Save("SavedPeds_" + pedIndex + "_ff_" + entry.Key, entry.Value, true);
+                                    }
+                                    foreach (KeyValuePair<int, int> entry in currentBodySettings)
+                                    {
+                                        StorageManager.Save("SavedPeds_" + pedIndex + "_bc_" + entry.Key, entry.Value, true);
                                     }
                                 }
                             }
