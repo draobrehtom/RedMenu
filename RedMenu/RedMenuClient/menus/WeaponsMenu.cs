@@ -46,7 +46,6 @@ namespace RedMenuClient.menus
 
             MenuItem dropWeaponBtn = new MenuItem("Drop Weapon", "Remove the currently selected weapon from your inventory.");
             MenuItem dropAllWeaponsBtn = new MenuItem("Drop All Weapons", "Removes all weapons from your inventory.");
-            MenuItem refillAmmo = new MenuItem("Refill Ammo", "Get the maximum amount of ammo for the currently selected weapon.");
 
             if (PermissionsManager.IsAllowed(Permission.WMDropWeapon))
             {
@@ -54,10 +53,71 @@ namespace RedMenuClient.menus
                 menu.AddMenuItem(dropAllWeaponsBtn);
             }
 
+            Menu ammoMenu = new Menu("Ammo", "Get ammo.");
+            MenuItem ammo = new MenuItem("Ammo", "Get ammo.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+            menu.AddMenuItem(ammo);
+            MenuController.AddSubmenu(menu, ammoMenu);
+            MenuController.BindMenuItem(menu, ammoMenu, ammo);
+
+            MenuItem refillAmmo = new MenuItem("Refill Ammo", "Get the maximum amount of ammo for the currently selected weapon.");
+            MenuItem refillAllAmmo = new MenuItem("Refill All Ammo", "Get the maximum amount of ammo for all weapons.");
+
+            MenuCheckboxItem infiniteAmmo = new MenuCheckboxItem("Infinite Ammo", "Never run out of ammo.");
+
             if (PermissionsManager.IsAllowed(Permission.WMRefillAmmo))
             {
-                menu.AddMenuItem(refillAmmo);
+                ammoMenu.AddMenuItem(refillAmmo);
+                ammoMenu.AddMenuItem(refillAllAmmo);
             }
+
+            if (PermissionsManager.IsAllowed(Permission.WMInfiniteAmmo))
+            {
+                ammoMenu.AddMenuItem(infiniteAmmo);
+            }
+
+            ammoMenu.OnItemSelect += (m, item, index) =>
+            {
+                if (item == refillAmmo)
+                {
+                    int ped = PlayerPedId();
+                    uint weapon = 0;
+                    GetCurrentPedWeapon(ped, ref weapon, true, 0, true);
+                    SetPedAmmo(ped, weapon, 500);
+                }
+                else if (item == refillAllAmmo)
+                {
+                    foreach (var name in data.WeaponsData.AmmoHashes)
+                    {
+                        SetPedAmmoByType(PlayerPedId(), GetHashKey(name), 500);
+                    }
+                }
+            };
+
+            ammoMenu.OnCheckboxChange += (m, item, index, _checked) =>
+            {
+                if (item == infiniteAmmo)
+                {
+                    SetPedInfiniteAmmoClip(PlayerPedId(), _checked);
+                }
+            };
+
+            Menu ammoTypesMenu = new Menu("Ammo Types", "Get ammo by type.");
+            MenuItem ammoTypes = new MenuItem("Ammo Types", "Get ammo by type.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+            ammoMenu.AddMenuItem(ammoTypes);
+            MenuController.AddSubmenu(ammoMenu, ammoTypesMenu);
+            MenuController.BindMenuItem(ammoMenu, ammoTypesMenu, ammoTypes);
+
+            foreach (var name in data.WeaponsData.AmmoHashes)
+            {
+                MenuItem item = new MenuItem(name);
+                ammoTypesMenu.AddMenuItem(item);
+            }
+
+            ammoTypesMenu.OnItemSelect += (m, item, index) =>
+            {
+                int hash = GetHashKey(data.WeaponsData.AmmoHashes[index]);
+                SetPedAmmoByType(PlayerPedId(), hash, 500);
+            };
 
             AddWeaponsSubmenu(data.WeaponsData.ItemHashes, "Items", "A list of equippable items.");
             AddWeaponsSubmenu(data.WeaponsData.BowHashes, "Bows", "A list of bows.");
@@ -82,13 +142,6 @@ namespace RedMenuClient.menus
                 else if (item == dropAllWeaponsBtn)
                 {
                     RemoveAllPedWeapons(PlayerPedId(), true, true);
-                }
-                else if (item == refillAmmo)
-                {
-                    int ped = PlayerPedId();
-                    uint weapon = 0;
-                    GetCurrentPedWeapon(ped, ref weapon, true, 0, true);
-                    SetPedAmmo(ped, weapon, 500);
                 }
             };
 

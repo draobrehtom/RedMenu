@@ -40,8 +40,6 @@ namespace RedMenuShared
         WMDropWeapon,
         WMRefillAmmo,
         WMMenu,
-        WMRemoveAllWeapons,
-        WMRemoveCurrentWeapon,
         WMItems,
         WMBows,
         WMMelee,
@@ -52,6 +50,7 @@ namespace RedMenuShared
         WMShotguns,
         WMSniperRifles,
         WMThrowables,
+        WMInfiniteAmmo,
 
         // Teleport Menu
         TMMenu,
