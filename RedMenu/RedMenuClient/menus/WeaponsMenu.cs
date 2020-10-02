@@ -62,7 +62,7 @@ namespace RedMenuClient.menus
             MenuItem refillAmmo = new MenuItem("Refill Ammo", "Get the maximum amount of ammo for the currently selected weapon.");
             MenuItem refillAllAmmo = new MenuItem("Refill All Ammo", "Get the maximum amount of ammo for all weapons.");
 
-            MenuCheckboxItem infiniteAmmo = new MenuCheckboxItem("Infinite Ammo", "Never run out of ammo.");
+            MenuCheckboxItem infiniteAmmo = new MenuCheckboxItem("Infinite Ammo", "Never run out of ammo.", UserDefaults.WeaponInfiniteAmmo);
 
             if (PermissionsManager.IsAllowed(Permission.WMRefillAmmo))
             {
@@ -73,6 +73,10 @@ namespace RedMenuClient.menus
             if (PermissionsManager.IsAllowed(Permission.WMInfiniteAmmo))
             {
                 ammoMenu.AddMenuItem(infiniteAmmo);
+                if (UserDefaults.WeaponInfiniteAmmo)
+                {
+                    SetPedInfiniteAmmoClip(PlayerPedId(), true);
+                }
             }
 
             ammoMenu.OnItemSelect += (m, item, index) =>
@@ -97,6 +101,7 @@ namespace RedMenuClient.menus
             {
                 if (item == infiniteAmmo)
                 {
+                    UserDefaults.WeaponInfiniteAmmo = _checked;
                     SetPedInfiniteAmmoClip(PlayerPedId(), _checked);
                 }
             };

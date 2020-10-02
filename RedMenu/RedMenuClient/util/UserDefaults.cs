@@ -114,5 +114,22 @@ namespace RedMenuClient.util
             }
         }
 
+        public static bool WeaponInfiniteAmmo
+        {
+            get
+            {
+                if (StorageManager.TryGet("WeaponInfiniteAmmo", out bool val))
+                {
+                    return val;
+                }
+                WeaponInfiniteAmmo = false;
+                return true;
+            }
+            set
+            {
+                StorageManager.Save("WeaponInfiniteAmmo", value, true);
+            }
+        }
+
     }
 }
