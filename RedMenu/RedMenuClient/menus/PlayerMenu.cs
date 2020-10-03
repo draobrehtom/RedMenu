@@ -110,6 +110,7 @@ namespace RedMenuClient.menus
             MenuItem clearPedTasks = new MenuItem("Clear Ped Tasks", "Clear all ped tasks immediately, breaking free of any animation.");
             MenuItem hogtieSelf = new MenuItem("Hogtie Yourself", "Knocks you to the ground and get hogtied.");
             MenuItem cleanPed = new MenuItem("Clean Ped", "Remove all dirt and other decals from the ped.");
+            MenuItem killSelf = new MenuItem("Kill Yourself", "Kill yourself.");
 
             MenuDynamicListItem playerOutfit = new MenuDynamicListItem("Select Outfit", "0", new MenuDynamicListItem.ChangeItemCallback((item, left) =>
             {
@@ -179,6 +180,10 @@ namespace RedMenuClient.menus
             if (PermissionsManager.IsAllowed(Permission.PMCleanPed))
             {
                 menu.AddMenuItem(cleanPed);
+            }
+            if (PermissionsManager.IsAllowed(Permission.PMKillSelf))
+            {
+                menu.AddMenuItem(killSelf);
             }
             if (PermissionsManager.IsAllowed(Permission.PMSelectPlayerModel) || PermissionsManager.IsAllowed(Permission.PMSelectOutfit))
             {
@@ -1087,6 +1092,11 @@ namespace RedMenuClient.menus
                 else if (item == cleanPed)
                 {
                     ClearPedEnvDirt(PlayerPedId());
+                }
+                else if (item == killSelf)
+                {
+                    SetEntityInvincible(PlayerPedId(), false);
+                    ApplyDamageToPed(PlayerPedId(), 500000, 0, 1, 1);
                 }
             };
 
