@@ -13,8 +13,32 @@ namespace RedMenuClient
 {
     class TickFunctions : BaseScript
     {
-        public TickFunctions() { }
+        public TickFunctions() {
+            EventHandlers["playerSpawned"] += new Action(Update);
+        }
 
+        private static void Update()
+        {
+            // Update godmode.
+            if (PermissionsManager.IsAllowed(Permission.PMGodMode) && UserDefaults.PlayerGodMode)
+            {
+                SetEntityInvincible(PlayerPedId(), true);
+            }
+            else
+            {
+                SetEntityInvincible(PlayerPedId(), false);
+            }
+
+            // This needs more native research for the outer cores.
+            //if (ConfigManager.EnableMaxStats)
+            //{
+            //    SetAttribute(PlayerPedId(), 0, GetMaxAttributePoints(PlayerPedId(), 0));
+            //    SetAttributePoints(PlayerPedId(), 1, GetMaxAttributePoints(PlayerPedId(), 1));
+            //    SetAttributePoints(PlayerPedId(), 2, GetMaxAttributePoints(PlayerPedId(), 2));
+            //}
+
+            // todo: add infinite stamina and infinite dead eye checks
+        }
 
         private static int lastPed = 0;
         [Tick]
@@ -22,28 +46,7 @@ namespace RedMenuClient
         {
             async Task PedChanged()
             {
-                // Update godmode.
-
-                if (PermissionsManager.IsAllowed(Permission.PMGodMode) && UserDefaults.PlayerGodMode)
-                {
-                    SetEntityInvincible(PlayerPedId(), true);
-                }
-                else
-                {
-                    SetEntityInvincible(PlayerPedId(), false);
-                }
-
-                // This needs more native research for the outer cores.
-                //if (ConfigManager.EnableMaxStats)
-                //{
-                //    SetAttribute(PlayerPedId(), 0, GetMaxAttributePoints(PlayerPedId(), 0));
-                //    SetAttributePoints(PlayerPedId(), 1, GetMaxAttributePoints(PlayerPedId(), 1));
-                //    SetAttributePoints(PlayerPedId(), 2, GetMaxAttributePoints(PlayerPedId(), 2));
-                //}
-
-                // todo: add infinite stamina and infinite dead eye checks
-
-
+                Update();
 
                 lastPed = PlayerPedId();
                 await Task.FromResult(0);
