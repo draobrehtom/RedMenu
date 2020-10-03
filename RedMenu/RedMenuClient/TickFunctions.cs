@@ -8,6 +8,8 @@ using CitizenFX.Core;
 using static CitizenFX.Core.Native.API;
 using RedMenuShared;
 using RedMenuClient.util;
+using System.Net;
+using CitizenFX.Core.Native;
 
 namespace RedMenuClient
 {
@@ -65,6 +67,31 @@ namespace RedMenuClient
 
             // ped changed.
             await PedChanged();
+        }
+
+        [Tick]
+        internal static async Task InfiniteStatsTick()
+        {
+            if (!IsPlayerDead(PlayerId())) // Allows respawning after killing yourself
+            {
+                if (PermissionsManager.IsAllowed(Permission.PMGodMode) && UserDefaults.PlayerGodMode)
+                {
+                    Function.Call((Hash)0xC6258F41D86676E0, PlayerPedId(), 0, 100.0f);
+                }
+                if (PermissionsManager.IsAllowed(Permission.PMInfiniteStamina) && UserDefaults.PlayerInfiniteStamina)
+                {
+                    RestorePlayerStamina(PlayerId(), 100.0f);
+                    Function.Call((Hash)0xC6258F41D86676E0, PlayerPedId(), 1, 100.0f);
+                }
+
+                if (PermissionsManager.IsAllowed(Permission.PMInfiniteDeadEye) && UserDefaults.PlayerInfiniteDeadEye)
+                {
+                    Function.Call((Hash)0xC6258F41D86676E0, PlayerPedId(), 2, 100.0f);
+                }
+            }
+
+            await Delay(1000);
+            await Task.FromResult(0);
         }
 
         /// <summary>

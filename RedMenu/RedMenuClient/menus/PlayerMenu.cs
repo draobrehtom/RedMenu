@@ -1065,6 +1065,14 @@ namespace RedMenuClient.menus
                     UserDefaults.PlayerGodMode = _checked;
                     SetEntityInvincible(PlayerPedId(), _checked);
                 }
+                else if (item == infiniteStamina)
+                {
+                    UserDefaults.PlayerInfiniteStamina = _checked;
+                }
+                else if (item == infiniteDeadEye)
+                {
+                    UserDefaults.PlayerInfiniteDeadEye = _checked;
+                }
             };
 
             menu.OnItemSelect += (m, item, index) =>
