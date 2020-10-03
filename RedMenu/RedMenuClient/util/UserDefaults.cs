@@ -123,11 +123,28 @@ namespace RedMenuClient.util
                     return val;
                 }
                 WeaponInfiniteAmmo = false;
-                return true;
+                return false;
             }
             set
             {
                 StorageManager.Save("WeaponInfiniteAmmo", value, true);
+            }
+        }
+
+        public static bool PlayerEveryoneIgnore
+        {
+            get
+            {
+                if (StorageManager.TryGet("PlayerEveryoneIgnore", out bool val))
+                {
+                    return val;
+                }
+                PlayerEveryoneIgnore = false;
+                return false;
+            }
+            set
+            {
+                StorageManager.Save("PlayerEveryoneIgnore", value, true);
             }
         }
 

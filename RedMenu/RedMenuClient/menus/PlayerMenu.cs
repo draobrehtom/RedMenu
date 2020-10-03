@@ -106,6 +106,7 @@ namespace RedMenuClient.menus
             MenuCheckboxItem godModeBox = new MenuCheckboxItem("God Mode", "Prevents you from taking damage.", UserDefaults.PlayerGodMode);
             MenuCheckboxItem infiniteStamina = new MenuCheckboxItem("Infinite Stamina", "Run forever!", UserDefaults.PlayerInfiniteStamina);
             MenuCheckboxItem infiniteDeadEye = new MenuCheckboxItem("Infinite DeadEye", "Useless?", UserDefaults.PlayerInfiniteDeadEye);
+            MenuCheckboxItem everyoneIgnore = new MenuCheckboxItem("Everyone Ignore Player", "Currently, only prevents NPCs from shooting at you.", UserDefaults.PlayerEveryoneIgnore);
 
             MenuItem clearPedTasks = new MenuItem("Clear Ped Tasks", "Clear all ped tasks immediately, breaking free of any animation.");
             MenuItem hogtieSelf = new MenuItem("Hogtie Yourself", "Knocks you to the ground and get hogtied.");
@@ -168,6 +169,10 @@ namespace RedMenuClient.menus
             if (PermissionsManager.IsAllowed(Permission.PMInfiniteDeadEye))
             {
                 menu.AddMenuItem(infiniteDeadEye);
+            }
+            if (PermissionsManager.IsAllowed(Permission.PMEveryoneIgnore))
+            {
+                menu.AddMenuItem(everyoneIgnore);
             }
             if (PermissionsManager.IsAllowed(Permission.PMClearTasks))
             {
@@ -1072,6 +1077,11 @@ namespace RedMenuClient.menus
                 else if (item == infiniteDeadEye)
                 {
                     UserDefaults.PlayerInfiniteDeadEye = _checked;
+                }
+                else if (item == everyoneIgnore)
+                {
+                    UserDefaults.PlayerEveryoneIgnore = _checked;
+                    SetEveryoneIgnorePlayer(PlayerId(), _checked);
                 }
             };
 

@@ -36,6 +36,7 @@ namespace RedMenuShared
         PMSavedOutfits,
         PMScenarios,
         PMKillSelf,
+        PMEveryoneIgnore,
 
         // Weapons Menu
         WMDropWeapon,

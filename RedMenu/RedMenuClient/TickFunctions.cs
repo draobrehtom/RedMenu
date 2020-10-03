@@ -31,6 +31,15 @@ namespace RedMenuClient
                 SetEntityInvincible(PlayerPedId(), false);
             }
 
+            if (PermissionsManager.IsAllowed(Permission.PMEveryoneIgnore) && UserDefaults.PlayerEveryoneIgnore)
+            {
+                SetEveryoneIgnorePlayer(PlayerId(), true);
+            }
+            else
+            {
+                SetEveryoneIgnorePlayer(PlayerId(), false);
+            }
+
             // This needs more native research for the outer cores.
             //if (ConfigManager.EnableMaxStats)
             //{
@@ -38,8 +47,6 @@ namespace RedMenuClient
             //    SetAttributePoints(PlayerPedId(), 1, GetMaxAttributePoints(PlayerPedId(), 1));
             //    SetAttributePoints(PlayerPedId(), 2, GetMaxAttributePoints(PlayerPedId(), 2));
             //}
-
-            // todo: add infinite stamina and infinite dead eye checks
         }
 
         private static int lastPed = 0;
