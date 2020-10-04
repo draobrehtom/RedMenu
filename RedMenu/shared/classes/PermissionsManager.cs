@@ -37,6 +37,7 @@ namespace RedMenuShared
         PMScenarios,
         PMKillSelf,
         PMEveryoneIgnore,
+        PMFortifyCores,
 
         // Weapons Menu
         WMDropWeapon,

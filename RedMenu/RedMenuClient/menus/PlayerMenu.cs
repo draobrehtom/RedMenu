@@ -103,6 +103,7 @@ namespace RedMenuClient.menus
             MenuItem innerStaminaCoreBtn = new MenuItem("Max Stamina Core", "Fully restores the inner Stamina core.");
             MenuItem innerDeadEyeCoreBtn = new MenuItem("Max DeadEye Core", "Fully restores the inner DeadEye core.");
             MenuListItem maxOuterCoresList = new MenuListItem("Restore Outer Core", new List<string>() { "All", "Health", "Stamina", "Dead Eye" }, 0, "Fully restores any or all outer cores to their max value.");
+            MenuListItem fortifyCoresList = new MenuListItem("Fortify Core", new List<string>() { "All", "Health", "Stamina", "Dead Eye" }, 0, "Fortify inner cores.");
             MenuCheckboxItem godModeBox = new MenuCheckboxItem("God Mode", "Prevents you from taking damage.", UserDefaults.PlayerGodMode);
             MenuCheckboxItem infiniteStamina = new MenuCheckboxItem("Infinite Stamina", "Run forever!", UserDefaults.PlayerInfiniteStamina);
             MenuCheckboxItem infiniteDeadEye = new MenuCheckboxItem("Infinite DeadEye", "Useless?", UserDefaults.PlayerInfiniteDeadEye);
@@ -153,6 +154,10 @@ namespace RedMenuClient.menus
             if (PermissionsManager.IsAllowed(Permission.PMMaxOuterCores))
             {
                 menu.AddMenuItem(maxOuterCoresList);
+            }
+            if (PermissionsManager.IsAllowed(Permission.PMFortifyCores))
+            {
+                menu.AddMenuItem(fortifyCoresList);
             }
             if (PermissionsManager.IsAllowed(Permission.PMGodMode))
             {
@@ -1140,6 +1145,35 @@ namespace RedMenuClient.menus
                             break;
                         case 3: // dead eye
                             Debug.WriteLine($"Max attribute points for this ped dead eye: {GetAttributePoints(PlayerPedId(), 2)}");
+                            break;
+                        default: // invalid index
+                            break;
+                    }
+                }
+                else if (item == fortifyCoresList)
+                {
+                    switch (listIndex)
+                    {
+                        case 0: // all
+                                // API definition incorrectly has p2 as int when it must be a float
+                                //EnableAttributeOverpower(PlayerPedId(), 0, 100, 1);
+                                //EnableAttributeOverpower(PlayerPedId(), 1, 100, 1);
+                                //EnableAttributeOverpower(PlayerPedId(), 2, 100, 1);
+                            Function.Call((Hash)0x4AF5A4C7B9157D14, PlayerPedId(), 0, 100.0f, true);
+                            Function.Call((Hash)0x4AF5A4C7B9157D14, PlayerPedId(), 1, 100.0f, true);
+                            Function.Call((Hash)0x4AF5A4C7B9157D14, PlayerPedId(), 2, 100.0f, true);
+                            break;
+                        case 1: // health
+                            //EnableAttributeOverpower(PlayerPedId(), 0, 100, 1);
+                            Function.Call((Hash)0x4AF5A4C7B9157D14, PlayerPedId(), 0, 100.0f, true);
+                            break;
+                        case 2: // stamina
+                            //EnableAttributeOverpower(PlayerPedId(), 1, 100, 1);
+                            Function.Call((Hash)0x4AF5A4C7B9157D14, PlayerPedId(), 1, 100.0f, true);
+                            break;
+                        case 3: //dead eye
+                            //EnableAttributeOverpower(PlayerPedId(), 2, 100, 1);
+                            Function.Call((Hash)0x4AF5A4C7B9157D14, PlayerPedId(), 2, 100.0f, true);
                             break;
                         default: // invalid index
                             break;
