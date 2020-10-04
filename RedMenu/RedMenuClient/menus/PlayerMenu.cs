@@ -540,7 +540,6 @@ namespace RedMenuClient.menus
                                 case 36: hash = 0xF1542D11; break;
                                 case 37: hash = 0xF16A1D23; break;
                                 case 38: hash = 0xFAE9107F; break;
-                                case 39: hash = 0xEA24B45E; break;
                                 default:
                                     hash = 0;
                                     break;
@@ -779,8 +778,8 @@ namespace RedMenuClient.menus
                                 case 34: hash = 0xEABE0032; break;
                                 case 35: hash = 0xF1542D11; break;
                                 case 36: hash = 0xF16A1D23; break;
-                                case 37: hash = 0xFAE9107F; break;
-                                case 38: hash = 0xF8016BCA; break;
+                                case 37: hash = 0xF8016BCA; break;
+                                case 38: hash = 0xFAE9107F; break;
                                 default:
                                     hash = 0;
                                     break;
