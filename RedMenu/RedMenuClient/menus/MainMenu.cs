@@ -64,6 +64,18 @@ namespace RedMenuClient.menus
                 MenuController.BindMenuItem(mainMenu, WeaponsMenu.GetMenu(), submenuBtn);
             }
 
+            if (PermissionsManager.IsAllowed(Permission.MMMenu))
+            {
+                MenuController.AddSubmenu(mainMenu, MountMenu.GetMenu());
+                MenuItem submenuBtn = new MenuItem("Mount Menu", "Mount related options.")
+                {
+                    RightIcon = MenuItem.Icon.ARROW_RIGHT
+                };
+
+                mainMenu.AddMenuItem(submenuBtn);
+                MenuController.BindMenuItem(mainMenu, MountMenu.GetMenu(), submenuBtn);
+            }
+
             // Teleport Menu
             if (PermissionsManager.IsAllowed(Permission.TMMenu))
             {

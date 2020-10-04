@@ -55,6 +55,9 @@ namespace RedMenuShared
         WMThrowables,
         WMInfiniteAmmo,
 
+        // Mount Menu
+        MMMenu,
+
         // Teleport Menu
         TMMenu,
         TMTeleportToWaypoint,
@@ -94,6 +97,10 @@ namespace RedMenuShared
             if (permissionName.StartsWith("WM"))
             {
                 return prefix + ".WeaponsMenu." + permissionName.Substring(2);
+            }
+            if (permissionName.StartsWith("MM"))
+            {
+                return prefix + ".MountMenu." + permissionName.Substring(2);
             }
             if (permissionName.StartsWith("TM"))
             {
