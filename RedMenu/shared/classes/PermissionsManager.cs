@@ -57,6 +57,7 @@ namespace RedMenuShared
 
         // Mount Menu
         MMMenu,
+        MMTack,
 
         // Teleport Menu
         TMMenu,
