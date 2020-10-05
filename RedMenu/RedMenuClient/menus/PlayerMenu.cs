@@ -549,7 +549,7 @@ namespace RedMenuClient.menus
                             {
                                 Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), hash, 0);
                                 Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
-                                currentMpClothes[itemIndex] = 0;
+                                currentMpClothes[itemIndex] = hash;
                             }
                         };
                     }
@@ -789,7 +789,7 @@ namespace RedMenuClient.menus
                             {
                                 Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), hash, 0);
                                 Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
-                                currentMpClothes[itemIndex] = 0;
+                                currentMpClothes[itemIndex] = hash;
                             }
                         };
                     }
@@ -949,7 +949,55 @@ namespace RedMenuClient.menus
                                 {
                                     if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_mp_" + keys[j], out int hash))
                                     {
-                                        Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), (uint)hash, true, true, false);
+                                        switch ((uint)hash)
+                                        {
+                                            case 0x18729F39:
+                                            case 0x1D4C528A:
+                                            case 0x2026C46D:
+                                            case 0x3107499B:
+                                            case 0x378AD10C:
+                                            case 0x3C1A74CD:
+                                            case 0x3F7F3587:
+                                            case 0x485EE834:
+                                            case 0x514ADCEA:
+                                            case 0x05E47CA6:
+                                            case 0x5FC29285:
+                                            case 0x0662AC34:
+                                            case 0x72E6EF74:
+                                            case 0x7505EF42:
+                                            case 0x777EC6EF:
+                                            case 0x79D7DF96:
+                                            case 0x7A6BBD0B:
+                                            case 0x7A96FACA:
+                                            case 0x7BC10759:
+                                            case 0x823687F5:
+                                            case 0x83887E88:
+                                            case 0x864B03AE:
+                                            case 0x877A2CF7:
+                                            case 0x91CE9B20:
+                                            case 0x94504D26:
+                                            case 0x96EDAE5C:
+                                            case 0x9925C067:
+                                            case 0x9B2C8B89:
+                                            case 0xA0E3AB7F:
+                                            case 0xA6D134C6:
+                                            case 0xAF14310B:
+                                            case 0x0B3966C9:
+                                            case 0xB6B6122D:
+                                            case 0xE06D30CE:
+                                            case 0xEA24B45E:
+                                            case 0xEABE0032:
+                                            case 0xF1542D11:
+                                            case 0xF16A1D23:
+                                            case 0xF8016BCA:
+                                            case 0xFAE9107F:
+                                                Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), hash, 0);
+                                                Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
+                                                break;
+                                            default:
+                                                Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), (uint)hash, true, true, false);
+                                                break;
+                                        }
                                         currentMpClothes[keys[j]] = (uint)hash;
                                     }
                                     else
