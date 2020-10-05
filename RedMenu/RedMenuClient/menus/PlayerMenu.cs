@@ -10,6 +10,7 @@ using CitizenFX.Core.Native;
 using RedMenuShared;
 using RedMenuClient.util;
 using System.Net;
+using RedMenuClient.data;
 
 namespace RedMenuClient.menus
 {
@@ -885,6 +886,16 @@ namespace RedMenuClient.menus
                         currentMpClothes[i] = 0;
                     }
 
+                    foreach (FacialFeature feature in data.FacialFeatureData.FacialFeatures)
+                    {
+                        currentFacialFeatures[feature.Index] = 0;
+                    }
+                    
+                    for (int i = 0; i <= 1; ++i)
+                    {
+                        currentBodySettings[i] = 0;
+                    }
+
                     for (int i = 1; i <= 20; ++i)
                     {
                         int pedIndex = i;
@@ -930,18 +941,18 @@ namespace RedMenuClient.menus
                                         SetPedOutfitPreset(PlayerPedId(), outfit, 0);
                                         SetModelAsNoLongerNeeded((uint)model);
                                         playerOutfit.CurrentItem = outfit.ToString();
-
-                                        ResetCurrentMpClothes();
-                                        ResetCurrentFacialFeatures();
-                                        ResetCurrentBodySettings();
-
-                                        await BaseScript.Delay(500);
                                     }
                                     else
                                     {
                                         Debug.WriteLine($"^1[ERROR] This ped model is not present in the game files {model}.^7");
                                     }
                                 }
+
+                                await BaseScript.Delay(500);
+
+                                ResetCurrentMpClothes();
+                                ResetCurrentFacialFeatures();
+                                ResetCurrentBodySettings();
 
                                 int[] keys = currentMpClothes.Keys.ToArray();
 
@@ -1012,7 +1023,16 @@ namespace RedMenuClient.menus
                                 {
                                     if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_ff_" + ffkeys[j], out float value))
                                     {
-                                        Function.Call((Hash)0x5653AB26C82938CF, PlayerPedId(), ffkeys[j], value);
+                                        if (value != 0)
+                                        {
+                                            Function.Call((Hash)0x5653AB26C82938CF, PlayerPedId(), ffkeys[j], value);
+                                        }
+
+                                        currentFacialFeatures[ffkeys[j]] = value;
+                                    }
+                                    else
+                                    {
+                                        currentFacialFeatures[ffkeys[j]] = 0;
                                     }
                                 }
 
@@ -1022,7 +1042,16 @@ namespace RedMenuClient.menus
                                 {
                                     if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_bc_" + bckeys[j], out int hash))
                                     {
-                                        Function.Call((Hash)0x1902C4CFCC5BE57C, PlayerPedId(), hash);
+                                        if (hash != 0)
+                                        {
+                                            Function.Call((Hash)0x1902C4CFCC5BE57C, PlayerPedId(), hash);
+                                        }
+
+                                        currentBodySettings[bckeys[j]] = hash;
+                                    }
+                                    else
+                                    {
+                                        currentBodySettings[bckeys[j]] = 0;
                                     }
                                 }
 
