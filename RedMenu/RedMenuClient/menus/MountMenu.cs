@@ -18,16 +18,82 @@ namespace RedMenuClient.menus
     {
         private static Menu menu = new Menu("Mount", "Mount related options.");
         private static bool setupDone = false;
+        private static int currentMount = 0;
 
         private static int GetLastMount(int ped)
         {
             return Function.Call<int>((Hash)0x4C8B59171957BCF7, ped);
         }
 
+        private static int CreatePed_2(uint model, float x, float y, float z, float heading, bool isNetwork, bool netMissionEntity, bool p7, bool p8)
+        {
+            return Function.Call<int>((Hash)0xD49F9B0955C367DE, model, x, y, z, heading, isNetwork, netMissionEntity, p7, p8);
+        }
+
+        private static int BlipAddForEntity(int blipHash, int entity)
+        {
+            return Function.Call<int>((Hash)0x23F74C2FDA6E7C61, blipHash, entity);
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
             setupDone = true;
+
+            if (PermissionsManager.IsAllowed(Permission.MMSpawn))
+            {
+                List<string> mounts = new List<string>();
+                MenuListItem mountPeds = new MenuListItem("Spawn Mount", mounts, 0, "Spawn a mount.");
+                for (int i = 0; i < data.PedModels.HorseHashes.Count(); i++)
+                {
+                    mounts.Add($"{data.PedModels.HorseHashes[i]} ({i + 1}/{data.PedModels.HorseHashes.Count()}");
+                }
+                menu.AddMenuItem(mountPeds);
+
+                menu.OnListItemSelect += async (m, item, listIndex, itemIndex) =>
+                {
+                    if (item == mountPeds)
+                    {
+                        if (currentMount != 0)
+                        {
+                            DeleteEntity(ref currentMount);
+                            currentMount = 0;
+                        }
+
+                        uint model = (uint)GetHashKey(data.PedModels.HorseHashes[listIndex]);
+
+                        int ped = PlayerPedId();
+                        Vector3 coords = GetEntityCoords(ped, false, false);
+                        float h = GetEntityHeading(ped);
+
+                        // Get a point in front of the player
+                        float r = -h * (float)(Math.PI / 180);
+                        float x2 = coords.X + (float)(5 * Math.Sin(r));
+                        float y2 = coords.Y + (float)(5 * Math.Cos(r));
+
+                        if (IsModelInCdimage(model))
+                        {
+                            RequestModel(model, false);
+                            while (!HasModelLoaded(model))
+                            {
+                                RequestModel(model, false);
+                                await BaseScript.Delay(0);
+                            }
+
+                            currentMount = CreatePed_2(model, x2, y2, coords.Z, 0.0f, true, true, true, true);
+                            SetModelAsNoLongerNeeded(model);
+                            SetPedOutfitPreset(currentMount, 0, 0);
+                            SetPedConfigFlag(currentMount, 297, true); // Enable leading
+                            SetPedConfigFlag(currentMount, 312, true); // Won't flee when shooting
+                            BlipAddForEntity(-1230993421, currentMount);
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"^1[ERROR] This ped model is not present in the game files {model}.^7");
+                        }
+                    }
+                };
+            }
 
             if (PermissionsManager.IsAllowed(Permission.MMTack))
             {
