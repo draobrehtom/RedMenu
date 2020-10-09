@@ -38,6 +38,7 @@ namespace RedMenuShared
         PMKillSelf,
         PMEveryoneIgnore,
         PMFortifyCores,
+        PMEmotes,
 
         // Weapons Menu
         WMDropWeapon,

@@ -46,6 +46,26 @@ namespace RedMenuClient.menus
             };
         }
 
+        private static void AddEmotesSubmenu(Menu menu, List<string> hashes, int category, string title, string description)
+        {
+            Menu submenu = new Menu(title, description);
+            MenuItem button = new MenuItem(title, description) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+            menu.AddMenuItem(button);
+            MenuController.AddSubmenu(menu, submenu);
+            MenuController.BindMenuItem(menu, submenu, button);
+
+            foreach (var name in hashes)
+            {
+                MenuListItem item = new MenuListItem(name, new List<string>() { "0", "1", "2"}, 0);
+                submenu.AddMenuItem(item);
+            }
+
+            submenu.OnListItemSelect += (m, listItem, selectedIndex, itemIndex) =>
+            {
+                TaskEmote(PlayerPedId(), category, selectedIndex, GetHashKey(hashes[itemIndex]), 1, 1, 1, 1);
+            };
+        }
+
         private static async Task<string> GetUserInput(string windowTitle, string defaultText, int maxInputLength)
         {
             var spacer = "\t";
@@ -1131,6 +1151,21 @@ namespace RedMenuClient.menus
                 AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.SheepScenarioHashes, "Sheep Scenarios", "Scenarios for sheep peds.");
                 AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.SkunkScenarioHashes, "Skunk Scenarios", "Scenarios for skunk peds.");
                 AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.WolfScenarioHashes, "Wolf Scenarios", "Scenarios for wolf peds.");
+            }
+
+            if (PermissionsManager.IsAllowed(Permission.PMEmotes))
+            {
+                Menu emotesMenu = new Menu("Emotes", "Player emotes.");
+                MenuItem emotes = new MenuItem("Emotes", "Player emotes.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                menu.AddMenuItem(emotes);
+                MenuController.AddSubmenu(menu, emotesMenu);
+                MenuController.BindMenuItem(menu, emotesMenu, emotes);
+
+                AddEmotesSubmenu(emotesMenu, data.ScenarioData.ReactionEmotes, 0, "Reactions", "Reaction emotes.");
+                AddEmotesSubmenu(emotesMenu, data.ScenarioData.ActionEmotes, 1, "Actions", "Action emotes.");
+                AddEmotesSubmenu(emotesMenu, data.ScenarioData.TauntEmotes, 2, "Taunts", "Taunt emotes.");
+                AddEmotesSubmenu(emotesMenu, data.ScenarioData.GreetEmotes, 3, "Greetings", "Greeting emotes.");
+                AddEmotesSubmenu(emotesMenu, data.ScenarioData.DanceEmotes, 4, "Dances", "Dance emotes.");
             }
 
             menu.OnDynamicListItemSelect += (m, item, currentItem) =>

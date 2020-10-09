@@ -1631,5 +1631,105 @@ namespace RedMenuClient.data
             "WORLD_ANIMAL_SKUNK_EATING",
             "WORLD_ANIMAL_SKUNK_FLEE_HOLE"
         };
+
+        public static List<string> ReactionEmotes = new List<string>()
+        {
+            "KIT_EMOTE_REACTION_APPLAUSE_1",
+            "KIT_EMOTE_REACTION_BEGMERCY_1",
+            "KIT_EMOTE_REACTION_CLAP_ALONG_1",
+            "KIT_EMOTE_REACTION_HANGOVER_1",
+            "KIT_EMOTE_REACTION_HOW_DARE_YOU_1",
+            "KIT_EMOTE_REACTION_HURL_1",
+            "KIT_EMOTE_REACTION_HUSH_YOUR_MOUTH_1",
+            "KIT_EMOTE_REACTION_JOVIAL_LAUGH_1",
+            "KIT_EMOTE_REACTION_NOD_HEAD_1",
+            "KIT_EMOTE_REACTION_POINTLAUGH_1",
+            "KIT_EMOTE_REACTION_SCARED_1",
+            "KIT_EMOTE_REACTION_SHAKEHEAD_1",
+            "KIT_EMOTE_REACTION_SHOT_1",
+            "KIT_EMOTE_REACTION_SHRUG_1",
+            "KIT_EMOTE_REACTION_SHUFFLE_1",
+            "KIT_EMOTE_REACTION_SLOW_CLAP_1",
+            "KIT_EMOTE_REACTION_SOB_1",
+            "KIT_EMOTE_REACTION_SURRENDER_1",
+            "KIT_EMOTE_REACTION_THUMBSDOWN_1",
+            "KIT_EMOTE_REACTION_WHO_ME_1",
+            "KIT_EMOTE_REACTION_YEEHAW_1"
+        };
+
+        public static List<string> ActionEmotes = new List<string>()
+        {
+            "KIT_EMOTE_ACTION_BECKON_1",
+            "KIT_EMOTE_ACTION_BLOW_KISS_1",
+            "KIT_EMOTE_ACTION_BOAST_1",
+            "KIT_EMOTE_ACTION_CHECK_POCKET_WATCH_1",
+            "KIT_EMOTE_ACTION_FIST_PUMP_1",
+            "KIT_EMOTE_ACTION_FLEX_1",
+            "KIT_EMOTE_ACTION_FOLLOW_ME_1",
+            "KIT_EMOTE_ACTION_HISSYFIT_1",
+            "KIT_EMOTE_ACTION_HYPNOSIS_POCKET_WATCH_1",
+            "KIT_EMOTE_ACTION_LETS_FISH_1",
+            "KIT_EMOTE_ACTION_LETS_GO_1",
+            "KIT_EMOTE_ACTION_LOOK_DISTANCE_1",
+            "KIT_EMOTE_ACTION_LOOK_YONDER_1",
+            "KIT_EMOTE_ACTION_NEWTHREADS_1",
+            "KIT_EMOTE_ACTION_POINT_1",
+            "KIT_EMOTE_ACTION_POSSE_UP_1",
+            "KIT_EMOTE_ACTION_PRAYER_1",
+            "KIT_EMOTE_ACTION_PROSPECTOR_JIG_1",
+            "KIT_EMOTE_ACTION_SCHEME_1",
+            "KIT_EMOTE_ACTION_SHOOTHIP_1",
+            "KIT_EMOTE_ACTION_SKYWARD_SHOOTING_1",
+            "KIT_EMOTE_ACTION_SMOKE_CIGARETTE_1",
+            "KIT_EMOTE_ACTION_SMOKE_CIGAR_1",
+            "KIT_EMOTE_ACTION_SMOKE_PIPE_1",
+            "KIT_EMOTE_ACTION_SPIT_1",
+            "KIT_EMOTE_ACTION_SPOOKY_1",
+            "KIT_EMOTE_ACTION_STOP_HERE_1",
+            "KIT_EMOTE_ACTION_TAKE_NOTES_1"
+        };
+
+        public static List<string> TauntEmotes = new List<string>()
+        {
+            "KIT_EMOTE_TAUNT_BOOHOO_1",
+            "KIT_EMOTE_TAUNT_FAKE_DRAW_1",
+            "KIT_EMOTE_TAUNT_FLIP_OFF_1",
+            "KIT_EMOTE_TAUNT_PROVOKE_1",
+            "KIT_EMOTE_TAUNT_RIPPER_1",
+            "KIT_EMOTE_TAUNT_THROAT_SLIT_1",
+            "KIT_EMOTE_TAUNT_UP_YOURS_1",
+            "KIT_EMOTE_TAUNT_VERSUS_1",
+            "KIT_EMOTE_TAUNT_YOUSTINK_1"
+        };
+
+        public static List<string> GreetEmotes = new List<string>()
+        {
+            "KIT_EMOTE_GREET_GENTLEWAVE_1",
+            "KIT_EMOTE_GREET_GET_OVER_HERE_1",
+            "KIT_EMOTE_GREET_GLAD_1",
+            "KIT_EMOTE_GREET_HEY_YOU_1",
+            "KIT_EMOTE_GREET_RESPECTFUL_BOW_1",
+            "KIT_EMOTE_GREET_SEVEN_1",
+            "KIT_EMOTE_GREET_SUBTLE_WAVE_1",
+            "KIT_EMOTE_GREET_TADA_1",
+            "KIT_EMOTE_GREET_THUMBSUP_1",
+            "KIT_EMOTE_GREET_TOUGH_1",
+            "KIT_EMOTE_GREET_WAVENEAR_1"
+        };
+
+        public static List<string> DanceEmotes = new List<string>()
+        {
+            "KIT_EMOTE_DANCE_AWKWARD_A_1",
+            "KIT_EMOTE_DANCE_CAREFREE_A_1",
+            "KIT_EMOTE_DANCE_CAREFREE_B_1",
+            "KIT_EMOTE_DANCE_CONFIDENT_B_1",
+            "KIT_EMOTE_DANCE_DRUNK_A_1",
+            "KIT_EMOTE_DANCE_DRUNK_B_1",
+            "KIT_EMOTE_DANCE_FORMAL_A_1",
+            "KIT_EMOTE_DANCE_GRACEFUL_A_1",
+            "KIT_EMOTE_DANCE_OLD_A_1",
+            "KIT_EMOTE_DANCE_WILD_A_1",
+            "KIT_EMOTE_DANCE_WILD_B_1"
+        };
     }
 }
