@@ -41,6 +41,7 @@ namespace RedMenuClient.menus
             setupDone = true;
 
             MenuListItem restoreCores = new MenuListItem("Restore Cores", new List<string>() { "All", "Health", "Stamina" }, 0, "Restore horse inner cores.");
+            MenuListItem fortifyCores = new MenuListItem("Fortify Cores", new List<string>() { "All", "Health", "Stamina" }, 0, "Fortify horse inner cores.");
 
             if (PermissionsManager.IsAllowed(Permission.MMSpawn))
             {
@@ -184,6 +185,11 @@ namespace RedMenuClient.menus
                 menu.AddMenuItem(restoreCores);
             }
 
+            if (PermissionsManager.IsAllowed(Permission.MMFortifyCores))
+            {
+                menu.AddMenuItem(fortifyCores);
+            }
+
             menu.OnListItemSelect += (m, item, listIndex, itemIndex) =>
             {
                 if (item == restoreCores)
@@ -199,6 +205,24 @@ namespace RedMenuClient.menus
                             break;
                         case 2:
                             Function.Call<int>((Hash)0xC6258F41D86676E0, GetLastMount(PlayerPedId()), 1, 100);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if (item == fortifyCores)
+                {
+                    switch (listIndex)
+                    {
+                        case 0:
+                            Function.Call((Hash)0x4AF5A4C7B9157D14, GetLastMount(PlayerPedId()), 0, 100.0f, true);
+                            Function.Call((Hash)0x4AF5A4C7B9157D14, GetLastMount(PlayerPedId()), 1, 100.0f, true);
+                            break;
+                        case 1:
+                            Function.Call((Hash)0x4AF5A4C7B9157D14, GetLastMount(PlayerPedId()), 0, 100.0f, true);
+                            break;
+                        case 2:
+                            Function.Call((Hash)0x4AF5A4C7B9157D14, GetLastMount(PlayerPedId()), 1, 100.0f, true);
                             break;
                         default:
                             break;
