@@ -40,6 +40,8 @@ namespace RedMenuClient.menus
             if (setupDone) return;
             setupDone = true;
 
+            MenuListItem restoreCores = new MenuListItem("Restore Cores", new List<string>() { "All", "Health", "Stamina" }, 0, "Restore horse inner cores.");
+
             if (PermissionsManager.IsAllowed(Permission.MMSpawn))
             {
                 List<string> mounts = new List<string>();
@@ -176,6 +178,33 @@ namespace RedMenuClient.menus
                     }
                 };
             }
+
+            if (PermissionsManager.IsAllowed(Permission.MMRestoreCores))
+            {
+                menu.AddMenuItem(restoreCores);
+            }
+
+            menu.OnListItemSelect += (m, item, listIndex, itemIndex) =>
+            {
+                if (item == restoreCores)
+                {
+                    switch (listIndex)
+                    {
+                        case 0:
+                            Function.Call<int>((Hash)0xC6258F41D86676E0, GetLastMount(PlayerPedId()), 0, 100);
+                            Function.Call<int>((Hash)0xC6258F41D86676E0, GetLastMount(PlayerPedId()), 1, 100);
+                            break;
+                        case 1:
+                            Function.Call<int>((Hash)0xC6258F41D86676E0, GetLastMount(PlayerPedId()), 0, 100);
+                            break;
+                        case 2:
+                            Function.Call<int>((Hash)0xC6258F41D86676E0, GetLastMount(PlayerPedId()), 1, 100);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            };
         }
 
         public static Menu GetMenu()

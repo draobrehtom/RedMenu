@@ -60,6 +60,7 @@ namespace RedMenuShared
         MMMenu,
         MMSpawn,
         MMTack,
+        MMRestoreCores,
 
         // Teleport Menu
         TMMenu,
