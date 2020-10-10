@@ -120,9 +120,7 @@ namespace RedMenuClient.menus
             if (setupDone) return;
             setupDone = true;
 
-            MenuItem innerHealthCoreBtn = new MenuItem("Max Health Core", "Fully restores the inner Health core.");
-            MenuItem innerStaminaCoreBtn = new MenuItem("Max Stamina Core", "Fully restores the inner Stamina core.");
-            MenuItem innerDeadEyeCoreBtn = new MenuItem("Max DeadEye Core", "Fully restores the inner DeadEye core.");
+            MenuListItem restoreInnerCores = new MenuListItem("Restore Inner Core", new List<string>() { "All", "Health", "Stamina", "Dead Eye" }, 0, "Fully restores any or all inner cores to their max value.");
             MenuListItem maxOuterCoresList = new MenuListItem("Restore Outer Core", new List<string>() { "All", "Health", "Stamina", "Dead Eye" }, 0, "Fully restores any or all outer cores to their max value.");
             MenuListItem fortifyCoresList = new MenuListItem("Fortify Core", new List<string>() { "All", "Health", "Stamina", "Dead Eye" }, 0, "Fortify inner cores.");
             MenuCheckboxItem godModeBox = new MenuCheckboxItem("God Mode", "Prevents you from taking damage.", UserDefaults.PlayerGodMode);
@@ -158,19 +156,9 @@ namespace RedMenuClient.menus
                 return "0";
             }), "Select a predefined outfit for this ped. Outfits are made by Rockstar. Note the selected value can go up indefinitely because we don't know how to check for the max amount of outfits yet, so more native research is needed.");
 
-
-
-            if (PermissionsManager.IsAllowed(Permission.PMRestoreHealth))
+            if (PermissionsManager.IsAllowed(Permission.PMRestoreInnerCores))
             {
-                menu.AddMenuItem(innerHealthCoreBtn);
-            }
-            if (PermissionsManager.IsAllowed(Permission.PMRestoreStamina))
-            {
-                menu.AddMenuItem(innerStaminaCoreBtn);
-            }
-            if (PermissionsManager.IsAllowed(Permission.PMRestoreDeadEye))
-            {
-                menu.AddMenuItem(innerDeadEyeCoreBtn);
+                menu.AddMenuItem(restoreInnerCores);
             }
             if (PermissionsManager.IsAllowed(Permission.PMMaxOuterCores))
             {
@@ -1203,19 +1191,7 @@ namespace RedMenuClient.menus
 
             menu.OnItemSelect += (m, item, index) =>
             {
-                if (item == innerHealthCoreBtn)
-                {
-                    Function.Call<int>((Hash)0xC6258F41D86676E0, PlayerPedId(), (int)0, (int)100);
-                }
-                else if (item == innerStaminaCoreBtn)
-                {
-                    Function.Call<int>((Hash)0xC6258F41D86676E0, PlayerPedId(), (int)1, (int)100);
-                }
-                else if (item == innerDeadEyeCoreBtn)
-                {
-                    Function.Call<int>((Hash)0xC6258F41D86676E0, PlayerPedId(), (int)2, (int)100);
-                }
-                else if (item == clearPedTasks)
+                if (item == clearPedTasks)
                 {
                     Function.Call(Hash.CLEAR_PED_TASKS_IMMEDIATELY, PlayerPedId(), true, false);
                 }
@@ -1236,7 +1212,29 @@ namespace RedMenuClient.menus
 
             menu.OnListItemSelect += (m, item, listIndex, itemIndex) =>
             {
-                if (item == maxOuterCoresList)
+                if (item == restoreInnerCores)
+                {
+                    switch (listIndex)
+                    {
+                        case 0:
+                            Function.Call<int>((Hash)0xC6258F41D86676E0, PlayerPedId(), 0, 100);
+                            Function.Call<int>((Hash)0xC6258F41D86676E0, PlayerPedId(), 1, 100);
+                            Function.Call<int>((Hash)0xC6258F41D86676E0, PlayerPedId(), 2, 100);
+                            break;
+                        case 1:
+                            Function.Call<int>((Hash)0xC6258F41D86676E0, PlayerPedId(), 0, 100);
+                            break;
+                        case 2:
+                            Function.Call<int>((Hash)0xC6258F41D86676E0, PlayerPedId(), 1, 100);
+                            break;
+                        case 3:
+                            Function.Call<int>((Hash)0xC6258F41D86676E0, PlayerPedId(), 2, 100);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if (item == maxOuterCoresList)
                 {
                     switch (listIndex)
                     {

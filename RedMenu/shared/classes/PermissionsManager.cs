@@ -19,9 +19,7 @@ namespace RedMenuShared
 
         // Player Menu
         PMMenu,
-        PMRestoreHealth,
-        PMRestoreStamina,
-        PMRestoreDeadEye,
+        PMRestoreInnerCores,
         PMMaxOuterCores,
         PMGodMode,
         PMInfiniteStamina,
