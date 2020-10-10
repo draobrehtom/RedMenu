@@ -42,6 +42,7 @@ namespace RedMenuClient.menus
 
             MenuListItem restoreCores = new MenuListItem("Restore Cores", new List<string>() { "All", "Health", "Stamina" }, 0, "Restore horse inner cores.");
             MenuListItem fortifyCores = new MenuListItem("Fortify Cores", new List<string>() { "All", "Health", "Stamina" }, 0, "Fortify horse inner cores.");
+            MenuItem deleteMount = new MenuItem("Delete Mount", "Delete the mount you are currently riding.");
 
             if (PermissionsManager.IsAllowed(Permission.MMSpawn))
             {
@@ -189,6 +190,24 @@ namespace RedMenuClient.menus
             {
                 menu.AddMenuItem(fortifyCores);
             }
+
+            if (PermissionsManager.IsAllowed(Permission.MMDelete))
+            {
+                menu.AddMenuItem(deleteMount);
+            }
+
+            menu.OnItemSelect += (m, item, index) =>
+            {
+                if (item == deleteMount)
+                {
+                    int mount = GetMount(PlayerPedId());
+
+                    if (mount != 0)
+                    {
+                        DeleteEntity(ref mount);
+                    }
+                }
+            };
 
             menu.OnListItemSelect += (m, item, listIndex, itemIndex) =>
             {
