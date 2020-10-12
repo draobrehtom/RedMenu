@@ -1069,7 +1069,7 @@ namespace RedMenuClient.menus
                             {
                                 string overwrite = await GetUserInput("Enter YES to overwrite " + pedName, "", 3);
 
-                                if (overwrite == "YES")
+                                if (string.Equals(overwrite, "yes", StringComparison.OrdinalIgnoreCase))
                                 {
                                     StorageManager.Save("SavedPeds_" + pedIndex + "_model", GetEntityModel(PlayerPedId()), true);
                                     StorageManager.Save("SavedPeds_" + pedIndex + "_outfit", Int32.Parse(playerOutfit.CurrentItem), true);
@@ -1090,9 +1090,13 @@ namespace RedMenuClient.menus
                             else if (item == rename)
                             {
                                 string newName = await GetUserInput("Enter ped name", pedName, 20);
-                                StorageManager.Save("SavedPeds_" + pedIndex + "_name", newName, true);
-                                savedPed.Text = newName;
-                                savedPedOptionsMenu.MenuTitle = newName;
+
+                                if (newName != null)
+                                {
+                                    StorageManager.Save("SavedPeds_" + pedIndex + "_name", newName, true);
+                                    savedPed.Text = newName;
+                                    savedPedOptionsMenu.MenuTitle = newName;
+                                }
                             }
                         };
                     }
