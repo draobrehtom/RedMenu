@@ -922,10 +922,8 @@ namespace RedMenuClient.menus
 
                         MenuItem load = new MenuItem("Load", "Load this ped.");
                         MenuItem save = new MenuItem("Save", "Save current ped to this slot.");
-                        MenuItem rename = new MenuItem("Rename", "Rename this slot.");
                         savedPedOptionsMenu.AddMenuItem(load);
                         savedPedOptionsMenu.AddMenuItem(save);
-                        savedPedOptionsMenu.AddMenuItem(rename);
 
                         savedPedOptionsMenu.OnItemSelect += async (m, item, index) =>
                         {
@@ -1067,9 +1065,9 @@ namespace RedMenuClient.menus
                             }
                             else if (item == save)
                             {
-                                string overwrite = await GetUserInput("Enter YES to overwrite " + pedName, "", 3);
+                                string newName = await GetUserInput("Enter ped name", pedName, 20);
 
-                                if (string.Equals(overwrite, "yes", StringComparison.OrdinalIgnoreCase))
+                                if (newName != null)
                                 {
                                     StorageManager.Save("SavedPeds_" + pedIndex + "_model", GetEntityModel(PlayerPedId()), true);
                                     StorageManager.Save("SavedPeds_" + pedIndex + "_outfit", Int32.Parse(playerOutfit.CurrentItem), true);
@@ -1085,17 +1083,10 @@ namespace RedMenuClient.menus
                                     {
                                         StorageManager.Save("SavedPeds_" + pedIndex + "_bc_" + entry.Key, entry.Value, true);
                                     }
-                                }
-                            }
-                            else if (item == rename)
-                            {
-                                string newName = await GetUserInput("Enter ped name", pedName, 20);
-
-                                if (newName != null)
-                                {
                                     StorageManager.Save("SavedPeds_" + pedIndex + "_name", newName, true);
                                     savedPed.Text = newName;
                                     savedPedOptionsMenu.MenuTitle = newName;
+                                    pedName = newName;
                                 }
                             }
                         };
