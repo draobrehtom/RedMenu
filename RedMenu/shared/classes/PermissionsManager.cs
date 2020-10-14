@@ -37,6 +37,7 @@ namespace RedMenuShared
         PMEveryoneIgnore,
         PMFortifyCores,
         PMEmotes,
+        PMDisableRagdoll,
 
         // Weapons Menu
         WMDropWeapon,

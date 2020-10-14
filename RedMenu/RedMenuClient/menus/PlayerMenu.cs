@@ -127,6 +127,7 @@ namespace RedMenuClient.menus
             MenuCheckboxItem infiniteStamina = new MenuCheckboxItem("Infinite Stamina", "Run forever!", UserDefaults.PlayerInfiniteStamina);
             MenuCheckboxItem infiniteDeadEye = new MenuCheckboxItem("Infinite DeadEye", "Useless?", UserDefaults.PlayerInfiniteDeadEye);
             MenuCheckboxItem everyoneIgnore = new MenuCheckboxItem("Everyone Ignore Player", "Currently, only prevents NPCs from shooting at you.", UserDefaults.PlayerEveryoneIgnore);
+            MenuCheckboxItem disableRagdoll = new MenuCheckboxItem("Disable Ragdoll", "Prevent your character from ragdolling.", UserDefaults.PlayerDisableRagdoll);
 
             MenuItem clearPedTasks = new MenuItem("Clear Ped Tasks", "Clear all ped tasks immediately, breaking free of any animation.");
             MenuItem hogtieSelf = new MenuItem("Hogtie Yourself", "Knocks you to the ground and get hogtied.");
@@ -187,6 +188,10 @@ namespace RedMenuClient.menus
             if (PermissionsManager.IsAllowed(Permission.PMEveryoneIgnore))
             {
                 menu.AddMenuItem(everyoneIgnore);
+            }
+            if (PermissionsManager.IsAllowed(Permission.PMDisableRagdoll))
+            {
+                menu.AddMenuItem(disableRagdoll);
             }
             if (PermissionsManager.IsAllowed(Permission.PMClearTasks))
             {
@@ -1181,6 +1186,11 @@ namespace RedMenuClient.menus
                 {
                     UserDefaults.PlayerEveryoneIgnore = _checked;
                     SetEveryoneIgnorePlayer(PlayerId(), _checked);
+                }
+                else if (item == disableRagdoll)
+                {
+                    UserDefaults.PlayerDisableRagdoll = _checked;
+                    SetPedCanRagdoll(PlayerPedId(), !_checked);
                 }
             };
 

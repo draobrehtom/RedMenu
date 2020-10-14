@@ -148,5 +148,21 @@ namespace RedMenuClient.util
             }
         }
 
+        public static bool PlayerDisableRagdoll
+        {
+            get
+            {
+                if (StorageManager.TryGet("PlayerDisableRagdoll", out bool val))
+                {
+                    return val;
+                }
+                PlayerDisableRagdoll = false;
+                return false;
+            }
+            set
+            {
+                StorageManager.Save("PlayerDisableRagdoll", value, true);
+            }
+        }
     }
 }

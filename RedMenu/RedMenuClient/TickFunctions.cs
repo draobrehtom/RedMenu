@@ -40,6 +40,15 @@ namespace RedMenuClient
                 SetEveryoneIgnorePlayer(PlayerId(), false);
             }
 
+            if (PermissionsManager.IsAllowed(Permission.PMDisableRagdoll) && UserDefaults.PlayerDisableRagdoll)
+            {
+                SetPedCanRagdoll(PlayerPedId(), false);
+            }
+            else
+            {
+                SetPedCanRagdoll(PlayerPedId(), true);
+            }
+
             // This needs more native research for the outer cores.
             //if (ConfigManager.EnableMaxStats)
             //{
