@@ -66,7 +66,10 @@ namespace RedMenuShared
         // Teleport Menu
         TMMenu,
         TMTeleportToWaypoint,
-        TMLocations
+        TMLocations,
+
+        // Misc Settings
+        MSClearArea
     }
 
 
@@ -110,6 +113,10 @@ namespace RedMenuShared
             if (permissionName.StartsWith("TM"))
             {
                 return prefix + ".TeleportMenu." + permissionName.Substring(2);
+            }
+            if (permissionName.StartsWith("MS"))
+            {
+                return prefix + ".MiscSettingsMenu." + permissionName.Substring(2);
             }
             return null;
         }
