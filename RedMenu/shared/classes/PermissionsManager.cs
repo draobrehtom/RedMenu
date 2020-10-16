@@ -63,6 +63,12 @@ namespace RedMenuShared
         MMFortifyCores,
         MMDelete,
 
+        // Vehicle Menu
+        VMMenu,
+        VMSpawn,
+        VMSpawnInside,
+        VMDelete,
+
         // Teleport Menu
         TMMenu,
         TMTeleportToWaypoint,
@@ -109,6 +115,10 @@ namespace RedMenuShared
             if (permissionName.StartsWith("MM"))
             {
                 return prefix + ".MountMenu." + permissionName.Substring(2);
+            }
+            if (permissionName.StartsWith("VM"))
+            {
+                return prefix + ".VehicleMenu." + permissionName.Substring(2);
             }
             if (permissionName.StartsWith("TM"))
             {

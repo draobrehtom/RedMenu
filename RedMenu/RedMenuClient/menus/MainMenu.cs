@@ -76,6 +76,18 @@ namespace RedMenuClient.menus
                 MenuController.BindMenuItem(mainMenu, MountMenu.GetMenu(), submenuBtn);
             }
 
+            if (PermissionsManager.IsAllowed(Permission.VMMenu))
+            {
+                MenuController.AddSubmenu(mainMenu, VehicleMenu.GetMenu());
+                MenuItem submenuBtn = new MenuItem("Vehicle Menu", "Vehicle related options.")
+                {
+                    RightIcon = MenuItem.Icon.ARROW_RIGHT
+                };
+
+                mainMenu.AddMenuItem(submenuBtn);
+                MenuController.BindMenuItem(mainMenu, VehicleMenu.GetMenu(), submenuBtn);
+            }
+
             // Teleport Menu
             if (PermissionsManager.IsAllowed(Permission.TMMenu))
             {

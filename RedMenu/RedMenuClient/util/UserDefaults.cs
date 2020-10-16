@@ -164,5 +164,22 @@ namespace RedMenuClient.util
                 StorageManager.Save("PlayerDisableRagdoll", value, true);
             }
         }
+
+        public static bool VehicleSpawnInside
+        {
+            get
+            {
+                if (StorageManager.TryGet("VehicleSpawnInside", out bool val))
+                {
+                    return val;
+                }
+                VehicleSpawnInside = false;
+                return false;
+            }
+            set
+            {
+                StorageManager.Save("VehicleSpawnInside", value, true);
+            }
+        }
     }
 }
