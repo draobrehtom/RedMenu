@@ -12,6 +12,7 @@ namespace RedMenuClient.data
         {
             "WEAPON_FISHINGROD",
             "WEAPON_KIT_BINOCULARS",
+            "WEAPON_KIT_BINOCULARS_IMPROVED",
             "WEAPON_KIT_CAMERA",
             "WEAPON_LASSO",
             "WEAPON_LASSO_REINFORCED",
