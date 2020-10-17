@@ -25,6 +25,64 @@ namespace RedMenuClient.menus
             return Function.Call<int>((Hash)0x23F74C2FDA6E7C61, blipHash, entity);
         }
 
+        private static void AddVehicleSubmenu(Menu menu, List<string> hashes, string name, string description)
+        {
+            Menu submenu = new Menu(name, description);
+            MenuItem submenuBtn = new MenuItem(name, description) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+            menu.AddMenuItem(submenuBtn);
+            MenuController.AddSubmenu(menu, submenu);
+            MenuController.BindMenuItem(menu, submenu, submenuBtn);
+
+            foreach (var hash in hashes)
+            {
+                submenu.AddMenuItem(new MenuItem(hash));
+            }
+
+            submenu.OnItemSelect += async (m, item, index) =>
+            {
+                if (currentVehicle != 0)
+                {
+                    DeleteVehicle(ref currentVehicle);
+                    currentVehicle = 0;
+                }
+
+                uint model = (uint)GetHashKey(hashes[index]);
+
+                int ped = PlayerPedId();
+                Vector3 coords = GetEntityCoords(ped, false, false);
+                float h = GetEntityHeading(ped);
+
+                // Get a point in front of the player
+                float r = -h * (float)(Math.PI / 180);
+                float x2 = coords.X + (float)(5 * Math.Sin(r));
+                float y2 = coords.Y + (float)(5 * Math.Cos(r));
+
+                if (IsModelInCdimage(model))
+                {
+                    RequestModel(model, false);
+                    while (!HasModelLoaded(model))
+                    {
+                        await BaseScript.Delay(0);
+                    }
+
+                    currentVehicle = CreateVehicle(model, x2, y2, coords.Z, h, true, true, false, true);
+                    SetModelAsNoLongerNeeded(model);
+                    SetVehicleOnGroundProperly(currentVehicle, 0);
+                    SetEntityVisible(currentVehicle, true);
+                    BlipAddForEntity(631964804, currentVehicle);
+
+                    if (UserDefaults.VehicleSpawnInside)
+                    {
+                        TaskWarpPedIntoVehicle(ped, currentVehicle, -1);
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine($"^1[ERROR] This vehicle model is not present in the game files {model}.^7");
+                }
+            };
+        }
+
         public static void SetupMenu()
         {
             if (setupDone) return;
@@ -41,55 +99,12 @@ namespace RedMenuClient.menus
                 MenuController.AddSubmenu(menu, spawnVehicleMenu);
                 MenuController.BindMenuItem(menu, spawnVehicleMenu, spawnVehicle);
 
-                foreach (var name in data.VehicleData.VehicleHashes)
-                {
-                    MenuItem item = new MenuItem(name);
-                    spawnVehicleMenu.AddMenuItem(item);
-                }
-
-                spawnVehicleMenu.OnItemSelect += async (m, item, index) =>
-                {
-                    if (currentVehicle != 0)
-                    {
-                        DeleteVehicle(ref currentVehicle);
-                        currentVehicle = 0;
-                    }
-
-                    uint model = (uint)GetHashKey(data.VehicleData.VehicleHashes[index]);
-
-                    int ped = PlayerPedId();
-                    Vector3 coords = GetEntityCoords(ped, false, false);
-                    float h = GetEntityHeading(ped);
-
-                    // Get a point in front of the player
-                    float r = -h * (float)(Math.PI / 180);
-                    float x2 = coords.X + (float)(5 * Math.Sin(r));
-                    float y2 = coords.Y + (float)(5 * Math.Cos(r));
-
-                    if (IsModelInCdimage(model))
-                    {
-                        RequestModel(model, false);
-                        while (!HasModelLoaded(model))
-                        {
-                            await BaseScript.Delay(0);
-                        }
-
-                        currentVehicle = CreateVehicle(model, x2, y2, coords.Z, h, true, true, false, true);
-                        SetModelAsNoLongerNeeded(model);
-                        SetVehicleOnGroundProperly(currentVehicle, 0);
-                        SetEntityVisible(currentVehicle, true);
-                        BlipAddForEntity(631964804, currentVehicle);
-
-                        if (UserDefaults.VehicleSpawnInside)
-                        {
-                            TaskWarpPedIntoVehicle(ped, currentVehicle, -1);
-                        }
-                    }
-                    else
-                    {
-                        Debug.WriteLine($"^1[ERROR] This vehicle model is not present in the game files {model}.^7");
-                    }
-                };
+                AddVehicleSubmenu(spawnVehicleMenu, data.VehicleData.BuggyHashes, "Buggies", "Spawn a buggy.");
+                AddVehicleSubmenu(spawnVehicleMenu, data.VehicleData.BoatHashes, "Boats", "Spawn a boat.");
+                AddVehicleSubmenu(spawnVehicleMenu, data.VehicleData.CartHashes, "Carts", "Spawn a cart.");
+                AddVehicleSubmenu(spawnVehicleMenu, data.VehicleData.CoachHashes, "Coaches", "Spawn a coach.");
+                AddVehicleSubmenu(spawnVehicleMenu, data.VehicleData.WagonHashes, "Wagons", "Spawn a wagon.");
+                AddVehicleSubmenu(spawnVehicleMenu, data.VehicleData.MiscHashes, "Misc", "Spawn a miscellaneous vehicle.");
             }
 
             if (PermissionsManager.IsAllowed(Permission.VMSpawnInside))
