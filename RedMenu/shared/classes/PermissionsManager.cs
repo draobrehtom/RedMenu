@@ -54,6 +54,7 @@ namespace RedMenuShared
         WMSniperRifles,
         WMThrowables,
         WMInfiniteAmmo,
+        WMGetAll,
 
         // Mount Menu
         MMMenu,

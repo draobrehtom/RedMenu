@@ -12,6 +12,24 @@ using RedMenuClient.util;
 
 namespace RedMenuClient.menus
 {
+    static class ListExtensions
+    {
+        public static void Shuffle<T>(this IList<T> list)
+        {
+            Random random = new Random();
+            int n = list.Count;
+
+            for (int i = list.Count - 1; i > 1; i--)
+            {
+                int rnd = random.Next(i + 1);
+
+                T value = list[rnd];
+                list[rnd] = list[i];
+                list[i] = value;
+            }
+
+        }
+    }
     class WeaponsMenu
     {
         private static Menu menu = new Menu("Weapons Menu", $"Weapon & Ammo Options");
@@ -39,6 +57,14 @@ namespace RedMenuClient.menus
             };
         }
 
+        private static void GiveAllWeaponsInCategory(List<string> hashes)
+        {
+            foreach (var name in hashes)
+            {
+                GiveWeaponToPed_2(PlayerPedId(), (uint)GetHashKey(name), 500, true, false, 0, false, 0.5f, 1.0f, 0, false, 0f, false);
+            }
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -46,11 +72,17 @@ namespace RedMenuClient.menus
 
             MenuItem dropWeaponBtn = new MenuItem("Drop Weapon", "Remove the currently selected weapon from your inventory.");
             MenuItem dropAllWeaponsBtn = new MenuItem("Drop All Weapons", "Removes all weapons from your inventory.");
+            MenuItem getAllWeapons = new MenuItem("Get All Weapons", "Add all the weapons you can carry to your inventory.");
 
             if (PermissionsManager.IsAllowed(Permission.WMDropWeapon))
             {
                 menu.AddMenuItem(dropWeaponBtn);
                 menu.AddMenuItem(dropAllWeaponsBtn);
+            }
+
+            if (PermissionsManager.IsAllowed(Permission.WMGetAll))
+            {
+                menu.AddMenuItem(getAllWeapons);
             }
 
             Menu ammoMenu = new Menu("Ammo", "Get ammo.");
@@ -147,6 +179,40 @@ namespace RedMenuClient.menus
                 else if (item == dropAllWeaponsBtn)
                 {
                     RemoveAllPedWeapons(PlayerPedId(), true, true);
+                }
+                else if (item == getAllWeapons)
+                {
+                    GiveAllWeaponsInCategory(data.WeaponsData.MeleeHashes);
+                    GiveAllWeaponsInCategory(data.WeaponsData.ThrownHashes);
+
+                    List<string> longarms = new List<string>();
+                    longarms.AddRange(data.WeaponsData.BowHashes);
+                    longarms.AddRange(data.WeaponsData.RepeaterHashes);
+                    longarms.AddRange(data.WeaponsData.RifleHashes);
+                    longarms.AddRange(data.WeaponsData.SniperHashes);
+                    longarms.Add("WEAPON_SHOTGUN_DOUBLEBARREL");
+                    longarms.Add("WEAPON_SHOTGUN_PUMP");
+                    longarms.Add("WEAPON_SHOTGUN_REPEATING");
+                    longarms.Add("WEAPON_SHOTGUN_SEMIAUTO");
+                    longarms.Shuffle();
+
+                    GiveWeaponToPed_2(PlayerPedId(), (uint)GetHashKey(longarms[0]), 500, true, false, 0, false, 0.5f, 1.0f, 0, false, 0f, false);
+                    GiveWeaponToPed_2(PlayerPedId(), (uint)GetHashKey(longarms[1]), 500, true, false, 0, false, 0.5f, 1.0f, 0, false, 0f, false);
+
+                    List<string> sidearms = new List<string>();
+                    sidearms.AddRange(data.WeaponsData.PistolHashes);
+                    sidearms.AddRange(data.WeaponsData.RevolverHashes);
+                    sidearms.Add("WEAPON_SHOTGUN_SAWEDOFF");
+                    sidearms.Shuffle();
+
+                    GiveWeaponToPed_2(PlayerPedId(), (uint)GetHashKey(sidearms[0]), 500, true, false, 0, false, 0.5f, 1.0f, 0, false, 0f, false);
+
+                    GiveAllWeaponsInCategory(data.WeaponsData.ItemHashes);
+
+                    foreach (var name in data.WeaponsData.AmmoHashes)
+                    {
+                        SetPedAmmoByType(PlayerPedId(), GetHashKey(name), 500);
+                    }
                 }
             };
 
