@@ -92,7 +92,15 @@ namespace RedMenuClient.menus
                         SetEntityCoords(ped, coords.X, coords.Y, groundz + 10.0f, false, false, false, false);
                         FreezeEntityPosition(ped, false);
                         Wait(3000);
-                        SetEntityInvincible(ped, false);
+
+                        if (PermissionsManager.IsAllowed(Permission.PMGodMode) && UserDefaults.PlayerGodMode)
+                        {
+                            SetEntityInvincible(ped, true);
+                        }
+                        else
+                        {
+                            SetEntityInvincible(ped, false);
+                        }
                     }
                 }
             };
