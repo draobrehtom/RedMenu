@@ -121,7 +121,7 @@ namespace RedMenuClient.menus
             setupDone = true;
 
             MenuListItem restoreInnerCores = new MenuListItem("Restore Inner Core", new List<string>() { "All", "Health", "Stamina", "Dead Eye" }, 0, "Fully restores any or all inner cores to their max value.");
-            MenuListItem maxOuterCoresList = new MenuListItem("Restore Outer Core", new List<string>() { "All", "Health", "Stamina", "Dead Eye" }, 0, "Fully restores any or all outer cores to their max value.");
+            MenuListItem restoreOuterCores = new MenuListItem("Restore Outer Core", new List<string>() { "All", "Health", "Stamina", "Dead Eye" }, 0, "Fully restores any or all outer cores to their max value.");
             MenuListItem fortifyCoresList = new MenuListItem("Fortify Core", new List<string>() { "All", "Health", "Stamina", "Dead Eye" }, 0, "Fortify inner cores.");
             MenuCheckboxItem godModeBox = new MenuCheckboxItem("God Mode", "Prevents you from taking damage.", UserDefaults.PlayerGodMode);
             MenuCheckboxItem infiniteStamina = new MenuCheckboxItem("Infinite Stamina", "Run forever!", UserDefaults.PlayerInfiniteStamina);
@@ -161,9 +161,9 @@ namespace RedMenuClient.menus
             {
                 menu.AddMenuItem(restoreInnerCores);
             }
-            if (PermissionsManager.IsAllowed(Permission.PMMaxOuterCores))
+            if (PermissionsManager.IsAllowed(Permission.PMRestoreOuterCores))
             {
-                menu.AddMenuItem(maxOuterCoresList);
+                menu.AddMenuItem(restoreOuterCores);
             }
             if (PermissionsManager.IsAllowed(Permission.PMFortifyCores))
             {
@@ -1239,26 +1239,23 @@ namespace RedMenuClient.menus
                             break;
                     }
                 }
-                else if (item == maxOuterCoresList)
+                else if (item == restoreOuterCores)
                 {
                     switch (listIndex)
                     {
                         case 0: // all
-                            Debug.WriteLine($"Max attribute points for this ped health: {GetAttributePoints(PlayerPedId(), 0)}");
-                            Debug.WriteLine($"Max attribute points for this ped stamina: {GetAttributePoints(PlayerPedId(), 1)}");
-                            Debug.WriteLine($"Max attribute points for this ped dead eye: {GetAttributePoints(PlayerPedId(), 2)}");
-                            //SetAttributePoints(PlayerPedId(), 0, Function.Call<int>((Hash)0x3FC4C027FD0936F4, PlayerPedId(), 0));
-                            //SetAttributePoints(PlayerPedId(), 1, Function.Call<int>((Hash)0x3FC4C027FD0936F4, PlayerPedId(), 1));
-                            //SetAttributePoints(PlayerPedId(), 2, Function.Call<int>((Hash)0x3FC4C027FD0936F4, PlayerPedId(), 2));
+                            Function.Call((Hash)0xAC2767ED8BDFAB15, PlayerPedId(), 100.0, 0);
+                            RestorePlayerStamina(PlayerId(), 100.0f);
+                            // deadeye?
                             break;
                         case 1: // health
-                            Debug.WriteLine($"Max attribute points for this ped health: {GetAttributePoints(PlayerPedId(), 0)}");
+                            SetEntityHealth(PlayerPedId(), 100, 0);
                             break;
                         case 2: // stamina
-                            Debug.WriteLine($"Max attribute points for this ped stamina: {GetAttributePoints(PlayerPedId(), 1)}");
+                            RestorePlayerStamina(PlayerId(), 100.0f);
                             break;
-                        case 3: // dead eye
-                            Debug.WriteLine($"Max attribute points for this ped dead eye: {GetAttributePoints(PlayerPedId(), 2)}");
+                        case 3: //deadeye
+                            // deadeye?
                             break;
                         default: // invalid index
                             break;
