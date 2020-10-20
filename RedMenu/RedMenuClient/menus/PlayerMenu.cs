@@ -1249,7 +1249,7 @@ namespace RedMenuClient.menus
                             // deadeye?
                             break;
                         case 1: // health
-                            SetEntityHealth(PlayerPedId(), 100, 0);
+                            Function.Call((Hash)0xAC2767ED8BDFAB15, PlayerPedId(), 100.0, 0);
                             break;
                         case 2: // stamina
                             RestorePlayerStamina(PlayerId(), 100.0f);
