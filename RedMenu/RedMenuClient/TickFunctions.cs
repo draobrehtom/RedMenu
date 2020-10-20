@@ -49,6 +49,15 @@ namespace RedMenuClient
                 SetPedCanRagdoll(PlayerPedId(), true);
             }
 
+            if (PermissionsManager.IsAllowed(Permission.WMInfiniteAmmo) && UserDefaults.WeaponInfiniteAmmo)
+            {
+                SetPedInfiniteAmmoClip(PlayerPedId(), true);
+            }
+            else
+            {
+                SetPedInfiniteAmmoClip(PlayerPedId(), false);
+            }
+
             // This needs more native research for the outer cores.
             //if (ConfigManager.EnableMaxStats)
             //{
