@@ -25,6 +25,11 @@ namespace RedMenuClient.menus
             return Function.Call<int>((Hash)0x23F74C2FDA6E7C61, blipHash, entity);
         }
 
+        private static void FixHotAirBalloon(int veh)
+        {
+            SetVehicleAsNoLongerNeeded(ref veh);
+        }
+
         private static void AddVehicleSubmenu(Menu menu, List<string> hashes, string name, string description)
         {
             Menu submenu = new Menu(name, description);
@@ -77,9 +82,10 @@ namespace RedMenuClient.menus
                     }
 
                     // If this isn't done, the hot air balloon won't move with the wind for some reason
-                    int c = currentVehicle;
-                    SetVehicleAsNoLongerNeeded(ref currentVehicle);
-                    currentVehicle = c;
+                    if (hashes[index] == "hotairballoon01")
+                    {
+                        FixHotAirBalloon(currentVehicle);
+                    }
                 }
                 else
                 {
@@ -130,7 +136,7 @@ namespace RedMenuClient.menus
 
                     if (veh != 0)
                     {
-                        DeleteVehicle(ref veh);
+                        DeleteEntity(ref veh);
                     }
                 }
             };
