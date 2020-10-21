@@ -75,6 +75,11 @@ namespace RedMenuClient.menus
                     {
                         TaskWarpPedIntoVehicle(ped, currentVehicle, -1);
                     }
+
+                    // If this isn't done, the hot air balloon won't move with the wind for some reason
+                    int c = currentVehicle;
+                    SetVehicleAsNoLongerNeeded(ref currentVehicle);
+                    currentVehicle = c;
                 }
                 else
                 {
