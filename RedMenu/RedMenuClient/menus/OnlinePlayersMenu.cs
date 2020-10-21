@@ -70,11 +70,7 @@ namespace RedMenuClient.menus
             }
 
             menu.OnItemSelect += DoOnItemSelect;
-
-            menu.OnMenuOpen += (m) =>
-            {
-                UpdatePlayerlist();
-            };
+            menu.OnMenuOpen += UpdatePlayerlist;
         }
         public static Menu GetMenu()
         {
@@ -82,10 +78,11 @@ namespace RedMenuClient.menus
             return menu;
         }
 
-        public static void UpdatePlayerlist()
+        public static void UpdatePlayerlist(Menu m)
         {
             menu.ClearMenuItems();
             menu.OnItemSelect -= DoOnItemSelect;
+            menu.OnMenuOpen -= UpdatePlayerlist;
             setupDone = false;
             SetupMenu();
         }
