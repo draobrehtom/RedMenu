@@ -1156,6 +1156,33 @@ namespace RedMenuClient.menus
                 AddEmotesSubmenu(emotesMenu, data.ScenarioData.DanceEmotes, 4, "Dances", "Dance emotes.");
             }
 
+            if (PermissionsManager.IsAllowed(Permission.PMWalkingStyle))
+            {
+                Menu walkingStyleMenu = new Menu("Walk Style", "Change your walking style.");
+                MenuItem walkingStyle = new MenuItem("Walk Style", "Change your walking style.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                menu.AddMenuItem(walkingStyle);
+                MenuController.AddSubmenu(menu, walkingStyleMenu);
+                MenuController.BindMenuItem(menu, walkingStyleMenu, walkingStyle);
+
+                MenuListItem bases = new MenuListItem("Base", data.ScenarioData.StanceBases, 0);
+                MenuListItem styles = new MenuListItem("Style", data.ScenarioData.StanceStyles, 0);
+
+                walkingStyleMenu.AddMenuItem(bases);
+                walkingStyleMenu.AddMenuItem(styles);
+
+                walkingStyleMenu.OnListItemSelect += (m, listItem, selectedIndex, itemIndex) =>
+                {
+                    if (listItem == bases)
+                    {
+                        Function.Call((Hash)0x923583741DC87BCE, PlayerPedId(), data.ScenarioData.StanceBases[selectedIndex]);
+                    }
+                    else if (listItem == styles)
+                    {
+                        Function.Call((Hash)0x89F5E7ADECCCB49C, PlayerPedId(), data.ScenarioData.StanceStyles[selectedIndex]);
+                    }
+                };
+            }
+
             menu.OnDynamicListItemSelect += (m, item, currentItem) =>
             {
                 if (item == playerOutfit)

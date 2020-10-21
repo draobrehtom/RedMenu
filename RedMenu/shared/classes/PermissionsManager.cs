@@ -38,6 +38,7 @@ namespace RedMenuShared
         PMFortifyCores,
         PMEmotes,
         PMDisableRagdoll,
+        PMWalkingStyle,
 
         // Weapons Menu
         WMDropWeapon,
