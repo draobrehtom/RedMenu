@@ -100,6 +100,7 @@ namespace RedMenuClient.menus
             setupDone = true;
 
             MenuCheckboxItem spawnInside = new MenuCheckboxItem("Spawn Inside Vehicle", "Automatically spawn inside vehicles.", UserDefaults.VehicleSpawnInside);
+            MenuItem repairVehicle = new MenuItem("Repair Vehicle", "Repair the vehicle you are currently in.");
             MenuItem deleteVehicle = new MenuItem("Delete Vehicle", "Delete the vehicle you are currently in.");
 
             if (PermissionsManager.IsAllowed(Permission.VMSpawn))
@@ -123,6 +124,11 @@ namespace RedMenuClient.menus
                 menu.AddMenuItem(spawnInside);
             }
 
+            if (PermissionsManager.IsAllowed(Permission.VMRepair))
+            {
+                menu.AddMenuItem(repairVehicle);
+            }
+
             if (PermissionsManager.IsAllowed(Permission.VMDelete))
             {
                 menu.AddMenuItem(deleteVehicle);
@@ -130,6 +136,15 @@ namespace RedMenuClient.menus
 
             menu.OnItemSelect += (m, item, index) =>
             {
+                if (item == repairVehicle)
+                {
+                    int veh = GetVehiclePedIsIn(PlayerPedId(), true);
+
+                    if (veh != 0)
+                    {
+                        SetVehicleFixed(veh);
+                    }
+                }
                 if (item == deleteVehicle)
                 {
                     int veh = GetVehiclePedIsIn(PlayerPedId(), true);
