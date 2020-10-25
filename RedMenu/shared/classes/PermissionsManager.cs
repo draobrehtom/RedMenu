@@ -71,6 +71,7 @@ namespace RedMenuShared
         VMSpawnInside,
         VMDelete,
         VMRepair,
+        VMTeleport,
 
         // Teleport Menu
         TMMenu,

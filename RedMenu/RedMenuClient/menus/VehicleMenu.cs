@@ -101,6 +101,7 @@ namespace RedMenuClient.menus
 
             MenuCheckboxItem spawnInside = new MenuCheckboxItem("Spawn Inside Vehicle", "Automatically spawn inside vehicles.", UserDefaults.VehicleSpawnInside);
             MenuItem repairVehicle = new MenuItem("Repair Vehicle", "Repair the vehicle you are currently in.");
+            MenuItem teleport = new MenuItem("Teleport Into Vehicle", "Teleport into your current vehicle.");
             MenuItem deleteVehicle = new MenuItem("Delete Vehicle", "Delete the vehicle you are currently in.");
 
             if (PermissionsManager.IsAllowed(Permission.VMSpawn))
@@ -129,6 +130,11 @@ namespace RedMenuClient.menus
                 menu.AddMenuItem(repairVehicle);
             }
 
+            if (PermissionsManager.IsAllowed(Permission.VMTeleport))
+            {
+                menu.AddMenuItem(teleport);
+            }
+
             if (PermissionsManager.IsAllowed(Permission.VMDelete))
             {
                 menu.AddMenuItem(deleteVehicle);
@@ -145,7 +151,14 @@ namespace RedMenuClient.menus
                         SetVehicleFixed(veh);
                     }
                 }
-                if (item == deleteVehicle)
+                else if (item == teleport)
+                {
+                    if (currentVehicle != 0)
+                    {
+                        TaskWarpPedIntoVehicle(PlayerPedId(), currentVehicle, -1);
+                    }
+                }
+                else if (item == deleteVehicle)
                 {
                     int veh = GetVehiclePedIsIn(PlayerPedId(), true);
 
