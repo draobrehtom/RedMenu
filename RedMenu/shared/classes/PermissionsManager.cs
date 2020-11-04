@@ -27,6 +27,7 @@ namespace RedMenuShared
         PMClearTasks,
         PMHogtieSelf,
         PMCleanPed,
+        PMDryPed,
         PMSelectPlayerModel,
         PMSelectOutfit,
         PMCustomizeMpPeds,
