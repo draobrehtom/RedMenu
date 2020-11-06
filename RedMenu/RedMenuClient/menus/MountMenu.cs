@@ -48,9 +48,9 @@ namespace RedMenuClient.menus
             {
                 List<string> mounts = new List<string>();
                 MenuListItem mountPeds = new MenuListItem("Spawn Mount", mounts, 0, "Spawn a mount.");
-                for (int i = 0; i < data.PedModels.HorseHashes.Count(); i++)
+                for (int i = 0; i < data.MountData.MountHashes.Count(); i++)
                 {
-                    mounts.Add($"{data.PedModels.HorseHashes[i]} ({i + 1}/{data.PedModels.HorseHashes.Count()}");
+                    mounts.Add($"{data.MountData.MountHashes[i]} ({i + 1}/{data.MountData.MountHashes.Count()}");
                 }
                 menu.AddMenuItem(mountPeds);
 
@@ -64,7 +64,7 @@ namespace RedMenuClient.menus
                             currentMount = 0;
                         }
 
-                        uint model = (uint)GetHashKey(data.PedModels.HorseHashes[listIndex]);
+                        uint model = (uint)GetHashKey(data.MountData.MountHashes[listIndex]);
 
                         int ped = PlayerPedId();
                         Vector3 coords = GetEntityCoords(ped, false, false);
