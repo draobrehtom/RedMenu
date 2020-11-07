@@ -61,6 +61,7 @@ namespace RedMenuShared
         // Mount Menu
         MMMenu,
         MMSpawn,
+        MMSex,
         MMTack,
         MMRestoreCores,
         MMFortifyCores,

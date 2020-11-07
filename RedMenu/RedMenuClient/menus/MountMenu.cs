@@ -35,6 +35,16 @@ namespace RedMenuClient.menus
             return Function.Call<int>((Hash)0x23F74C2FDA6E7C61, blipHash, entity);
         }
 
+        private static void SetPedFaceFeature(int ped, int index, float value)
+        {
+            Function.Call((Hash)0x5653AB26C82938CF, ped, index, value);
+        }
+
+        private static void UpdatePedVariation(int ped, bool p1, bool p2, bool p3, bool p4, bool p5)
+        {
+            Function.Call((Hash)0xCC8CA3E88256E58F, ped, p1, p2, p3, p4, p5);
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -44,59 +54,23 @@ namespace RedMenuClient.menus
             MenuListItem fortifyCores = new MenuListItem("Fortify Cores", new List<string>() { "All", "Health", "Stamina" }, 0, "Fortify horse inner cores.");
             MenuItem deleteMount = new MenuItem("Delete Mount", "Delete the mount you are currently riding.");
 
+            List<string> mounts = new List<string>();
+            MenuListItem mountPeds = new MenuListItem("Spawn Mount", mounts, 0, "Spawn a mount.");
+            for (int i = 0; i < data.MountData.MountHashes.Count(); i++)
+            {
+                mounts.Add($"{data.MountData.MountHashes[i]} ({i + 1}/{data.MountData.MountHashes.Count()}");
+            }
+
+            MenuListItem sex = new MenuListItem("Sex", new List<string>() { "Male", "Female" }, 0, "Set the sex of your mount.");
+
             if (PermissionsManager.IsAllowed(Permission.MMSpawn))
             {
-                List<string> mounts = new List<string>();
-                MenuListItem mountPeds = new MenuListItem("Spawn Mount", mounts, 0, "Spawn a mount.");
-                for (int i = 0; i < data.MountData.MountHashes.Count(); i++)
-                {
-                    mounts.Add($"{data.MountData.MountHashes[i]} ({i + 1}/{data.MountData.MountHashes.Count()}");
-                }
                 menu.AddMenuItem(mountPeds);
+            }
 
-                menu.OnListItemSelect += async (m, item, listIndex, itemIndex) =>
-                {
-                    if (item == mountPeds)
-                    {
-                        if (currentMount != 0)
-                        {
-                            DeleteEntity(ref currentMount);
-                            currentMount = 0;
-                        }
-
-                        uint model = (uint)GetHashKey(data.MountData.MountHashes[listIndex]);
-
-                        int ped = PlayerPedId();
-                        Vector3 coords = GetEntityCoords(ped, false, false);
-                        float h = GetEntityHeading(ped);
-
-                        // Get a point in front of the player
-                        float r = -h * (float)(Math.PI / 180);
-                        float x2 = coords.X + (float)(5 * Math.Sin(r));
-                        float y2 = coords.Y + (float)(5 * Math.Cos(r));
-
-                        if (IsModelInCdimage(model))
-                        {
-                            RequestModel(model, false);
-                            while (!HasModelLoaded(model))
-                            {
-                                RequestModel(model, false);
-                                await BaseScript.Delay(0);
-                            }
-
-                            currentMount = CreatePed_2(model, x2, y2, coords.Z, 0.0f, true, true, true, true);
-                            SetModelAsNoLongerNeeded(model);
-                            SetPedOutfitPreset(currentMount, 0, 0);
-                            SetPedConfigFlag(currentMount, 297, true); // Enable leading
-                            SetPedConfigFlag(currentMount, 312, true); // Won't flee when shooting
-                            BlipAddForEntity(-1230993421, currentMount);
-                        }
-                        else
-                        {
-                            Debug.WriteLine($"^1[ERROR] This ped model is not present in the game files {model}.^7");
-                        }
-                    }
-                };
+            if (PermissionsManager.IsAllowed(Permission.MMSex))
+            {
+                menu.AddMenuItem(sex);
             }
 
             if (PermissionsManager.IsAllowed(Permission.MMTack))
@@ -209,9 +183,67 @@ namespace RedMenuClient.menus
                 }
             };
 
-            menu.OnListItemSelect += (m, item, listIndex, itemIndex) =>
+            menu.OnListItemSelect += async (m, item, listIndex, itemIndex) =>
             {
-                if (item == restoreCores)
+                if (item == mountPeds)
+                {
+                    if (currentMount != 0)
+                    {
+                        DeleteEntity(ref currentMount);
+                        currentMount = 0;
+                    }
+
+                    uint model = (uint)GetHashKey(data.MountData.MountHashes[listIndex]);
+
+                    int ped = PlayerPedId();
+                    Vector3 coords = GetEntityCoords(ped, false, false);
+                    float h = GetEntityHeading(ped);
+
+                    // Get a point in front of the player
+                    float r = -h * (float)(Math.PI / 180);
+                    float x2 = coords.X + (float)(5 * Math.Sin(r));
+                    float y2 = coords.Y + (float)(5 * Math.Cos(r));
+
+                    if (IsModelInCdimage(model))
+                    {
+                        RequestModel(model, false);
+                        while (!HasModelLoaded(model))
+                        {
+                            RequestModel(model, false);
+                            await BaseScript.Delay(0);
+                        }
+
+                        currentMount = CreatePed_2(model, x2, y2, coords.Z, 0.0f, true, true, true, true);
+                        SetModelAsNoLongerNeeded(model);
+                        SetPedOutfitPreset(currentMount, 0, 0);
+                        SetPedConfigFlag(currentMount, 297, true); // Enable leading
+                        SetPedConfigFlag(currentMount, 312, true); // Won't flee when shooting
+                        BlipAddForEntity(-1230993421, currentMount);
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"^1[ERROR] This ped model is not present in the game files {model}.^7");
+                    }
+                }
+                else if (item == sex)
+                {
+                    int mount = GetLastMount(PlayerPedId());
+
+                    switch (listIndex)
+                    {
+                        case 0:
+                            SetPedFaceFeature(mount, 41611, 0.0f);
+                            break;
+                        case 1:
+                            SetPedFaceFeature(mount, 41611, 1.0f);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    UpdatePedVariation(mount, false, true, true, true, false);
+                }
+                else if (item == restoreCores)
                 {
                     switch (listIndex)
                     {
