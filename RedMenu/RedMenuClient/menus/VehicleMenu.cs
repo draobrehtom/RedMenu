@@ -102,6 +102,7 @@ namespace RedMenuClient.menus
             MenuCheckboxItem spawnInside = new MenuCheckboxItem("Spawn Inside Vehicle", "Automatically spawn inside vehicles.", UserDefaults.VehicleSpawnInside);
             MenuItem repairVehicle = new MenuItem("Repair Vehicle", "Repair the vehicle you are currently in.");
             MenuItem teleport = new MenuItem("Teleport Into Vehicle", "Teleport into your current vehicle.");
+            MenuListItem engineOnOff = new MenuListItem("Engine", new List<string>() { "On", "Off" }, 0, "Set the vehicle engine on/off.");
             MenuItem deleteVehicle = new MenuItem("Delete Vehicle", "Delete the vehicle you are currently in.");
 
             if (PermissionsManager.IsAllowed(Permission.VMSpawn))
@@ -133,6 +134,11 @@ namespace RedMenuClient.menus
             if (PermissionsManager.IsAllowed(Permission.VMTeleport))
             {
                 menu.AddMenuItem(teleport);
+            }
+
+            if (PermissionsManager.IsAllowed(Permission.VMEngineOnOff))
+            {
+                menu.AddMenuItem(engineOnOff);
             }
 
             if (PermissionsManager.IsAllowed(Permission.VMDelete))
@@ -174,6 +180,24 @@ namespace RedMenuClient.menus
                 if (item == spawnInside)
                 {
                     UserDefaults.VehicleSpawnInside = _checked;
+                }
+            };
+
+            menu.OnListItemSelect += (m, item, listIndex, itemIndex) =>
+            {
+                if (item == engineOnOff)
+                {
+                    switch (listIndex)
+                    {
+                        case 0: // on
+                            SetVehicleEngineOn(GetVehiclePedIsIn(PlayerPedId(), false), 1, 0);
+                            break;
+                        case 1:
+                            SetVehicleEngineOn(GetVehiclePedIsIn(PlayerPedId(), false), 0, 0);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             };
         }
