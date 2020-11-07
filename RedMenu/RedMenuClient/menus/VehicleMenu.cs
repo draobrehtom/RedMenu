@@ -14,6 +14,20 @@ using RedMenuClient.data;
 
 namespace RedMenuClient.menus
 {
+    class VehicleDistance
+    {
+        public int vehicle;
+        public float distance;
+
+        public VehicleDistance(int vehicle)
+        {
+            this.vehicle = vehicle;
+
+            Vector3 pCoords = GetEntityCoords(PlayerPedId(), true, true);
+            Vector3 vCoords = GetEntityCoords(vehicle, true, true);
+            distance = GetDistanceBetweenCoords(pCoords.X, pCoords.Y, pCoords.Z, vCoords.X, vCoords.Y, vCoords.Z, true);
+        }
+    }
     class VehicleMenu
     {
         private static Menu menu = new Menu("Vehicle Menu", "Vehicle related options.");
@@ -94,6 +108,19 @@ namespace RedMenuClient.menus
             };
         }
 
+        private static int GetNearestVehicle()
+        {
+            List<VehicleDistance> vehicles = new List<VehicleDistance>();
+            int veh = 0;
+            int handle = FindFirstVehicle(ref veh);
+            vehicles.Add(new VehicleDistance(veh));
+            while (FindNextVehicle(handle, ref veh))
+            {
+                vehicles.Add(new VehicleDistance(veh));
+            }
+            return vehicles.OrderBy(v => v.distance).First().vehicle;
+        }
+
         public static void SetupMenu()
         {
             if (setupDone) return;
@@ -101,7 +128,7 @@ namespace RedMenuClient.menus
 
             MenuCheckboxItem spawnInside = new MenuCheckboxItem("Spawn Inside Vehicle", "Automatically spawn inside vehicles.", UserDefaults.VehicleSpawnInside);
             MenuItem repairVehicle = new MenuItem("Repair Vehicle", "Repair the vehicle you are currently in.");
-            MenuItem teleport = new MenuItem("Teleport Into Vehicle", "Teleport into your current vehicle.");
+            MenuItem teleport = new MenuItem("Teleport Into Vehicle", "Teleport into the closest vehicle with an open seat.");
             MenuListItem engineOnOff = new MenuListItem("Engine", new List<string>() { "On", "Off" }, 0, "Set the vehicle engine on/off.");
             MenuItem deleteVehicle = new MenuItem("Delete Vehicle", "Delete the vehicle you are currently in.");
 
@@ -159,9 +186,11 @@ namespace RedMenuClient.menus
                 }
                 else if (item == teleport)
                 {
-                    if (currentVehicle != 0)
+                    int veh = GetNearestVehicle();
+
+                    if (veh != 0)
                     {
-                        TaskWarpPedIntoVehicle(PlayerPedId(), currentVehicle, -1);
+                        TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1);
                     }
                 }
                 else if (item == deleteVehicle)
