@@ -129,7 +129,8 @@ namespace RedMenuClient.menus
             MenuCheckboxItem spawnInside = new MenuCheckboxItem("Spawn Inside Vehicle", "Automatically spawn inside vehicles.", UserDefaults.VehicleSpawnInside);
             MenuItem repairVehicle = new MenuItem("Repair Vehicle", "Repair the vehicle you are currently in.");
             MenuItem teleport = new MenuItem("Teleport Into Vehicle", "Teleport into the closest vehicle with an open seat.");
-            MenuListItem engineOnOff = new MenuListItem("Engine", new List<string>() { "On", "Off" }, 0, "Set the vehicle engine on/off.");
+            MenuListItem engineOnOff = new MenuListItem("Engine", new List<string>() { "On", "Off" }, 0, "Set vehicle engine on/off.");
+            MenuListItem lightsOnOff = new MenuListItem("Lights", new List<string>() { "On", "Off" }, 0, "Set vehicle lights on/off.");
             MenuItem deleteVehicle = new MenuItem("Delete Vehicle", "Delete the vehicle you are currently in.");
 
             if (PermissionsManager.IsAllowed(Permission.VMSpawn))
@@ -166,6 +167,11 @@ namespace RedMenuClient.menus
             if (PermissionsManager.IsAllowed(Permission.VMEngineOnOff))
             {
                 menu.AddMenuItem(engineOnOff);
+            }
+
+            if (PermissionsManager.IsAllowed(Permission.VMLightsOnOff))
+            {
+                menu.AddMenuItem(lightsOnOff);
             }
 
             if (PermissionsManager.IsAllowed(Permission.VMDelete))
@@ -221,8 +227,22 @@ namespace RedMenuClient.menus
                         case 0: // on
                             SetVehicleEngineOn(GetVehiclePedIsIn(PlayerPedId(), false), 1, 0);
                             break;
-                        case 1:
+                        case 1: // off
                             SetVehicleEngineOn(GetVehiclePedIsIn(PlayerPedId(), false), 0, 0);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if (item == lightsOnOff)
+                {
+                    switch (listIndex)
+                    {
+                        case 0: // on
+                            SetVehicleLights(GetVehiclePedIsIn(PlayerPedId(), true), 0);
+                            break;
+                        case 1: // off
+                            SetVehicleLights(GetVehiclePedIsIn(PlayerPedId(), true), 1);
                             break;
                         default:
                             break;

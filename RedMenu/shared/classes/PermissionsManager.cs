@@ -75,6 +75,7 @@ namespace RedMenuShared
         VMRepair,
         VMTeleport,
         VMEngineOnOff,
+        VMLightsOnOff,
 
         // Teleport Menu
         TMMenu,
