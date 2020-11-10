@@ -16,6 +16,8 @@ namespace RedMenuClient.menus
 {
     static class PlayerMenu
     {
+        private const int maxSavedPeds = 50;
+
         private static Menu menu = new Menu("Player Menu", "Player Related Options");
         private static bool setupDone = false;
         private static Menu appearanceMenu = new Menu("Ped Appearance", "Player Customization");
@@ -914,7 +916,7 @@ namespace RedMenuClient.menus
                         currentBodySettings[i] = 0;
                     }
 
-                    for (int i = 1; i <= 30; ++i)
+                    for (int i = 1; i <= maxSavedPeds; ++i)
                     {
                         int pedIndex = i;
 
