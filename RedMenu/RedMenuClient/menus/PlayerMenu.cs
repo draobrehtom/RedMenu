@@ -231,12 +231,14 @@ namespace RedMenuClient.menus
                     List<string> animals = new List<string>();
                     List<string> horses = new List<string>();
                     List<string> other = new List<string>();
+                    List<string> mp = new List<string>();
                     MenuListItem malePeds = new MenuListItem("Males", males, 0, "Select a male ped model.");
                     MenuListItem femalePeds = new MenuListItem("Females", females, 0, "Select a female ped model.");
                     MenuListItem cutscenePeds = new MenuListItem("Cutscene", cutscene, 0, "Select a cutscene ped model.");
                     MenuListItem animalPeds = new MenuListItem("Animals", animals, 0, "Select an animal ped model.");
                     MenuListItem horsePeds = new MenuListItem("Horses", horses, 0, "Select a horse ped model.");
                     MenuListItem otherPeds = new MenuListItem("Other", other, 0, "Select a ped model.");
+                    MenuListItem mpPeds = new MenuListItem("MP", mp, 0, "Select an MP ped model.");
                     for (int i = 0; i < data.PedModels.MalePedHashes.Count(); i++)
                     {
                         males.Add($"{data.PedModels.MalePedHashes[i]} ({i + 1}/{data.PedModels.MalePedHashes.Count()})");
@@ -261,11 +263,16 @@ namespace RedMenuClient.menus
                     {
                         other.Add($"{data.PedModels.OtherPedHashes[i]} ({i + 1}/{data.PedModels.OtherPedHashes.Count()})");
                     }
+                    for (int i = 0; i < data.PedModels.MPPedHashes.Count(); i++)
+                    {
+                        mp.Add($"{data.PedModels.MPPedHashes[i]} ({i + 1}/{data.PedModels.MPPedHashes.Count()})");
+                    }
 
                     appearanceMenu.AddMenuItem(malePeds);
                     appearanceMenu.AddMenuItem(femalePeds);
                     appearanceMenu.AddMenuItem(otherPeds);
                     appearanceMenu.AddMenuItem(cutscenePeds);
+                    appearanceMenu.AddMenuItem(mpPeds);
                     appearanceMenu.AddMenuItem(animalPeds);
                     appearanceMenu.AddMenuItem(horsePeds);
 
@@ -287,6 +294,10 @@ namespace RedMenuClient.menus
                         else if (item == otherPeds)
                         {
                             model = (uint)GetHashKey(data.PedModels.OtherPedHashes[listIndex]);
+                        }
+                        else if (item == mpPeds)
+                        {
+                            model = (uint)GetHashKey(data.PedModels.MPPedHashes[listIndex]);
                         }
                         else if (item == animalPeds)
                         {
