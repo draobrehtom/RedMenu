@@ -52,6 +52,7 @@ namespace RedMenuClient.menus
 
             MenuListItem restoreCores = new MenuListItem("Restore Cores", new List<string>() { "All", "Health", "Stamina" }, 0, "Restore horse inner cores.");
             MenuListItem fortifyCores = new MenuListItem("Fortify Cores", new List<string>() { "All", "Health", "Stamina" }, 0, "Fortify horse inner cores.");
+            MenuItem cleanMount = new MenuItem("Clean Mount", "Remove all dirt and other decals from the mount you are currently riding.");
             MenuItem deleteMount = new MenuItem("Delete Mount", "Delete the mount you are currently riding.");
 
             List<string> mounts = new List<string>();
@@ -165,6 +166,11 @@ namespace RedMenuClient.menus
                 menu.AddMenuItem(fortifyCores);
             }
 
+            if (PermissionsManager.IsAllowed(Permission.MMClean))
+            {
+                menu.AddMenuItem(cleanMount);
+            }
+
             if (PermissionsManager.IsAllowed(Permission.MMDelete))
             {
                 menu.AddMenuItem(deleteMount);
@@ -172,7 +178,11 @@ namespace RedMenuClient.menus
 
             menu.OnItemSelect += (m, item, index) =>
             {
-                if (item == deleteMount)
+                if (item == cleanMount)
+                {
+                    ClearPedEnvDirt(GetLastMount(PlayerPedId()));
+                }
+                else if (item == deleteMount)
                 {
                     int mount = GetMount(PlayerPedId());
 

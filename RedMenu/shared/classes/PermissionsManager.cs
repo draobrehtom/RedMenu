@@ -65,6 +65,7 @@ namespace RedMenuShared
         MMTack,
         MMRestoreCores,
         MMFortifyCores,
+        MMClean,
         MMDelete,
 
         // Vehicle Menu
