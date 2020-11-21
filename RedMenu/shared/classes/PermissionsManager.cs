@@ -77,6 +77,7 @@ namespace RedMenuShared
         VMTeleport,
         VMEngineOnOff,
         VMLightsOnOff,
+        VMSelectTint,
 
         // Teleport Menu
         TMMenu,

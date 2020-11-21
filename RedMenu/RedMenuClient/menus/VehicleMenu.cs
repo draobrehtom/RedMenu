@@ -121,6 +121,11 @@ namespace RedMenuClient.menus
             return vehicles.OrderBy(v => v.distance).First().vehicle;
         }
 
+        private static void SetVehicleTint(int vehicle, int tint)
+        {
+            Function.Call((Hash)0x8268B098F6FCA4E2, vehicle, tint);
+        }
+
         public static void SetupMenu()
         {
             if (setupDone) return;
@@ -132,6 +137,29 @@ namespace RedMenuClient.menus
             MenuListItem engineOnOff = new MenuListItem("Engine", new List<string>() { "On", "Off" }, 0, "Set vehicle engine on/off.");
             MenuListItem lightsOnOff = new MenuListItem("Lights", new List<string>() { "On", "Off" }, 0, "Set vehicle lights on/off.");
             MenuItem deleteVehicle = new MenuItem("Delete Vehicle", "Delete the vehicle you are currently in.");
+
+            MenuDynamicListItem vehicleTint = new MenuDynamicListItem("Vehicle Tint", "0", new MenuDynamicListItem.ChangeItemCallback((item, left) =>
+            {
+                if (int.TryParse(item.CurrentItem, out int val))
+                {
+                    int newVal = val;
+                    if (left)
+                    {
+                        newVal--;
+                        if (newVal < 0)
+                        {
+                            newVal = 0;
+                        }
+                    }
+                    else
+                    {
+                        newVal++;
+                    }
+                    SetVehicleTint(GetVehiclePedIsIn(PlayerPedId(), false), newVal);
+                    return newVal.ToString();
+                }
+                return "0";
+            }), "Select a predefined tint for the vehicle you are currently in.");
 
             if (PermissionsManager.IsAllowed(Permission.VMSpawn))
             {
@@ -147,6 +175,11 @@ namespace RedMenuClient.menus
                 AddVehicleSubmenu(spawnVehicleMenu, data.VehicleData.CoachHashes, "Coaches", "Spawn a coach.");
                 AddVehicleSubmenu(spawnVehicleMenu, data.VehicleData.WagonHashes, "Wagons", "Spawn a wagon.");
                 AddVehicleSubmenu(spawnVehicleMenu, data.VehicleData.MiscHashes, "Misc", "Spawn a miscellaneous vehicle.");
+            }
+
+            if (PermissionsManager.IsAllowed(Permission.VMSelectTint))
+            {
+                menu.AddMenuItem(vehicleTint);
             }
 
             if (PermissionsManager.IsAllowed(Permission.VMSpawnInside))
