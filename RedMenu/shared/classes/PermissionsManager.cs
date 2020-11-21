@@ -57,6 +57,7 @@ namespace RedMenuShared
         WMThrowables,
         WMInfiniteAmmo,
         WMGetAll,
+        WMDualWield,
 
         // Mount Menu
         MMMenu,

@@ -167,6 +167,41 @@ namespace RedMenuClient.menus
             AddWeaponsSubmenu(data.WeaponsData.SniperHashes, "Sniper Rifles", "A list of sniper rifles.");
             AddWeaponsSubmenu(data.WeaponsData.ThrownHashes, "Throwables", "A list of throwable weapons.");
 
+            if (PermissionsManager.IsAllowed(Permission.WMDualWield))
+            {
+                Menu dualWieldMenu = new Menu("Dual Wield", "Dual wield weapons");
+                MenuItem dualWield = new MenuItem("Dual Wield", "Dual wield weapons") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                menu.AddMenuItem(dualWield);
+                MenuController.AddSubmenu(menu, dualWieldMenu);
+                MenuController.BindMenuItem(menu, dualWieldMenu, dualWield);
+
+                List<string> dualWieldWeapons = new List<string>();
+                dualWieldWeapons.AddRange(data.WeaponsData.PistolHashes);
+                dualWieldWeapons.AddRange(data.WeaponsData.RevolverHashes);
+                dualWieldWeapons.Add("WEAPON_SHOTGUN_SAWEDOFF");
+
+                MenuListItem rHandWeapon = new MenuListItem("Right Hand", dualWieldWeapons, 0, "Weapon held in right hand.");
+                MenuListItem lHandWeapon = new MenuListItem("Left Hand", dualWieldWeapons, 0, "Weapon held in left hand.");
+                MenuItem equip = new MenuItem("Equip", "Equip the selected weapons.");
+
+                dualWieldMenu.AddMenuItem(rHandWeapon);
+                dualWieldMenu.AddMenuItem(lHandWeapon);
+                dualWieldMenu.AddMenuItem(equip);
+
+                dualWieldMenu.OnItemSelect += (m, item, index) =>
+                {
+                    if (item == equip)
+                    {
+                        uint hash1 = (uint)GetHashKey(rHandWeapon.GetCurrentSelection());
+                        uint hash2 = (uint)GetHashKey(lHandWeapon.GetCurrentSelection());
+                        Function.Call((Hash)0x5E3BDDBCB83F3D84, PlayerPedId(), hash1, 500, 1, 1, 2, 0, 0, 0.5, 1.0, 752097756, 0, 0, 0, false);
+                        Function.Call((Hash)0x5E3BDDBCB83F3D84, PlayerPedId(), hash2, 500, 1, 1, 3, 0, 0, 0.5, 1.0, 752097756, 1, 0, 0, false);
+                        Function.Call((Hash)0xADF692B254977C0C, PlayerPedId(), hash1, false, 0, false, false);
+                        Function.Call((Hash)0xADF692B254977C0C, PlayerPedId(), hash2, false, 1, false, false);
+                    }
+                };
+            }
+
             menu.OnItemSelect += (m, item, index) =>
             {
                 if (item == dropWeaponBtn)
