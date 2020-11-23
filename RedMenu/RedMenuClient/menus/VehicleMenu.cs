@@ -207,6 +207,107 @@ namespace RedMenuClient.menus
                 menu.AddMenuItem(lightsOnOff);
             }
 
+            if (PermissionsManager.IsAllowed(Permission.VMDoors))
+            {
+                Menu doorsMenu = new Menu("Doors", "Open/Close vehicle doors.");
+                MenuItem doors = new MenuItem("Doors", "Open/Close vehicle doors.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                menu.AddMenuItem(doors);
+                MenuController.AddSubmenu(menu, doorsMenu);
+                MenuController.BindMenuItem(menu, doorsMenu, doors);
+
+                MenuListItem all = new MenuListItem("All", new List<string>() { "Open", "Close" }, 0);
+                MenuListItem frontL = new MenuListItem("Front Left", new List<string>() { "Open", "Close" }, 0);
+                MenuListItem frontR = new MenuListItem("Front Right", new List<string>() { "Open", "Close" }, 0);
+                MenuListItem backL = new MenuListItem("Back Left", new List<string>() { "Open", "Close" }, 0);
+                MenuListItem backR = new MenuListItem("Back Right", new List<string>() { "Open", "Close" }, 0);
+                MenuListItem hood = new MenuListItem("Hood", new List<string>() { "Open", "Close" }, 0);
+                MenuListItem trunk = new MenuListItem("Trunk", new List<string>() { "Open", "Close" }, 0);
+                MenuListItem back1 = new MenuListItem("Back 1", new List<string>() { "Open", "Close" }, 0);
+                MenuListItem back2 = new MenuListItem("Back 2", new List<string>() { "Open", "Close" }, 0);
+
+                doorsMenu.AddMenuItem(all);
+                doorsMenu.AddMenuItem(frontL);
+                doorsMenu.AddMenuItem(frontR);
+                doorsMenu.AddMenuItem(backL);
+                doorsMenu.AddMenuItem(backR);
+                doorsMenu.AddMenuItem(hood);
+                doorsMenu.AddMenuItem(trunk);
+                doorsMenu.AddMenuItem(back1);
+                doorsMenu.AddMenuItem(back2);
+
+                doorsMenu.OnListItemSelect += (m, listItem, selectedIndex, itemIndex) =>
+                {
+                    int doorIndex;
+
+                    if (listItem == frontL)
+                    {
+                        doorIndex = 0;
+                    }
+                    else if (listItem == frontR)
+                    {
+                        doorIndex = 1;
+                    }
+                    else if (listItem == backL)
+                    {
+                        doorIndex = 2;
+                    }
+                    else if (listItem == backR)
+                    {
+                        doorIndex = 3;
+                    }
+                    else if (listItem == hood)
+                    {
+                        doorIndex = 4;
+                    }
+                    else if (listItem == trunk)
+                    {
+                        doorIndex = 5;
+                    }
+                    else if (listItem == back1)
+                    {
+                        doorIndex = 6;
+                    }
+                    else if (listItem == back2)
+                    {
+                        doorIndex = 7;
+                    }
+                    else
+                    {
+                        doorIndex = -1;
+                    }
+
+                    string selected = listItem.GetCurrentSelection();
+
+                    int veh = GetVehiclePedIsIn(PlayerPedId(), false);
+
+                    if (selected == "Open")
+                    {
+                        if (doorIndex == -1)
+                        {
+                            for (int i = 0; i < 8; ++i)
+                            {
+                                SetVehicleDoorOpen(veh, i, false, false);
+                            }
+                        }
+                        else
+                        {
+                            SetVehicleDoorOpen(veh, doorIndex, false, false);
+                        }
+                    }
+                    else
+                    {
+                        if (doorIndex == -1)
+                        {
+                            SetVehicleDoorsShut(veh, false);
+                        }
+                        else
+                        {
+                            SetVehicleDoorShut(veh, doorIndex, false);
+                        }
+                    }
+                };
+            }
+
             if (PermissionsManager.IsAllowed(Permission.VMDelete))
             {
                 menu.AddMenuItem(deleteVehicle);
