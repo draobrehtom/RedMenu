@@ -14,13 +14,15 @@ namespace RedMenuClient.data
             "WEAPON_KIT_BINOCULARS",
             "WEAPON_KIT_BINOCULARS_IMPROVED",
             "WEAPON_KIT_CAMERA",
+            "WEAPON_KIT_METAL_DETECTOR",
             "WEAPON_LASSO",
             "WEAPON_LASSO_REINFORCED",
             "WEAPON_MELEE_LANTERN",
             "WEAPON_MELEE_DAVY_LANTERN",
             //"WEAPON_MELEE_LANTERN_ELECTRIC",
             "WEAPON_MELEE_TORCH",
-            //"WEAPON_MOONSHINEJUG"
+            //"WEAPON_MOONSHINEJUG",
+            "WEAPON_MOONSHINEJUG_MP"
         };
         public static List<string> MeleeHashes { get; } = new List<string>()
         {
@@ -39,10 +41,12 @@ namespace RedMenuClient.data
             //"WEAPON_MELEE_KNIFE_BEAR",
             //"WEAPON_MELEE_KNIFE_CIVIL_WAR",
             "WEAPON_MELEE_KNIFE_JAWBONE",
+            "WEAPON_MELEE_KNIFE_TRADER",
             //"WEAPON_MELEE_KNIFE_JOHN",
             //"WEAPON_MELEE_KNIFE_MINER",
             //"WEAPON_MELEE_KNIFE_VAMPIRE",
             "WEAPON_MELEE_MACHETE",
+            "WEAPON_MELEE_MACHETE_COLLECTOR",
             "WEAPON_MELEE_MACHETE_HORROR"
         };
 
@@ -54,6 +58,7 @@ namespace RedMenuClient.data
             //"WEAPON_REVOLVER_CATTLEMAN_PIG",
             "WEAPON_REVOLVER_DOUBLEACTION",
             //"WEAPON_REVOLVER_DOUBLEACTION_EXOTIC",
+            "WEAPON_REVOLVER_DOUBLEACTION_GAMBLER",
             "WEAPON_REVOLVER_LEMAT",
             "WEAPON_REVOLVER_NAVY",
             "WEAPON_REVOLVER_SCHOFIELD",
