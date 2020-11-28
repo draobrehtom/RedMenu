@@ -27,6 +27,7 @@ namespace RedMenuClient.data
             "skiff",
             "SMUGGLER02",
             "TugBoat2",
+            "TugBoat3",
             "turbineboat",
         };
 
@@ -59,7 +60,8 @@ namespace RedMenuClient.data
             "wagonDoc01x",
             "WAGONPRISON01X",
             "wagontraveller01x",
-            "wagonWork01x"
+            "wagonWork01x",
+            "warwagon2"
         };
 
         public static List<string> BuggyHashes = new List<string>()
