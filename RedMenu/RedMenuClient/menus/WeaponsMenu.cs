@@ -70,9 +70,21 @@ namespace RedMenuClient.menus
             if (setupDone) return;
             setupDone = true;
 
+            MenuItem cleanWeapon = new MenuItem("Clean Weapon", "Clean the currently selected weapon.");
+            MenuItem dirtyWeapon = new MenuItem("Dirty Weapon", "Dirty the currently selected weapon.");
             MenuItem dropWeaponBtn = new MenuItem("Drop Weapon", "Remove the currently selected weapon from your inventory.");
             MenuItem dropAllWeaponsBtn = new MenuItem("Drop All Weapons", "Removes all weapons from your inventory.");
             MenuItem getAllWeapons = new MenuItem("Get All Weapons", "Add all the weapons you can carry to your inventory.");
+
+            if (PermissionsManager.IsAllowed(Permission.WMCleanWeapon))
+            {
+                menu.AddMenuItem(cleanWeapon);
+            }
+
+            if (PermissionsManager.IsAllowed(Permission.WMDirtyWeapon))
+            {
+                menu.AddMenuItem(dirtyWeapon);
+            }
 
             if (PermissionsManager.IsAllowed(Permission.WMDropWeapon))
             {
@@ -248,6 +260,22 @@ namespace RedMenuClient.menus
                     {
                         SetPedAmmoByType(PlayerPedId(), GetHashKey(name), 500);
                     }
+                }
+                else if (item == cleanWeapon)
+                {
+                    int wep = GetCurrentPedWeaponEntityIndex(PlayerPedId(), 0);
+                    Function.Call((Hash)0xA7A57E89E965D839, wep, 0.0);
+                    Function.Call((Hash)0xA9EF4AD10BDDDB57, wep, 0.0);
+                    Function.Call((Hash)0x812CE61DEBCAB948, wep, 0.0);
+                    Function.Call((Hash)0xE22060121602493B, wep, 0.0);
+                }
+                else if (item == dirtyWeapon)
+                {
+                    int wep = GetCurrentPedWeaponEntityIndex(PlayerPedId(), 0);
+                    Function.Call((Hash)0xA7A57E89E965D839, wep, 1.0);
+                    Function.Call((Hash)0xA9EF4AD10BDDDB57, wep, 1.0);
+                    Function.Call((Hash)0x812CE61DEBCAB948, wep, 1.0);
+                    Function.Call((Hash)0xE22060121602493B, wep, 1.0);
                 }
             };
 

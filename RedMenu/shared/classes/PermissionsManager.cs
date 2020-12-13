@@ -58,6 +58,8 @@ namespace RedMenuShared
         WMInfiniteAmmo,
         WMGetAll,
         WMDualWield,
+        WMCleanWeapon,
+        WMDirtyWeapon,
 
         // Mount Menu
         MMMenu,
