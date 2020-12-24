@@ -88,6 +88,12 @@ namespace RedMenuShared
         TMTeleportToWaypoint,
         TMLocations,
 
+        // World Related Options Menu
+        WOMenu,
+        WOTime,
+        WOWeather,
+        WOTimecycleModifiers,
+
         // Misc Settings
         MSClearArea
     }
@@ -137,6 +143,10 @@ namespace RedMenuShared
             if (permissionName.StartsWith("TM"))
             {
                 return prefix + ".TeleportMenu." + permissionName.Substring(2);
+            }
+            if (permissionName.StartsWith("WO"))
+            {
+                return prefix + ".WorldRelatedOptionsMenu." + permissionName.Substring(2);
             }
             if (permissionName.StartsWith("MS"))
             {

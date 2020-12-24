@@ -101,6 +101,18 @@ namespace RedMenuClient.menus
                 MenuController.BindMenuItem(mainMenu, TeleportMenu.GetMenu(), submenuBtn);
             }
 
+            // World Options Menu
+            if (PermissionsManager.IsAllowed(Permission.WOMenu))
+            {
+                MenuController.AddSubmenu(mainMenu, WorldOptionsMenu.GetMenu());
+                MenuItem submenuBtn = new MenuItem("World Options", "World related options.")
+                {
+                    RightIcon = MenuItem.Icon.ARROW_RIGHT
+                };
+
+                mainMenu.AddMenuItem(submenuBtn);
+                MenuController.BindMenuItem(mainMenu, WorldOptionsMenu.GetMenu(), submenuBtn);
+            }
 
             // Misc settings
             MenuController.AddSubmenu(mainMenu, MiscSettingsMenu.GetMenu());
