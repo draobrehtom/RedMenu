@@ -42,7 +42,7 @@ namespace RedMenuClient.menus
             if (PermissionsManager.IsAllowed(Permission.WOTime))
             {
                 Menu timeOptionsMenu = new Menu("Time Options");
-                MenuItem timeOptions = new MenuItem("Time Options");
+                MenuItem timeOptions = new MenuItem("Time Options") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
 
                 menu.AddMenuItem(timeOptions);
                 MenuController.AddSubmenu(menu, timeOptionsMenu);
@@ -86,7 +86,7 @@ namespace RedMenuClient.menus
             if (PermissionsManager.IsAllowed(Permission.WOWeather))
             {
                 Menu weatherOptionsMenu = new Menu("Weather Options");
-                MenuItem weatherOptions = new MenuItem("Weather Options");
+                MenuItem weatherOptions = new MenuItem("Weather Options") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
                 menu.AddMenuItem(weatherOptions);
                 MenuController.AddSubmenu(menu, weatherOptionsMenu);
                 MenuController.BindMenuItem(menu, weatherOptionsMenu, weatherOptions);
@@ -114,7 +114,7 @@ namespace RedMenuClient.menus
             if (PermissionsManager.IsAllowed(Permission.WOTimecycleModifiers))
             {
                 Menu timecycleModifiersMenu = new Menu("Timecycle");
-                MenuItem timeCycleModifiers = new MenuItem("Timecycle Modifiers");
+                MenuItem timeCycleModifiers = new MenuItem("Timecycle Modifiers") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
                 menu.AddMenuItem(timeCycleModifiers);
                 MenuController.AddSubmenu(menu, timecycleModifiersMenu);
                 MenuController.BindMenuItem(menu, timecycleModifiersMenu, timeCycleModifiers);
