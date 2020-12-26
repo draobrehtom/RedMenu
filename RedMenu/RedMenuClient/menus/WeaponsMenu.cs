@@ -65,6 +65,11 @@ namespace RedMenuClient.menus
             }
         }
 
+        private static void RemoveAmmoFromPedByType(int ped, int ammoHash, int amount, uint reason)
+        {
+            Function.Call((Hash)0xB6CFEC32E3742779, ped, ammoHash, amount, reason);
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -106,12 +111,21 @@ namespace RedMenuClient.menus
             MenuItem refillAmmo = new MenuItem("Refill Ammo", "Get the maximum amount of ammo for the currently selected weapon.");
             MenuItem refillAllAmmo = new MenuItem("Refill All Ammo", "Get the maximum amount of ammo for all weapons.");
 
+            MenuItem removeAmmo = new MenuItem("Remove Ammo", "Remove all ammo for the currently selected weapon.");
+            MenuItem removeAllAmmo = new MenuItem("Remove All Ammo", "Remove all ammo for all weapons.");
+
             MenuCheckboxItem infiniteAmmo = new MenuCheckboxItem("Infinite Ammo", "Never run out of ammo.", UserDefaults.WeaponInfiniteAmmo);
 
             if (PermissionsManager.IsAllowed(Permission.WMRefillAmmo))
             {
                 ammoMenu.AddMenuItem(refillAmmo);
                 ammoMenu.AddMenuItem(refillAllAmmo);
+            }
+
+            if (PermissionsManager.IsAllowed(Permission.WMRemoveAmmo))
+            {
+                ammoMenu.AddMenuItem(removeAmmo);
+                ammoMenu.AddMenuItem(removeAllAmmo);
             }
 
             if (PermissionsManager.IsAllowed(Permission.WMInfiniteAmmo))
@@ -137,6 +151,26 @@ namespace RedMenuClient.menus
                     foreach (var name in data.WeaponsData.AmmoHashes)
                     {
                         SetPedAmmoByType(PlayerPedId(), GetHashKey(name), 500);
+                    }
+                }
+                else if (item == removeAmmo)
+                {
+                    int ped = PlayerPedId();
+                    uint weapon = 0;
+                    GetCurrentPedWeapon(ped, ref weapon, true, 0, true);
+                    int ammoType = GetPedAmmoTypeFromWeapon(ped, weapon);
+                    int amount = GetPedAmmoByType(ped, ammoType);
+                    RemoveAmmoFromPedByType(ped, ammoType, amount, 0x2188E0A3);
+
+                }
+                else if (item == removeAllAmmo)
+                {
+                    foreach (var name in data.WeaponsData.AmmoHashes)
+                    {
+                        int ped = PlayerPedId();
+                        int ammoType = GetHashKey(name);
+                        int amount = GetPedAmmoByType(ped, ammoType);
+                        RemoveAmmoFromPedByType(ped, ammoType, amount, 0x2188E0A3);
                     }
                 }
             };

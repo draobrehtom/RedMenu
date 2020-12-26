@@ -60,6 +60,7 @@ namespace RedMenuShared
         WMDualWield,
         WMCleanWeapon,
         WMDirtyWeapon,
+        WMRemoveAmmo,
 
         // Mount Menu
         MMMenu,
