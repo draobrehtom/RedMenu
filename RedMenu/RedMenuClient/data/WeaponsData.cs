@@ -14,6 +14,7 @@ namespace RedMenuClient.data
             "WEAPON_KIT_BINOCULARS",
             "WEAPON_KIT_BINOCULARS_IMPROVED",
             "WEAPON_KIT_CAMERA",
+            "WEAPON_KIT_CAMERA_ADVANCED",
             "WEAPON_KIT_METAL_DETECTOR",
             "WEAPON_LASSO",
             "WEAPON_LASSO_REINFORCED",
@@ -100,6 +101,7 @@ namespace RedMenuClient.data
             "WEAPON_THROWN_BOLAS",
             "WEAPON_THROWN_DYNAMITE",
             "WEAPON_THROWN_MOLOTOV",
+            "WEAPON_THROWN_POISONBOTTLE",
             "WEAPON_THROWN_THROWING_KNIVES",
             "WEAPON_THROWN_TOMAHAWK",
             "WEAPON_THROWN_TOMAHAWK_ANCIENT"
