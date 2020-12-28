@@ -105,7 +105,7 @@ namespace RedMenuClient.menus
             if (PermissionsManager.IsAllowed(Permission.WOMenu))
             {
                 MenuController.AddSubmenu(mainMenu, WorldOptionsMenu.GetMenu());
-                MenuItem submenuBtn = new MenuItem("World Options", "World related options.")
+                MenuItem submenuBtn = new MenuItem("World Menu", "World related options.")
                 {
                     RightIcon = MenuItem.Icon.ARROW_RIGHT
                 };

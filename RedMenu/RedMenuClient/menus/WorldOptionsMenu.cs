@@ -16,7 +16,7 @@ namespace RedMenuClient.menus
 {
     class WorldOptionsMenu
     {
-        private static Menu menu = new Menu("World Options");
+        private static Menu menu = new Menu("World Menu", "World related options");
         private static bool setupDone = false;
 
         private static void NetworkOverrideClockTime(int hour, int minute, int second, int transitionTime, bool freezeTime)
@@ -41,8 +41,8 @@ namespace RedMenuClient.menus
 
             if (PermissionsManager.IsAllowed(Permission.WOTime))
             {
-                Menu timeOptionsMenu = new Menu("Time Options");
-                MenuItem timeOptions = new MenuItem("Time Options") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                Menu timeOptionsMenu = new Menu("Time Options", "Set the current time");
+                MenuItem timeOptions = new MenuItem("Time Options", "Set the current time.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
 
                 menu.AddMenuItem(timeOptions);
                 MenuController.AddSubmenu(menu, timeOptionsMenu);
@@ -60,12 +60,12 @@ namespace RedMenuClient.menus
                     minuteSecondRange.Add(i.ToString());
                 }
 
-                MenuListItem hour = new MenuListItem("Hour", hourRange, 0);
-                MenuListItem minute = new MenuListItem("Minute", minuteSecondRange, 0);
-                MenuListItem second = new MenuListItem("Second", minuteSecondRange, 0);
-                MenuListItem transition = new MenuListItem("Transition", new List<string>() { "0", "1000", "5000", "10000", "30000" }, 1);
-                MenuCheckboxItem freeze = new MenuCheckboxItem("Freeze");
-                MenuItem apply = new MenuItem("Apply");
+                MenuListItem hour = new MenuListItem("Hour", hourRange, 0, "The hour to set.");
+                MenuListItem minute = new MenuListItem("Minute", minuteSecondRange, 0, "The minute to set.");
+                MenuListItem second = new MenuListItem("Second", minuteSecondRange, 0, "The second to set.");
+                MenuListItem transition = new MenuListItem("Transition", new List<string>() { "0", "1000", "5000", "10000", "30000" }, 1, "Transition time in milliseconds.");
+                MenuCheckboxItem freeze = new MenuCheckboxItem("Freeze", "Whether to freeze time.");
+                MenuItem apply = new MenuItem("Apply", "Apply the selected time settings.");
 
                 timeOptionsMenu.AddMenuItem(hour);
                 timeOptionsMenu.AddMenuItem(minute);
@@ -85,16 +85,16 @@ namespace RedMenuClient.menus
 
             if (PermissionsManager.IsAllowed(Permission.WOWeather))
             {
-                Menu weatherOptionsMenu = new Menu("Weather Options");
-                MenuItem weatherOptions = new MenuItem("Weather Options") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                Menu weatherOptionsMenu = new Menu("Weather Options", "Set the current weather");
+                MenuItem weatherOptions = new MenuItem("Weather Options", "Set the current weather.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
                 menu.AddMenuItem(weatherOptions);
                 MenuController.AddSubmenu(menu, weatherOptionsMenu);
                 MenuController.BindMenuItem(menu, weatherOptionsMenu, weatherOptions);
 
-                MenuListItem weatherType = new MenuListItem("Weather Type", data.WorldData.WeatherTypes, 0);
-                MenuListItem transition = new MenuListItem("Transition", new List<string>() { "1.0", "5.0", "10.0", "30.0" }, 0);
-                MenuListItem snowCoverageType = new MenuListItem("Snow Coverage", new List<string>() { "0", "1", "2", "3" }, 0);
-                MenuItem apply = new MenuItem("Apply");
+                MenuListItem weatherType = new MenuListItem("Weather Type", data.WorldData.WeatherTypes, 0, "The main type of weather.");
+                MenuListItem transition = new MenuListItem("Transition", new List<string>() { "1.0", "5.0", "10.0", "30.0" }, 0, "Transition time in seconds.");
+                MenuListItem snowCoverageType = new MenuListItem("Snow Coverage", new List<string>() { "Primary", "Secondary", "Xmas", "XmasSecondary" }, 0, "Type of ground snow coverage.");
+                MenuItem apply = new MenuItem("Apply", "Apply the selected weather settings.");
 
                 weatherOptionsMenu.AddMenuItem(weatherType);
                 weatherOptionsMenu.AddMenuItem(transition);
@@ -113,14 +113,14 @@ namespace RedMenuClient.menus
 
             if (PermissionsManager.IsAllowed(Permission.WOTimecycleModifiers))
             {
-                Menu timecycleModifiersMenu = new Menu("Timecycle");
-                MenuItem timeCycleModifiers = new MenuItem("Timecycle Modifiers") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                Menu timecycleModifiersMenu = new Menu("Timecycle", "Set/Clear timecycle modifiers");
+                MenuItem timeCycleModifiers = new MenuItem("Timecycle Modifiers", "Set/Clear timecycle modifiers.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
                 menu.AddMenuItem(timeCycleModifiers);
                 MenuController.AddSubmenu(menu, timecycleModifiersMenu);
                 MenuController.BindMenuItem(menu, timecycleModifiersMenu, timeCycleModifiers);
 
-                MenuListItem modifier = new MenuListItem("Modifier", data.WorldData.TimecycleModifiers, 0);
-                MenuItem clear = new MenuItem("Clear Timecycle Modifier");
+                MenuListItem modifier = new MenuListItem("Modifier", data.WorldData.TimecycleModifiers, 0, "Set a timecycle modifier.");
+                MenuItem clear = new MenuItem("Clear Timecycle Modifier", "Clear the timecycle modifier.");
 
                 timecycleModifiersMenu.AddMenuItem(modifier);
                 timecycleModifiersMenu.AddMenuItem(clear);
