@@ -184,7 +184,7 @@ namespace RedMenuClient.menus
                 }
             };
 
-            Menu ammoTypesMenu = new Menu("Ammo Types", "Get ammo by type.");
+            Menu ammoTypesMenu = new Menu("Ammo Types", "Get ammo by type");
             MenuItem ammoTypes = new MenuItem("Ammo Types", "Get ammo by type.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
             ammoMenu.AddMenuItem(ammoTypes);
             MenuController.AddSubmenu(ammoMenu, ammoTypesMenu);
