@@ -180,7 +180,10 @@ namespace RedMenuClient.menus
             {
                 if (item == cleanMount)
                 {
-                    ClearPedEnvDirt(GetLastMount(PlayerPedId()));
+                    int ped = GetLastMount(PlayerPedId());
+                    ClearPedEnvDirt(ped);
+                    ClearPedDamageDecalByZone(ped, 10, "ALL");
+                    ClearPedBloodDamage(ped);
                 }
                 else if (item == deleteMount)
                 {

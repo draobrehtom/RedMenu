@@ -1251,7 +1251,10 @@ namespace RedMenuClient.menus
                 }
                 else if (item == cleanPed)
                 {
-                    ClearPedEnvDirt(PlayerPedId());
+                    int ped = PlayerPedId();
+                    ClearPedEnvDirt(ped);
+                    ClearPedDamageDecalByZone(ped, 10, "ALL");
+                    ClearPedBloodDamage(ped);
                 }
                 else if (item == dryPed)
                 {
