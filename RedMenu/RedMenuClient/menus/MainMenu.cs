@@ -114,6 +114,19 @@ namespace RedMenuClient.menus
                 MenuController.BindMenuItem(mainMenu, WorldOptionsMenu.GetMenu(), submenuBtn);
             }
 
+            // Voice Menu
+            if (PermissionsManager.IsAllowed(Permission.VOMenu))
+            {
+                MenuController.AddSubmenu(mainMenu, VoiceMenu.GetMenu());
+                MenuItem submenuBtn = new MenuItem("Voice Menu", "Voice related options.")
+                {
+                    RightIcon = MenuItem.Icon.ARROW_RIGHT
+                };
+
+                mainMenu.AddMenuItem(submenuBtn);
+                MenuController.BindMenuItem(mainMenu, VoiceMenu.GetMenu(), submenuBtn);
+            }
+
             // Misc settings
             MenuController.AddSubmenu(mainMenu, MiscSettingsMenu.GetMenu());
             MenuItem miscBtn = new MenuItem("Misc Settings", "Miscellaneous settings and menu options.")

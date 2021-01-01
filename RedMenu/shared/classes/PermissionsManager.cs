@@ -95,6 +95,10 @@ namespace RedMenuShared
         WOWeather,
         WOTimecycleModifiers,
 
+        // Voice Menu
+        VOMenu,
+        VORange,
+
         // Misc Settings
         MSClearArea
     }
@@ -148,6 +152,10 @@ namespace RedMenuShared
             if (permissionName.StartsWith("WO"))
             {
                 return prefix + ".WorldRelatedOptionsMenu." + permissionName.Substring(2);
+            }
+            if (permissionName.StartsWith("VO"))
+            {
+                return prefix + ".VoiceMenu." + permissionName.Substring(2);
             }
             if (permissionName.StartsWith("MS"))
             {

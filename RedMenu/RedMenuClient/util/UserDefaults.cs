@@ -181,5 +181,22 @@ namespace RedMenuClient.util
                 StorageManager.Save("VehicleSpawnInside", value, true);
             }
         }
+
+        public static float VoiceRange
+        {
+            get
+            {
+                if (StorageManager.TryGet("VoiceRange", out float val))
+                {
+                    return val;
+                }
+                VoiceRange = 0f;
+                return 0f;
+            }
+            set
+            {
+                StorageManager.Save("VoiceRange", value, true);
+            }
+        }
     }
 }
