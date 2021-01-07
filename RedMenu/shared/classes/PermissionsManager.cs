@@ -151,7 +151,7 @@ namespace RedMenuShared
             }
             if (permissionName.StartsWith("WO"))
             {
-                return prefix + ".WorldRelatedOptionsMenu." + permissionName.Substring(2);
+                return prefix + ".WorldMenu." + permissionName.Substring(2);
             }
             if (permissionName.StartsWith("VO"))
             {
