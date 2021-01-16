@@ -16,7 +16,7 @@ namespace RedMenuClient.menus
 {
     static class PlayerMenu
     {
-        private const int maxSavedPeds = 50;
+        private const int maxSavedPeds = 100;
 
         private static Menu menu = new Menu("Player Menu", "Player Related Options");
         private static bool setupDone = false;
