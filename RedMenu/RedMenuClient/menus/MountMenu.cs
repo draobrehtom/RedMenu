@@ -45,6 +45,23 @@ namespace RedMenuClient.menus
             Function.Call((Hash)0xCC8CA3E88256E58F, ped, p1, p2, p3, p4, p5);
         }
 
+        private static bool IsThisModelAHorse(int ped)
+        {
+            return Function.Call<bool>((Hash)0x772A1969F649E902, ped);
+        }
+
+        private static int GetTargetMount(int ped)
+        {
+            if (IsThisModelAHorse(GetEntityModel(ped)))
+            {
+                return ped;
+            }
+            else
+            {
+                return GetLastMount(ped);
+            }
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -128,7 +145,7 @@ namespace RedMenuClient.menus
                     }
                     if (hash != 0)
                     {
-                        Function.Call((Hash)0xD3A7B003ED343FD9, GetLastMount(PlayerPedId()), hash, true, true, false);
+                        Function.Call((Hash)0xD3A7B003ED343FD9, GetTargetMount(PlayerPedId()), hash, true, true, false);
                     }
                 };
 
@@ -150,8 +167,8 @@ namespace RedMenuClient.menus
                     }
                     if (hash != 0)
                     {
-                        Function.Call((Hash)0xD710A5007C2AC539, GetLastMount(PlayerPedId()), hash, 0);
-                        Function.Call((Hash)0xCC8CA3E88256E58F, GetLastMount(PlayerPedId()), false, true, true, true, false);
+                        Function.Call((Hash)0xD710A5007C2AC539, GetTargetMount(PlayerPedId()), hash, 0);
+                        Function.Call((Hash)0xCC8CA3E88256E58F, GetTargetMount(PlayerPedId()), false, true, true, true, false);
                     }
                 };
             }
@@ -180,7 +197,7 @@ namespace RedMenuClient.menus
             {
                 if (item == cleanMount)
                 {
-                    int ped = GetLastMount(PlayerPedId());
+                    int ped = GetTargetMount(PlayerPedId());
                     ClearPedEnvDirt(ped);
                     ClearPedDamageDecalByZone(ped, 10, "ALL");
                     ClearPedBloodDamage(ped);
@@ -240,7 +257,7 @@ namespace RedMenuClient.menus
                 }
                 else if (item == sex)
                 {
-                    int mount = GetLastMount(PlayerPedId());
+                    int mount = GetTargetMount(PlayerPedId());
 
                     switch (listIndex)
                     {
@@ -261,14 +278,14 @@ namespace RedMenuClient.menus
                     switch (listIndex)
                     {
                         case 0:
-                            Function.Call<int>((Hash)0xC6258F41D86676E0, GetLastMount(PlayerPedId()), 0, 100);
-                            Function.Call<int>((Hash)0xC6258F41D86676E0, GetLastMount(PlayerPedId()), 1, 100);
+                            Function.Call<int>((Hash)0xC6258F41D86676E0, GetTargetMount(PlayerPedId()), 0, 100);
+                            Function.Call<int>((Hash)0xC6258F41D86676E0, GetTargetMount(PlayerPedId()), 1, 100);
                             break;
                         case 1:
-                            Function.Call<int>((Hash)0xC6258F41D86676E0, GetLastMount(PlayerPedId()), 0, 100);
+                            Function.Call<int>((Hash)0xC6258F41D86676E0, GetTargetMount(PlayerPedId()), 0, 100);
                             break;
                         case 2:
-                            Function.Call<int>((Hash)0xC6258F41D86676E0, GetLastMount(PlayerPedId()), 1, 100);
+                            Function.Call<int>((Hash)0xC6258F41D86676E0, GetTargetMount(PlayerPedId()), 1, 100);
                             break;
                         default:
                             break;
@@ -279,14 +296,14 @@ namespace RedMenuClient.menus
                     switch (listIndex)
                     {
                         case 0:
-                            Function.Call((Hash)0x4AF5A4C7B9157D14, GetLastMount(PlayerPedId()), 0, 100.0f, true);
-                            Function.Call((Hash)0x4AF5A4C7B9157D14, GetLastMount(PlayerPedId()), 1, 100.0f, true);
+                            Function.Call((Hash)0x4AF5A4C7B9157D14, GetTargetMount(PlayerPedId()), 0, 100.0f, true);
+                            Function.Call((Hash)0x4AF5A4C7B9157D14, GetTargetMount(PlayerPedId()), 1, 100.0f, true);
                             break;
                         case 1:
-                            Function.Call((Hash)0x4AF5A4C7B9157D14, GetLastMount(PlayerPedId()), 0, 100.0f, true);
+                            Function.Call((Hash)0x4AF5A4C7B9157D14, GetTargetMount(PlayerPedId()), 0, 100.0f, true);
                             break;
                         case 2:
-                            Function.Call((Hash)0x4AF5A4C7B9157D14, GetLastMount(PlayerPedId()), 1, 100.0f, true);
+                            Function.Call((Hash)0x4AF5A4C7B9157D14, GetTargetMount(PlayerPedId()), 1, 100.0f, true);
                             break;
                         default:
                             break;
