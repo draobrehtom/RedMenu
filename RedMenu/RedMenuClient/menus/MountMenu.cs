@@ -19,6 +19,7 @@ namespace RedMenuClient.menus
         private static Menu menu = new Menu("Mount", "Mount related options.");
         private static bool setupDone = false;
         private static int currentMount = 0;
+        private static Random rng = new Random();
 
         private static int GetLastMount(int ped)
         {
@@ -62,6 +63,45 @@ namespace RedMenuClient.menus
             }
         }
 
+        private async static void SpawnMount(uint model)
+        {
+            if (currentMount != 0)
+            {
+                DeleteEntity(ref currentMount);
+                currentMount = 0;
+            }
+
+            int ped = PlayerPedId();
+            Vector3 coords = GetEntityCoords(ped, false, false);
+            float h = GetEntityHeading(ped);
+
+            // Get a point in front of the player
+            float r = -h * (float)(Math.PI / 180);
+            float x2 = coords.X + (float)(5 * Math.Sin(r));
+            float y2 = coords.Y + (float)(5 * Math.Cos(r));
+
+            if (IsModelInCdimage(model))
+            {
+                RequestModel(model, false);
+                while (!HasModelLoaded(model))
+                {
+                    RequestModel(model, false);
+                    await BaseScript.Delay(0);
+                }
+
+                currentMount = CreatePed_2(model, x2, y2, coords.Z, 0.0f, true, true, true, true);
+                SetModelAsNoLongerNeeded(model);
+                SetPedOutfitPreset(currentMount, 0, 0);
+                SetPedConfigFlag(currentMount, 297, true); // Enable leading
+                SetPedConfigFlag(currentMount, 312, true); // Won't flee when shooting
+                BlipAddForEntity(-1230993421, currentMount);
+            }
+            else
+            {
+                Debug.WriteLine($"^1[ERROR] This ped model is not present in the game files {model}.^7");
+            }
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -81,9 +121,13 @@ namespace RedMenuClient.menus
 
             MenuListItem sex = new MenuListItem("Sex", new List<string>() { "Male", "Female" }, 0, "Set the sex of your mount.");
 
+            MenuItem randomMount = new MenuItem("Spawn Random Mount", "Spawn a random mount.");
+            MenuItem randomTack = new MenuItem("Randomize Tack", "Add random tack to your horse.");
+
             if (PermissionsManager.IsAllowed(Permission.MMSpawn))
             {
                 menu.AddMenuItem(mountPeds);
+                menu.AddMenuItem(randomMount);
             }
 
             if (PermissionsManager.IsAllowed(Permission.MMSex))
@@ -98,6 +142,8 @@ namespace RedMenuClient.menus
                 menu.AddMenuItem(tack);
                 MenuController.AddSubmenu(menu, tackMenu);
                 MenuController.BindMenuItem(menu, tackMenu, tack);
+
+                menu.AddMenuItem(randomTack);
 
                 List<string> blankets = new List<string>();
                 List<string> grips = new List<string>();
@@ -211,49 +257,38 @@ namespace RedMenuClient.menus
                         DeleteEntity(ref mount);
                     }
                 }
+                else if (item == randomMount)
+                {
+                    int r = rng.Next(data.MountData.MountHashes.Count);
+                    uint model = (uint)GetHashKey(data.MountData.MountHashes[r]);
+                    SpawnMount(model);
+                }
+                else if (item == randomTack)
+                {
+                    int rBlanket = rng.Next(data.MountData.BlanketHashes.Count);
+                    int rGrip = rng.Next(data.MountData.GripHashes.Count);
+                    int rBag = rng.Next(data.MountData.BagHashes.Count);
+                    int rSaddle = rng.Next(data.MountData.SaddleHashes.Count);
+                    int rStirrup = rng.Next(data.MountData.StirrupHashes.Count);
+                    int rRoll = rng.Next(data.MountData.RollHashes.Count);
+
+                    int mount = GetTargetMount(PlayerPedId());
+
+                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, data.MountData.BlanketHashes[rBlanket], true, true, false);
+                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, data.MountData.GripHashes[rGrip], true, true, false);
+                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, data.MountData.BagHashes[rBag], true, true, false);
+                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, data.MountData.SaddleHashes[rSaddle], true, true, false);
+                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, data.MountData.StirrupHashes[rStirrup], true, true, false);
+                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, data.MountData.RollHashes[rRoll], true, true, false);
+                }
             };
 
             menu.OnListItemSelect += async (m, item, listIndex, itemIndex) =>
             {
                 if (item == mountPeds)
                 {
-                    if (currentMount != 0)
-                    {
-                        DeleteEntity(ref currentMount);
-                        currentMount = 0;
-                    }
-
                     uint model = (uint)GetHashKey(data.MountData.MountHashes[listIndex]);
-
-                    int ped = PlayerPedId();
-                    Vector3 coords = GetEntityCoords(ped, false, false);
-                    float h = GetEntityHeading(ped);
-
-                    // Get a point in front of the player
-                    float r = -h * (float)(Math.PI / 180);
-                    float x2 = coords.X + (float)(5 * Math.Sin(r));
-                    float y2 = coords.Y + (float)(5 * Math.Cos(r));
-
-                    if (IsModelInCdimage(model))
-                    {
-                        RequestModel(model, false);
-                        while (!HasModelLoaded(model))
-                        {
-                            RequestModel(model, false);
-                            await BaseScript.Delay(0);
-                        }
-
-                        currentMount = CreatePed_2(model, x2, y2, coords.Z, 0.0f, true, true, true, true);
-                        SetModelAsNoLongerNeeded(model);
-                        SetPedOutfitPreset(currentMount, 0, 0);
-                        SetPedConfigFlag(currentMount, 297, true); // Enable leading
-                        SetPedConfigFlag(currentMount, 312, true); // Won't flee when shooting
-                        BlipAddForEntity(-1230993421, currentMount);
-                    }
-                    else
-                    {
-                        Debug.WriteLine($"^1[ERROR] This ped model is not present in the game files {model}.^7");
-                    }
+                    SpawnMount(model);
                 }
                 else if (item == sex)
                 {
