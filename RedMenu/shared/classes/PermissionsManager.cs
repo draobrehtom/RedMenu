@@ -94,6 +94,7 @@ namespace RedMenuShared
         WOTime,
         WOWeather,
         WOTimecycleModifiers,
+        WOAnimpostfx,
 
         // Voice Menu
         VOMenu,

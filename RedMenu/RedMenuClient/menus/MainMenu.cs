@@ -104,14 +104,14 @@ namespace RedMenuClient.menus
             // World Options Menu
             if (PermissionsManager.IsAllowed(Permission.WOMenu))
             {
-                MenuController.AddSubmenu(mainMenu, WorldOptionsMenu.GetMenu());
+                MenuController.AddSubmenu(mainMenu, WorldMenu.GetMenu());
                 MenuItem submenuBtn = new MenuItem("World Menu", "World related options.")
                 {
                     RightIcon = MenuItem.Icon.ARROW_RIGHT
                 };
 
                 mainMenu.AddMenuItem(submenuBtn);
-                MenuController.BindMenuItem(mainMenu, WorldOptionsMenu.GetMenu(), submenuBtn);
+                MenuController.BindMenuItem(mainMenu, WorldMenu.GetMenu(), submenuBtn);
             }
 
             // Voice Menu
