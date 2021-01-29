@@ -320,6 +320,14 @@ namespace RedMenuClient.menus
                             SetModelAsNoLongerNeeded(model);
                             playerOutfit.CurrentItem = "0";
 
+                            // mp_male comes with non-MP ammo components that should be removed
+                            if ((int)model == GetHashKey("mp_male"))
+                            {
+                                Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), 0xDA0E2C55, 0);
+                                Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), 0x3F1F01E5, 0);
+                                Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
+                            }
+
                             ResetCurrentMpClothes();
                             ResetCurrentFacialFeatures();
                             ResetCurrentBodySettings();
@@ -970,6 +978,14 @@ namespace RedMenuClient.menus
                                         SetPedOutfitPreset(PlayerPedId(), outfit, 0);
                                         SetModelAsNoLongerNeeded((uint)model);
                                         playerOutfit.CurrentItem = outfit.ToString();
+
+                                        // mp_male comes with non-MP ammo components that should be removed
+                                        if (model == GetHashKey("mp_male"))
+                                        {
+                                            Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), 0xDA0E2C55, 0);
+                                            Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), 0x3F1F01E5, 0);
+                                            Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
+                                        }
                                     }
                                     else
                                     {
