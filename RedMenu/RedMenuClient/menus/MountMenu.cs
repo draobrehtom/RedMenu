@@ -268,6 +268,8 @@ namespace RedMenuClient.menus
                             {
                                 SetMountSex(currentMount, mountSex);
                             }
+
+                            SetPedPromptName(currentMount, mountName);
                         }
                         else if (item == save)
                         {
