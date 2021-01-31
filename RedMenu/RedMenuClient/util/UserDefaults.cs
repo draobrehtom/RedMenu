@@ -198,5 +198,22 @@ namespace RedMenuClient.util
                 StorageManager.Save("VoiceRange", value, true);
             }
         }
+
+        public static bool MountGodMode
+        {
+            get
+            {
+                if (StorageManager.TryGet("MountGodMode", out bool val))
+                {
+                    return val;
+                }
+                MountGodMode = false;
+                return false;
+            }
+            set
+            {
+                StorageManager.Save("MountGodMode", value, true);
+            }
+        }
     }
 }

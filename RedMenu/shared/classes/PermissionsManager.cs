@@ -72,6 +72,7 @@ namespace RedMenuShared
         MMClean,
         MMDelete,
         MMSavedMounts,
+        MMGodMode,
 
         // Vehicle Menu
         VMMenu,
