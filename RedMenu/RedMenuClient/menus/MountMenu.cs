@@ -171,9 +171,10 @@ namespace RedMenuClient.menus
             setupDone = true;
 
             MenuListItem restoreInnerCores = new MenuListItem("Restore Inner Cores", new List<string>() { "All", "Health", "Stamina" }, 0, "Restore horse inner cores.");
-            MenuListItem restoreOuterCores = new MenuListItem("Restore Outer Cores", new List<string>() { "All", "Health", "Stamine" }, 0, "Restore horse outer cores.");
+            MenuListItem restoreOuterCores = new MenuListItem("Restore Outer Cores", new List<string>() { "All", "Health", "Stamina" }, 0, "Restore horse outer cores.");
             MenuListItem fortifyCores = new MenuListItem("Fortify Cores", new List<string>() { "All", "Health", "Stamina" }, 0, "Fortify horse inner cores.");
             MenuCheckboxItem godMode = new MenuCheckboxItem("God Mode", "Prevents your mount from taking damage.", UserDefaults.MountGodMode);
+            MenuCheckboxItem infiniteStamina = new MenuCheckboxItem("Infinite Stamina", "Your mount will never run out of stamina.", UserDefaults.MountInfiniteStamina);
             MenuItem cleanMount = new MenuItem("Clean Mount", "Remove all dirt and other decals from the mount you are currently riding.");
             MenuItem deleteMount = new MenuItem("Delete Mount", "Delete the mount you are currently riding.");
 
@@ -414,6 +415,11 @@ namespace RedMenuClient.menus
                 menu.AddMenuItem(godMode);
             }
 
+            if (PermissionsManager.IsAllowed(Permission.MMInfiniteStamina))
+            {
+                menu.AddMenuItem(infiniteStamina);
+            }
+
             if (PermissionsManager.IsAllowed(Permission.MMClean))
             {
                 menu.AddMenuItem(cleanMount);
@@ -565,6 +571,10 @@ namespace RedMenuClient.menus
                 {
                     UserDefaults.MountGodMode = _checked;
                     SetEntityInvincible(currentMount, _checked);
+                }
+                else if (item == infiniteStamina)
+                {
+                    UserDefaults.MountInfiniteStamina = _checked;
                 }
             };
         }

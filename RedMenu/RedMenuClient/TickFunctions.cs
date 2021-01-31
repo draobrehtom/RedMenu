@@ -99,19 +99,37 @@ namespace RedMenuClient
         {
             if (!IsPlayerDead(PlayerId())) // Allows respawning after killing yourself
             {
+                int ped = PlayerPedId();
+
                 if (PermissionsManager.IsAllowed(Permission.PMGodMode) && UserDefaults.PlayerGodMode)
                 {
-                    Function.Call((Hash)0xC6258F41D86676E0, PlayerPedId(), 0, 100.0f);
+                    Function.Call((Hash)0xC6258F41D86676E0, ped, 0, 100.0f);
                 }
+
                 if (PermissionsManager.IsAllowed(Permission.PMInfiniteStamina) && UserDefaults.PlayerInfiniteStamina)
                 {
                     RestorePlayerStamina(PlayerId(), 100.0f);
-                    Function.Call((Hash)0xC6258F41D86676E0, PlayerPedId(), 1, 100.0f);
+                    Function.Call((Hash)0xC6258F41D86676E0, ped, 1, 100.0f);
                 }
 
                 if (PermissionsManager.IsAllowed(Permission.PMInfiniteDeadEye) && UserDefaults.PlayerInfiniteDeadEye)
                 {
-                    Function.Call((Hash)0xC6258F41D86676E0, PlayerPedId(), 2, 100.0f);
+                    Function.Call((Hash)0xC6258F41D86676E0, ped, 2, 100.0f);
+                }
+
+                int mount = GetMount(ped);
+
+                if (mount != 0)
+                {
+                    if (PermissionsManager.IsAllowed(Permission.MMGodMode) && UserDefaults.MountGodMode)
+                    {
+                        Function.Call((Hash)0xC6258F41D86676E0, mount, 0, 100);
+                    }
+                    if (PermissionsManager.IsAllowed(Permission.MMInfiniteStamina) && UserDefaults.MountInfiniteStamina)
+                    {
+                        Function.Call((Hash)0x675680D089BFA21F, mount, 100.0f);
+                        Function.Call((Hash)0xC6258F41D86676E0, mount, 1, 100);
+                    }
                 }
             }
 

@@ -74,6 +74,7 @@ namespace RedMenuShared
         MMDelete,
         MMSavedMounts,
         MMGodMode,
+        MMInfiniteStamina,
 
         // Vehicle Menu
         VMMenu,

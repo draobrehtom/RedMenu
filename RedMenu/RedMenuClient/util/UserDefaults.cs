@@ -215,5 +215,22 @@ namespace RedMenuClient.util
                 StorageManager.Save("MountGodMode", value, true);
             }
         }
+
+        public static bool MountInfiniteStamina
+        {
+            get
+            {
+                if (StorageManager.TryGet("MountInfiniteStamina", out bool val))
+                {
+                    return val;
+                }
+                MountInfiniteStamina = false;
+                return false;
+            }
+            set
+            {
+                StorageManager.Save("MountInfiniteStamina", value, true);
+            }
+        }
     }
 }
