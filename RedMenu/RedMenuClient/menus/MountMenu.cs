@@ -170,7 +170,8 @@ namespace RedMenuClient.menus
             if (setupDone) return;
             setupDone = true;
 
-            MenuListItem restoreCores = new MenuListItem("Restore Cores", new List<string>() { "All", "Health", "Stamina" }, 0, "Restore horse inner cores.");
+            MenuListItem restoreInnerCores = new MenuListItem("Restore Inner Cores", new List<string>() { "All", "Health", "Stamina" }, 0, "Restore horse inner cores.");
+            MenuListItem restoreOuterCores = new MenuListItem("Restore Outer Cores", new List<string>() { "All", "Health", "Stamine" }, 0, "Restore horse outer cores.");
             MenuListItem fortifyCores = new MenuListItem("Fortify Cores", new List<string>() { "All", "Health", "Stamina" }, 0, "Fortify horse inner cores.");
             MenuCheckboxItem godMode = new MenuCheckboxItem("God Mode", "Prevents your mount from taking damage.", UserDefaults.MountGodMode);
             MenuItem cleanMount = new MenuItem("Clean Mount", "Remove all dirt and other decals from the mount you are currently riding.");
@@ -393,9 +394,14 @@ namespace RedMenuClient.menus
                 };
             }
 
-            if (PermissionsManager.IsAllowed(Permission.MMRestoreCores))
+            if (PermissionsManager.IsAllowed(Permission.MMRestoreInnerCores))
             {
-                menu.AddMenuItem(restoreCores);
+                menu.AddMenuItem(restoreInnerCores);
+            }
+
+            if (PermissionsManager.IsAllowed(Permission.MMRestoreOuterCores))
+            {
+                menu.AddMenuItem(restoreOuterCores);
             }
 
             if (PermissionsManager.IsAllowed(Permission.MMFortifyCores))
@@ -487,7 +493,7 @@ namespace RedMenuClient.menus
                 {
                     SetMountSex(GetTargetMount(PlayerPedId()), listIndex);
                 }
-                else if (item == restoreCores)
+                else if (item == restoreInnerCores)
                 {
                     switch (listIndex)
                     {
@@ -502,6 +508,26 @@ namespace RedMenuClient.menus
                             Function.Call<int>((Hash)0xC6258F41D86676E0, GetTargetMount(PlayerPedId()), 1, 100);
                             break;
                         default:
+                            break;
+                    }
+                }
+                else if (item == restoreOuterCores)
+                {
+                    int mount = GetTargetMount(PlayerPedId());
+
+                    switch (listIndex)
+                    {
+                        case 0: // all
+                            Function.Call((Hash)0xAC2767ED8BDFAB15, mount, 100.0, 0);
+                            Function.Call((Hash)0x675680D089BFA21F, mount, 100.0f);
+                            break;
+                        case 1: // health
+                            Function.Call((Hash)0xAC2767ED8BDFAB15, mount, 100.0, 0);
+                            break;
+                        case 2: // stamina
+                            Function.Call((Hash)0x675680D089BFA21F, mount, 100.0f);
+                            break;
+                        default: // invalid index
                             break;
                     }
                 }
