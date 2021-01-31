@@ -71,6 +71,7 @@ namespace RedMenuShared
         MMFortifyCores,
         MMClean,
         MMDelete,
+        MMSavedMounts,
 
         // Vehicle Menu
         VMMenu,

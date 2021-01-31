@@ -21,6 +21,10 @@ namespace RedMenuClient.menus
         private static int currentMount = 0;
         private static Random rng = new Random();
 
+        private const int maxSavedMounts = 100;
+
+        private static Dictionary<int, uint> currentMountComponents = new Dictionary<int, uint>();
+
         private static int GetLastMount(int ped)
         {
             return Function.Call<int>((Hash)0x4C8B59171957BCF7, ped);
@@ -59,7 +63,16 @@ namespace RedMenuClient.menus
             }
             else
             {
-                return GetLastMount(ped);
+                int lastMount = GetLastMount(ped);
+
+                if (DoesEntityExist(lastMount))
+                {
+                    return GetLastMount(ped);
+                }
+                else
+                {
+                    return currentMount;
+                }
             }
         }
 
@@ -102,6 +115,54 @@ namespace RedMenuClient.menus
             }
         }
 
+        private static void ResetCurrentMountComponents()
+        {
+            int[] keys = currentMountComponents.Keys.ToArray();
+            for (int i = 0; i < keys.Length; ++i)
+            {
+                currentMountComponents[keys[i]] = 0;
+            }
+        }
+
+        private static async Task<string> GetUserInput(string windowTitle, string defaultText, int maxInputLength)
+        {
+            var spacer = "\t";
+            AddTextEntry($"{GetCurrentResourceName().ToUpper()}_WINDOW_TITLE", $"{windowTitle ?? "Enter"}:{spacer}(MAX {maxInputLength} Characters)");
+            DisplayOnscreenKeyboard(1, $"{GetCurrentResourceName().ToUpper()}_WINDOW_TITLE", "", defaultText ?? "", "", "", "", maxInputLength); await BaseScript.Delay(0);
+            while (true)
+            {
+                int keyboardStatus = UpdateOnscreenKeyboard();
+                switch (keyboardStatus)
+                {
+                    case 3:
+                    case 2:
+                        return null;
+                    case 1:
+                        return GetOnscreenKeyboardResult();
+                    default:
+                        await BaseScript.Delay(0);
+                        break;
+                }
+            }
+        }
+
+        private static void SetMountSex(int mount, int sex)
+        {
+            switch (sex)
+            {
+                case 0:
+                    SetPedFaceFeature(mount, 41611, 0.0f);
+                    break;
+                case 1:
+                    SetPedFaceFeature(mount, 41611, 1.0f);
+                    break;
+                default:
+                    break;
+            }
+
+            UpdatePedVariation(mount, false, true, true, true, false);
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -123,6 +184,112 @@ namespace RedMenuClient.menus
 
             MenuItem randomMount = new MenuItem("Spawn Random Mount", "Spawn a random mount.");
             MenuItem randomTack = new MenuItem("Randomize Tack", "Add random tack to your horse.");
+
+            if (PermissionsManager.IsAllowed(Permission.MMSavedMounts))
+            {
+                MenuItem savedMounts = new MenuItem("Saved Mounts", "Save and load mounts.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                Menu savedMountsMenu = new Menu("Saved Mounts", "Save and load mounts");
+                menu.AddMenuItem(savedMounts);
+                MenuController.AddSubmenu(menu, savedMountsMenu);
+                MenuController.BindMenuItem(menu, savedMountsMenu, savedMounts);
+
+                for (int i = 0; i <= 9; ++i)
+                {
+                    currentMountComponents[i] = 0;
+                }
+
+                for (int i = 1; i <= maxSavedMounts; ++i)
+                {
+                    int mountIndex = i;
+                    
+                    if (!StorageManager.TryGet("SavedMounts_" + mountIndex + "_name", out string mountName))
+                    {
+                        mountName = "Mount " + mountIndex;
+                    }
+
+                    MenuItem savedMount = new MenuItem(mountName) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                    savedMountsMenu.AddMenuItem(savedMount);
+
+                    Menu savedMountOptionsMenu = new Menu(mountName);
+                    MenuController.AddSubmenu(savedMountsMenu, savedMountOptionsMenu);
+                    MenuController.BindMenuItem(savedMountsMenu, savedMountOptionsMenu, savedMount);
+
+                    MenuItem load = new MenuItem("Load", "Load this mount.");
+                    MenuItem save = new MenuItem("Save", "Save current mount to this slot.");
+                    savedMountOptionsMenu.AddMenuItem(load);
+                    savedMountOptionsMenu.AddMenuItem(save);
+
+                    savedMountOptionsMenu.OnItemSelect += async (m, item, index) =>
+                    {
+                        if (item == load)
+                        {
+                            if (StorageManager.TryGet("SavedMounts_" + mountIndex + "_model", out int model))
+                            {
+                                SpawnMount((uint)model);
+                            }
+
+                            await BaseScript.Delay(500);
+
+                            ResetCurrentMountComponents();
+
+                            int[] keys = currentMountComponents.Keys.ToArray();
+
+                            for (int j = 0; j < keys.Length; ++j)
+                            {
+                                if (StorageManager.TryGet("SavedMounts_" + mountIndex + "_c_" + keys[j], out int hash))
+                                {
+                                    switch ((uint)hash)
+                                    {
+                                        case 0x17CEB41A:
+                                        case 0x5447332:
+                                        case 0x80451C25:
+                                        case 0xA63CAE10:
+                                        case 0xAA0217AB:
+                                        case 0xBAA7E618:
+                                        case 0xDA6DADCA:
+                                        case 0xEFB31921:
+                                        case 0x1530BE1C:
+                                            Function.Call((Hash)0xD710A5007C2AC539, currentMount, hash, 0);
+                                            Function.Call((Hash)0xCC8CA3E88256E58F, currentMount, false, true, true, true, false);
+                                            break;
+                                        default:
+                                            Function.Call((Hash)0xD3A7B003ED343FD9, currentMount, (uint)hash, true, true, false);
+                                            break;
+                                    }
+                                    currentMountComponents[keys[j]] = (uint)hash;
+                                }
+                                else
+                                {
+                                    currentMountComponents[keys[j]] = 0;
+                                }
+                            }
+
+                            if (StorageManager.TryGet("SavedMounts_" + mountIndex + "_sex", out int mountSex))
+                            {
+                                SetMountSex(currentMount, mountSex);
+                            }
+                        }
+                        else if (item == save)
+                        {
+                            string newName = await GetUserInput("Enter mount name", mountName, 20);
+
+                            if (newName != null)
+                            {
+                                StorageManager.Save("SavedMounts_" + mountIndex + "_model", GetEntityModel(currentMount), true);
+                                foreach (KeyValuePair<int, uint> entry in currentMountComponents)
+                                {
+                                    StorageManager.Save("SavedMounts_" + mountIndex + "_c_" + entry.Key, (int)entry.Value, true);
+                                }
+                                StorageManager.Save("SavedMounts_" + mountIndex + "_sex", sex.ListIndex, true);
+                                StorageManager.Save("SavedMounts_" + mountIndex + "_name", newName, true);
+                                savedMount.Text = newName;
+                                savedMountOptionsMenu.MenuTitle = newName;
+                                mountName = newName;
+                            }
+                        }
+                    };
+                }
+            }
 
             if (PermissionsManager.IsAllowed(Permission.MMSpawn))
             {
@@ -192,6 +359,7 @@ namespace RedMenuClient.menus
                     if (hash != 0)
                     {
                         Function.Call((Hash)0xD3A7B003ED343FD9, GetTargetMount(PlayerPedId()), hash, true, true, false);
+                        currentMountComponents[itemIndex] = hash;
                     }
                 };
 
@@ -215,6 +383,7 @@ namespace RedMenuClient.menus
                     {
                         Function.Call((Hash)0xD710A5007C2AC539, GetTargetMount(PlayerPedId()), hash, 0);
                         Function.Call((Hash)0xCC8CA3E88256E58F, GetTargetMount(PlayerPedId()), false, true, true, true, false);
+                        currentMountComponents[itemIndex] = hash;
                     }
                 };
             }
@@ -274,12 +443,26 @@ namespace RedMenuClient.menus
 
                     int mount = GetTargetMount(PlayerPedId());
 
-                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, data.MountData.BlanketHashes[rBlanket], true, true, false);
-                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, data.MountData.GripHashes[rGrip], true, true, false);
-                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, data.MountData.BagHashes[rBag], true, true, false);
-                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, data.MountData.SaddleHashes[rSaddle], true, true, false);
-                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, data.MountData.StirrupHashes[rStirrup], true, true, false);
-                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, data.MountData.RollHashes[rRoll], true, true, false);
+                    uint hBlanket = data.MountData.BlanketHashes[rBlanket];
+                    uint hGrip = data.MountData.GripHashes[rGrip];
+                    uint hBag = data.MountData.BagHashes[rBag];
+                    uint hSaddle = data.MountData.SaddleHashes[rSaddle];
+                    uint hStirrup = data.MountData.StirrupHashes[rStirrup];
+                    uint hRoll = data.MountData.RollHashes[rRoll];
+
+                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, hBlanket, true, true, false);
+                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, hGrip, true, true, false);
+                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, hBag, true, true, false);
+                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, hSaddle, true, true, false);
+                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, hStirrup, true, true, false);
+                    Function.Call((Hash)0xD3A7B003ED343FD9, mount, hRoll, true, true, false);
+
+                    currentMountComponents[0] = hBlanket;
+                    currentMountComponents[1] = hGrip;
+                    currentMountComponents[2] = hBag;
+                    currentMountComponents[5] = hSaddle;
+                    currentMountComponents[6] = hStirrup;
+                    currentMountComponents[7] = hRoll;
                 }
             };
 
@@ -292,21 +475,7 @@ namespace RedMenuClient.menus
                 }
                 else if (item == sex)
                 {
-                    int mount = GetTargetMount(PlayerPedId());
-
-                    switch (listIndex)
-                    {
-                        case 0:
-                            SetPedFaceFeature(mount, 41611, 0.0f);
-                            break;
-                        case 1:
-                            SetPedFaceFeature(mount, 41611, 1.0f);
-                            break;
-                        default:
-                            break;
-                    }
-
-                    UpdatePedVariation(mount, false, true, true, true, false);
+                    SetMountSex(GetTargetMount(PlayerPedId()), listIndex);
                 }
                 else if (item == restoreCores)
                 {
@@ -343,6 +512,14 @@ namespace RedMenuClient.menus
                         default:
                             break;
                     }
+                }
+            };
+
+            menu.OnListIndexChange += (m, listItem, oldIndex, newIndex, itemIndex) =>
+            {
+                if (listItem == sex)
+                {
+                    SetMountSex(GetTargetMount(PlayerPedId()), newIndex);
                 }
             };
         }
