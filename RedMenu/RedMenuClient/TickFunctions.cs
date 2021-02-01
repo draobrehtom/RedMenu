@@ -68,30 +68,20 @@ namespace RedMenuClient
         }
 
         private static int lastPed = 0;
+
         [Tick]
         internal static async Task PedChangeDetectionTick()
         {
-            async Task PedChanged()
+            int ped = PlayerPedId();
+
+            if (ped != lastPed)
             {
                 Update();
-
-                lastPed = PlayerPedId();
-                await Task.FromResult(0);
+                lastPed = ped;
             }
 
-
-            if (lastPed != PlayerPedId())
-            {
-                await PedChanged();
-            }
-            int ped = PlayerPedId();
-            while (ped == PlayerPedId())
-            {
-                await Delay(1000);
-            }
-
-            // ped changed.
-            await PedChanged();
+            await Delay(1000);
+            await Task.FromResult(0);
         }
 
         [Tick]
