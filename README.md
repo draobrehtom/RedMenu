@@ -1,3 +1,9 @@
+# This fork
+
+You can download the latest build of this fork here: https://ci.appveyor.com/project/kibook/redmenu
+
+Everything below is from the original README for RedMenu.
+
 # RedMenu
 RedMenu is a server side menu for **[RedM](https://redm.gg/)**. (Soon™)
 
