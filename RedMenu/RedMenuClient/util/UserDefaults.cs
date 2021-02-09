@@ -232,5 +232,22 @@ namespace RedMenuClient.util
                 StorageManager.Save("MountInfiniteStamina", value, true);
             }
         }
+
+        public static int PlayerDefaultSavedPed
+        {
+            get
+            {
+                if (StorageManager.TryGet("PlayerDefaultSavedPed", out int val))
+                {
+                    return val;
+                }
+                PlayerDefaultSavedPed = 0;
+                return 0;
+            }
+            set
+            {
+                StorageManager.Save("PlayerDefaultSavedPed", value, true);
+            }
+        }
     }
 }

@@ -16,7 +16,18 @@ namespace RedMenuClient
     class TickFunctions : BaseScript
     {
         public TickFunctions() {
-            EventHandlers["playerSpawned"] += new Action(Update);
+            EventHandlers["playerSpawned"] += new Action(OnSpawn);
+        }
+
+        private static async void OnSpawn()
+        {
+            await Delay(1000);
+            if (PermissionsManager.IsAllowed(Permission.PMSavedPeds) && UserDefaults.PlayerDefaultSavedPed != 0)
+            {
+                menus.PlayerMenu.LoadDefaultPed(UserDefaults.PlayerDefaultSavedPed);
+            }
+            await Delay(500);
+            Update();
         }
 
         private static void Update()

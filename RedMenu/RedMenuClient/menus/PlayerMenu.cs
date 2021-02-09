@@ -117,6 +117,150 @@ namespace RedMenuClient.menus
             }
         }
 
+        public static async void LoadDefaultPed(int pedIndex)
+        {
+            if (!StorageManager.TryGet("SavedPeds_" + pedIndex + "_outfit", out int outfit))
+            {
+                outfit = 0;
+            }
+
+            if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_model", out int model))
+            {
+                if (IsModelInCdimage((uint)model))
+                {
+                    RequestModel((uint)model, false);
+                    while (!HasModelLoaded((uint)model))
+                    {
+                        await BaseScript.Delay(0);
+                    }
+                    SetPlayerModel(PlayerId(), model, 0);
+                    SetPedOutfitPreset(PlayerPedId(), outfit, 0);
+                    SetModelAsNoLongerNeeded((uint)model);
+
+                    // mp_male comes with non-MP ammo components that should be removed
+                    if (model == GetHashKey("mp_male"))
+                    {
+                        Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), 0xDA0E2C55, 0);
+                        Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), 0x3F1F01E5, 0);
+                        Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
+                    }
+                }
+                else
+                {
+                    Debug.WriteLine($"^1[ERROR] This ped model is not present in the game files {model}.^7");
+                }
+            }
+
+            await BaseScript.Delay(500);
+
+            ResetCurrentMpClothes();
+            ResetCurrentFacialFeatures();
+            ResetCurrentBodySettings();
+
+            int[] keys = currentMpClothes.Keys.ToArray();
+
+            for (int j = 0; j < keys.Length; ++j)
+            {
+                if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_mp_" + keys[j], out int hash))
+                {
+                    switch ((uint)hash)
+                    {
+                        case 0x18729F39:
+                        case 0x1D4C528A:
+                        case 0x2026C46D:
+                        case 0x3107499B:
+                        case 0x378AD10C:
+                        case 0x3C1A74CD:
+                        case 0x3F7F3587:
+                        case 0x485EE834:
+                        case 0x514ADCEA:
+                        case 0x05E47CA6:
+                        case 0x5FC29285:
+                        case 0x0662AC34:
+                        case 0x72E6EF74:
+                        case 0x7505EF42:
+                        case 0x777EC6EF:
+                        case 0x79D7DF96:
+                        case 0x7A6BBD0B:
+                        case 0x7A96FACA:
+                        case 0x7BC10759:
+                        case 0x823687F5:
+                        case 0x83887E88:
+                        case 0x864B03AE:
+                        case 0x877A2CF7:
+                        case 0x91CE9B20:
+                        case 0x94504D26:
+                        case 0x96EDAE5C:
+                        case 0x9925C067:
+                        case 0x9B2C8B89:
+                        case 0xA0E3AB7F:
+                        case 0xA6D134C6:
+                        case 0xAF14310B:
+                        case 0x0B3966C9:
+                        case 0xB6B6122D:
+                        case 0xE06D30CE:
+                        case 0xEA24B45E:
+                        case 0xEABE0032:
+                        case 0xF1542D11:
+                        case 0xF16A1D23:
+                        case 0xF8016BCA:
+                        case 0xFAE9107F:
+                            Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), hash, 0);
+                            Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
+                            break;
+                        default:
+                            Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), (uint)hash, true, true, false);
+                            break;
+                    }
+                    currentMpClothes[keys[j]] = (uint)hash;
+                }
+                else
+                {
+                    currentMpClothes[keys[j]] = 0;
+                }
+            }
+
+            uint[] ffkeys = currentFacialFeatures.Keys.ToArray();
+
+            for (int j = 0; j < ffkeys.Length; ++j)
+            {
+                if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_ff_" + ffkeys[j], out float value))
+                {
+                    if (value != 0)
+                    {
+                        Function.Call((Hash)0x5653AB26C82938CF, PlayerPedId(), ffkeys[j], value);
+                    }
+
+                    currentFacialFeatures[ffkeys[j]] = value;
+                }
+                else
+                {
+                    currentFacialFeatures[ffkeys[j]] = 0;
+                }
+            }
+
+            int[] bckeys = currentBodySettings.Keys.ToArray();
+
+            for (int j = 0; j < bckeys.Length; ++j)
+            {
+                if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_bc_" + bckeys[j], out int hash))
+                {
+                    if (hash != 0)
+                    {
+                        Function.Call((Hash)0x1902C4CFCC5BE57C, PlayerPedId(), hash);
+                    }
+
+                    currentBodySettings[bckeys[j]] = hash;
+                }
+                else
+                {
+                    currentBodySettings[bckeys[j]] = 0;
+                }
+            }
+
+            Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -919,6 +1063,7 @@ namespace RedMenuClient.menus
                     MenuController.AddSubmenu(appearanceMenu, savedPedsMenu);
                     appearanceMenu.AddMenuItem(savedPeds);
                     MenuController.BindMenuItem(appearanceMenu, savedPedsMenu, savedPeds);
+                    List<MenuCheckboxItem> defaultSavedPedCheckboxes = new List<MenuCheckboxItem>();
 
                     for (int i = 0; i <= 38; ++i)
                     {
@@ -953,154 +1098,17 @@ namespace RedMenuClient.menus
 
                         MenuItem load = new MenuItem("Load", "Load this ped.");
                         MenuItem save = new MenuItem("Save", "Save current ped to this slot.");
+                        MenuCheckboxItem isDefault = new MenuCheckboxItem("Default", "Load this ped automatically when you respawn.", pedIndex == UserDefaults.PlayerDefaultSavedPed);
+                        defaultSavedPedCheckboxes.Add(isDefault);
                         savedPedOptionsMenu.AddMenuItem(load);
                         savedPedOptionsMenu.AddMenuItem(save);
+                        savedPedOptionsMenu.AddMenuItem(isDefault);
 
                         savedPedOptionsMenu.OnItemSelect += async (m, item, index) =>
                         {
                             if (item == load)
                             {
-                                if (!StorageManager.TryGet("SavedPeds_" + pedIndex + "_outfit", out int outfit))
-                                {
-                                    outfit = 0;
-                                }
-
-                                if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_model", out int model))
-                                {
-                                    if (IsModelInCdimage((uint)model))
-                                    {
-                                        RequestModel((uint)model, false);
-                                        while (!HasModelLoaded((uint)model))
-                                        {
-                                            await BaseScript.Delay(0);
-                                        }
-                                        SetPlayerModel(PlayerId(), model, 0);
-                                        SetPedOutfitPreset(PlayerPedId(), outfit, 0);
-                                        SetModelAsNoLongerNeeded((uint)model);
-                                        playerOutfit.CurrentItem = outfit.ToString();
-
-                                        // mp_male comes with non-MP ammo components that should be removed
-                                        if (model == GetHashKey("mp_male"))
-                                        {
-                                            Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), 0xDA0E2C55, 0);
-                                            Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), 0x3F1F01E5, 0);
-                                            Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Debug.WriteLine($"^1[ERROR] This ped model is not present in the game files {model}.^7");
-                                    }
-                                }
-
-                                await BaseScript.Delay(500);
-
-                                ResetCurrentMpClothes();
-                                ResetCurrentFacialFeatures();
-                                ResetCurrentBodySettings();
-
-                                int[] keys = currentMpClothes.Keys.ToArray();
-
-                                for (int j = 0; j < keys.Length; ++j)
-                                {
-                                    if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_mp_" + keys[j], out int hash))
-                                    {
-                                        switch ((uint)hash)
-                                        {
-                                            case 0x18729F39:
-                                            case 0x1D4C528A:
-                                            case 0x2026C46D:
-                                            case 0x3107499B:
-                                            case 0x378AD10C:
-                                            case 0x3C1A74CD:
-                                            case 0x3F7F3587:
-                                            case 0x485EE834:
-                                            case 0x514ADCEA:
-                                            case 0x05E47CA6:
-                                            case 0x5FC29285:
-                                            case 0x0662AC34:
-                                            case 0x72E6EF74:
-                                            case 0x7505EF42:
-                                            case 0x777EC6EF:
-                                            case 0x79D7DF96:
-                                            case 0x7A6BBD0B:
-                                            case 0x7A96FACA:
-                                            case 0x7BC10759:
-                                            case 0x823687F5:
-                                            case 0x83887E88:
-                                            case 0x864B03AE:
-                                            case 0x877A2CF7:
-                                            case 0x91CE9B20:
-                                            case 0x94504D26:
-                                            case 0x96EDAE5C:
-                                            case 0x9925C067:
-                                            case 0x9B2C8B89:
-                                            case 0xA0E3AB7F:
-                                            case 0xA6D134C6:
-                                            case 0xAF14310B:
-                                            case 0x0B3966C9:
-                                            case 0xB6B6122D:
-                                            case 0xE06D30CE:
-                                            case 0xEA24B45E:
-                                            case 0xEABE0032:
-                                            case 0xF1542D11:
-                                            case 0xF16A1D23:
-                                            case 0xF8016BCA:
-                                            case 0xFAE9107F:
-                                                Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), hash, 0);
-                                                Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
-                                                break;
-                                            default:
-                                                Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), (uint)hash, true, true, false);
-                                                break;
-                                        }
-                                        currentMpClothes[keys[j]] = (uint)hash;
-                                    }
-                                    else
-                                    {
-                                        currentMpClothes[keys[j]] = 0;
-                                    }
-                                }
-
-                                uint[] ffkeys = currentFacialFeatures.Keys.ToArray();
-
-                                for (int j = 0; j < ffkeys.Length; ++j)
-                                {
-                                    if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_ff_" + ffkeys[j], out float value))
-                                    {
-                                        if (value != 0)
-                                        {
-                                            Function.Call((Hash)0x5653AB26C82938CF, PlayerPedId(), ffkeys[j], value);
-                                        }
-
-                                        currentFacialFeatures[ffkeys[j]] = value;
-                                    }
-                                    else
-                                    {
-                                        currentFacialFeatures[ffkeys[j]] = 0;
-                                    }
-                                }
-
-                                int[] bckeys = currentBodySettings.Keys.ToArray();
-
-                                for (int j = 0; j < bckeys.Length; ++j)
-                                {
-                                    if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_bc_" + bckeys[j], out int hash))
-                                    {
-                                        if (hash != 0)
-                                        {
-                                            Function.Call((Hash)0x1902C4CFCC5BE57C, PlayerPedId(), hash);
-                                        }
-
-                                        currentBodySettings[bckeys[j]] = hash;
-                                    }
-                                    else
-                                    {
-                                        currentBodySettings[bckeys[j]] = 0;
-                                    }
-                                }
-
-                                Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
+                                LoadDefaultPed(pedIndex);
                             }
                             else if (item == save)
                             {
@@ -1126,6 +1134,29 @@ namespace RedMenuClient.menus
                                     savedPed.Text = newName;
                                     savedPedOptionsMenu.MenuTitle = newName;
                                     pedName = newName;
+                                }
+                            }
+                        };
+
+                        savedPedOptionsMenu.OnCheckboxChange += (m, item, index, _checked) =>
+                        {
+                            if (item == isDefault)
+                            {
+                                if (_checked)
+                                {
+                                    UserDefaults.PlayerDefaultSavedPed = pedIndex;
+
+                                    foreach (var cb in defaultSavedPedCheckboxes)
+                                    {
+                                        if (cb != isDefault)
+                                        {
+                                            cb.Checked = false;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    UserDefaults.PlayerDefaultSavedPed = 0;
                                 }
                             }
                         };
