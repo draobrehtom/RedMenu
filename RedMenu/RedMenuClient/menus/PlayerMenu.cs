@@ -586,46 +586,46 @@ namespace RedMenuClient.menus
                         //foreach (var k in data.FemaleCustomization.beard) { buckles2.Add($"({data.FemaleCustomization.beard.IndexOf(k) + 1}/{data.FemaleCustomization.beard.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.FemaleCustomization.buckles2) { buckles2.Add($"({data.FemaleCustomization.buckles2.IndexOf(k) + 1}/{data.FemaleCustomization.buckles2.Count()}) 0x{k.ToString("X08")}"); }
 
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Spurs", spurs, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Boot Accessories", spurs, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Pants", pants, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Shirts", shirts, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Chaps", chaps, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Faces", faces, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Ponchos", ponchos, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Heads", faces, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Cloaks", ponchos, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Badges", badges, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Vests", vests, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Leg Armor", legArmor, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Glasses", glasses, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Bandanas", bandanas, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Coats", coats, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Body Armor", bodyArmor, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Spats", legArmor, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Eyewear", glasses, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Neckwear", bandanas, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Closed Coats", coats, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Armor", bodyArmor, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Masks", masks, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Boots", boots, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Buckles", buckles, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Rings", rings, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Neckwear", neckwear, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Wristbands", wristbands, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Feet Style", feetStyle, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Belts", belts, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Accessories", buckles, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Right-Hand Rings", rings, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Neckties", neckwear, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Bracelets", wristbands, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Lower Bodies", feetStyle, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Loadouts", belts, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Hair", hair, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Suspenders", suspenders, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Gauntlets", gauntlets, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Bags", bags, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Satchels", bags, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Teeth", teeth, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Hats", hats, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Gun Belts", gunBelts, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Skirts", skirts, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Belts 2", belts2, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Ponchos 2", ponchos2, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Body Style", bodyStyle, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Belts", belts2, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Ponchos", ponchos2, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Upper Bodies", bodyStyle, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Off-Hand Holsters", offHandHolsters, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Coats 2", coats2, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Open Coats", coats2, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Eyes", eyes, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Gloves", gloves, 0));
                         femaleCustomMenu.AddMenuItem(new MenuListItem("Gun Belt Accessory", gunBeltAccessory, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Rings 2", rings2, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Left-Hand Rings", rings2, 0));
                         //femaleCustomMenu.AddMenuItem(new MenuListItem("Beard", beard, 0));
-                        femaleCustomMenu.AddMenuItem(new MenuListItem("Buckles 2", buckles2, 0));
+                        femaleCustomMenu.AddMenuItem(new MenuListItem("Belt Buckles", buckles2, 0));
 
                         femaleCustomMenu.OnListIndexChange += (m, item, oldIndex, newIndex, itemIndex) =>
                         {
@@ -825,46 +825,46 @@ namespace RedMenuClient.menus
                         foreach (var k in data.MaleCustomization.beard) { beard.Add($"({data.MaleCustomization.beard.IndexOf(k) + 1}/{data.MaleCustomization.beard.Count()}) 0x{k.ToString("X08")}"); }
                         foreach (var k in data.MaleCustomization.buckles2) { buckles2.Add($"({data.MaleCustomization.buckles2.IndexOf(k) + 1}/{data.MaleCustomization.buckles2.Count()}) 0x{k.ToString("X08")}"); }
 
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Spurs", spurs, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Boot Accessories", spurs, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Pants", pants, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Shirts", shirts, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Chaps", chaps, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Faces", faces, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Ponchos", ponchos, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Heads", faces, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Cloaks", ponchos, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Badges", badges, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Vests", vests, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Leg Armor", legArmor, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Glasses", glasses, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Bandanas", bandanas, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Coats", coats, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Body Armor", bodyArmor, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Spats", legArmor, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Eyewear", glasses, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Neckwear", bandanas, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Closed Coats", coats, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Armor", bodyArmor, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Masks", masks, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Boots", boots, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Buckles", buckles, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Rings", rings, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Neckwear", neckwear, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Wristbands", wristbands, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Feet Style", feetStyle, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Belts", belts, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Accessories", buckles, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Right-Hand Rings", rings, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Neckties", neckwear, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Bracelets", wristbands, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Lower Bodies", feetStyle, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Loadouts", belts, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Hair", hair, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Suspenders", suspenders, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Gauntlets", gauntlets, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Bags", bags, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Satchels", bags, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Teeth", teeth, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Hats", hats, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Gun Belts", gunBelts, 0));
                         //maleCustomMenu.AddMenuItem(new MenuListItem("Skirts", skirts, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Belts 2", belts2, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Ponchos 2", ponchos2, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Body Style", bodyStyle, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Belts", belts2, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Ponchos", ponchos2, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Upper Bodies", bodyStyle, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Off-Hand Holsters", offHandHolsters, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Coats 2", coats2, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Open Coats", coats2, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Eyes", eyes, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Gloves", gloves, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Gun Belt Accessory", gunBeltAccessory, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Rings 2", rings2, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Left-Hand Rings", rings2, 0));
                         maleCustomMenu.AddMenuItem(new MenuListItem("Beard", beard, 0));
-                        maleCustomMenu.AddMenuItem(new MenuListItem("Buckles 2", buckles2, 0));
+                        maleCustomMenu.AddMenuItem(new MenuListItem("Belt Buckles", buckles2, 0));
 
                         maleCustomMenu.OnListIndexChange += (m, item, oldIndex, newIndex, itemIndex) =>
                         {
