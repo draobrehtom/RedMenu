@@ -27,6 +27,8 @@ namespace RedMenuClient.menus
         private static Dictionary<uint, float> currentFacialFeatures = new Dictionary<uint, float>();
         private static Dictionary<int, int> currentBodySettings = new Dictionary<int, int>();
 
+        private static MenuDynamicListItem playerOutfit;
+
         private static void AddScenarioSubmenu(Menu menu, List<string> hashes, string title, string description)
         {
             Menu submenu = new Menu(title, description);
@@ -136,6 +138,7 @@ namespace RedMenuClient.menus
                     SetPlayerModel(PlayerId(), model, 0);
                     SetPedOutfitPreset(PlayerPedId(), outfit, 0);
                     SetModelAsNoLongerNeeded((uint)model);
+                    playerOutfit.CurrentItem = outfit.ToString();
 
                     // mp_male comes with non-MP ammo components that should be removed
                     if (model == GetHashKey("mp_male"))
@@ -281,7 +284,7 @@ namespace RedMenuClient.menus
             MenuItem dryPed = new MenuItem("Dry Ped", "Remove all wetness from the ped.");
             MenuItem killSelf = new MenuItem("Kill Yourself", "Kill yourself.");
 
-            MenuDynamicListItem playerOutfit = new MenuDynamicListItem("Select Outfit", "0", new MenuDynamicListItem.ChangeItemCallback((item, left) =>
+            playerOutfit = new MenuDynamicListItem("Select Outfit", "0", new MenuDynamicListItem.ChangeItemCallback((item, left) =>
             {
                 if (int.TryParse(item.CurrentItem, out int val))
                 {
