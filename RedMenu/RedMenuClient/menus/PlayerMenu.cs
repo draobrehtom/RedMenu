@@ -1066,6 +1066,7 @@ namespace RedMenuClient.menus
                     MenuController.AddSubmenu(appearanceMenu, savedPedsMenu);
                     appearanceMenu.AddMenuItem(savedPeds);
                     MenuController.BindMenuItem(appearanceMenu, savedPedsMenu, savedPeds);
+                    List<MenuItem> savedPedSlots = new List<MenuItem>();
                     List<MenuCheckboxItem> defaultSavedPedCheckboxes = new List<MenuCheckboxItem>();
 
                     for (int i = 0; i <= 38; ++i)
@@ -1093,7 +1094,12 @@ namespace RedMenuClient.menus
                         }
 
                         MenuItem savedPed = new MenuItem(pedName) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                        if (pedIndex == UserDefaults.PlayerDefaultSavedPed)
+                        {
+                            savedPed.LeftIcon = MenuItem.Icon.STAR;
+                        }
                         savedPedsMenu.AddMenuItem(savedPed);
+                        savedPedSlots.Add(savedPed);
 
                         Menu savedPedOptionsMenu = new Menu(pedName);
                         MenuController.AddSubmenu(savedPedsMenu, savedPedOptionsMenu);
@@ -1160,6 +1166,18 @@ namespace RedMenuClient.menus
                                 else
                                 {
                                     UserDefaults.PlayerDefaultSavedPed = 0;
+                                }
+
+                                for (int slot = 0; slot < savedPedSlots.Count; ++slot)
+                                {
+                                    if (_checked && slot + 1 == pedIndex)
+                                    {
+                                        savedPedSlots[slot].LeftIcon = MenuItem.Icon.STAR;
+                                    }
+                                    else
+                                    {
+                                        savedPedSlots[slot].LeftIcon = MenuItem.Icon.NONE;
+                                    }
                                 }
                             }
                         };
