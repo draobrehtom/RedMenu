@@ -264,6 +264,166 @@ namespace RedMenuClient.menus
             Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
         }
 
+        private static void SetMood(string mood)
+        {
+            int ped = PlayerPedId();
+
+            switch (mood)
+            {
+                case "None":
+                    if (IsPedMale(ped))
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_normal", "face_human@gen_male@base");
+                    }
+                    else
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_normal", "face_human@gen_female@base");
+                    }
+                    ClearFacialIdleAnimOverride(ped);
+                    break;
+                case "Aiming":
+                    if (IsPedMale(ped))
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_aiming_pistol", "face_human@gen_male@base");
+                    }
+                    else
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_aiming_pistol", "face_human@gen_female@base");
+                    }
+                    break;
+                case "Angry":
+                    if (IsPedMale(ped))
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_angry", "face_human@gen_male@base");
+                    }
+                    else
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_angry", "face_human@gen_female@base");
+                    }
+                    break;
+                case "Bitchy":
+                    if (IsPedMale(ped))
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_bitchy", "face_human@gen_male@base");
+                    }
+                    else
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_bitchy", "face_human@gen_female@base");
+                    }
+                    break;
+                case "Burning":
+                    if (IsPedMale(ped))
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_burning", "face_human@gen_male@base");
+                    }
+                    else
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_burning", "face_human@gen_female@base");
+                    }
+                    break;
+                case "Cocky":
+                    SetFacialIdleAnimOverride(ped, "mood_cocky", "face_human@gen_male@base");
+                    break;
+                case "Cold":
+                    SetFacialIdleAnimOverride(ped, "mood_cold", "face_human@gen_male@base");
+                    break;
+                case "Confused":
+                    SetFacialIdleAnimOverride(ped, "mood_confused", "face_human@gen_male@base");
+                    break;
+                case "Cower":
+                    if (IsPedMale(ped))
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_cower", "face_human@gen_male@base");
+                    }
+                    else
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_cower", "face_human@gen_female@base");
+                    }
+                    break;
+                case "Disgust":
+                    SetFacialIdleAnimOverride(ped, "mood_disgust", "face_human@gen_male@base");
+                    break;
+                case "Drunk":
+                    if (IsPedMale(ped))
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_drunk_medium", "face_human@gen_male@base");
+                    }
+                    else
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_drunk_medium", "face_human@gen_female@base");
+                    }
+                    break;
+                case "Happy":
+                    if (IsPedMale(ped))
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_happy", "face_human@gen_male@base");
+                    }
+                    else
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_happy", "face_human@gen_female@base");
+                    }
+                    break;
+                case "Hot":
+                    SetFacialIdleAnimOverride(ped, "mood_hot", "face_human@gen_male@base");
+                    break;
+                case "Normal":
+                    if (IsPedMale(ped))
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_normal", "face_human@gen_male@base");
+                    }
+                    else
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_normal", "face_human@gen_female@base");
+                    }
+                    break;
+                case "Sad":
+                    SetFacialIdleAnimOverride(ped, "mood_sad", "face_human@gen_male@base");
+                    break;
+                case "Scared":
+                    if (IsPedMale(ped))
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_scared", "face_human@gen_male@base");
+                    }
+                    else
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_scared", "face_human@gen_female@base");
+                    }
+                    break;
+                case "Seductive":
+                    if (IsPedMale(ped))
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_seductive", "face_human@gen_male@base");
+                    }
+                    else
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_seductive", "face_human@gen_female@base");
+                    }
+                    break;
+                case "Sleeping":
+                    if (IsPedMale(ped))
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_sleeping", "face_human@gen_male@base");
+                    }
+                    else
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_sleeping", "face_human@gen_female@base");
+                    }
+                    break;
+                case "Smug":
+                    if (IsPedMale(ped))
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_smug", "face_human@gen_male@base");
+                    }
+                    else
+                    {
+                        SetFacialIdleAnimOverride(ped, "mood_smug", "face_human@gen_female@base");
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -283,6 +443,8 @@ namespace RedMenuClient.menus
             MenuItem cleanPed = new MenuItem("Clean Ped", "Remove all dirt and other decals from the ped.");
             MenuItem dryPed = new MenuItem("Dry Ped", "Remove all wetness from the ped.");
             MenuItem killSelf = new MenuItem("Kill Yourself", "Kill yourself.");
+
+            MenuListItem moods = new MenuListItem("Mood", new List<string>() { "None", "Aiming", "Angry", "Burning", "Cocky", "Cold", "Confused", "Cower", "Disgust", "Drunk", "Happy", "Hot", "Normal", "Sad", "Seductive", "Scared", "Sleeping", "Smug" }, 0, "Change your mood.");
 
             playerOutfit = new MenuDynamicListItem("Select Outfit", "0", new MenuDynamicListItem.ChangeItemCallback((item, left) =>
             {
@@ -1269,6 +1431,11 @@ namespace RedMenuClient.menus
                 };
             }
 
+            if (PermissionsManager.IsAllowed(Permission.PMMood))
+            {
+                menu.AddMenuItem(moods);
+            }
+
             menu.OnDynamicListItemSelect += (m, item, currentItem) =>
             {
                 if (item == playerOutfit)
@@ -1409,6 +1576,10 @@ namespace RedMenuClient.menus
                         default: // invalid index
                             break;
                     }
+                }
+                else if (item == moods)
+                {
+                    SetMood(item.GetCurrentSelection());
                 }
             };
         }

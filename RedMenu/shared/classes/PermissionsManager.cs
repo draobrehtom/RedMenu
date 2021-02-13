@@ -40,6 +40,7 @@ namespace RedMenuShared
         PMEmotes,
         PMDisableRagdoll,
         PMWalkingStyle,
+        PMMood,
 
         // Weapons Menu
         WMDropWeapon,
