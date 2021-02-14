@@ -249,5 +249,22 @@ namespace RedMenuClient.util
                 StorageManager.Save("PlayerDefaultSavedPed", value, true);
             }
         }
+
+        public static int WeaponDefaultSavedLoadout
+        {
+            get
+            {
+                if (StorageManager.TryGet("WeaponDefaultSavedLoadout", out int val))
+                {
+                    return val;
+                }
+                WeaponDefaultSavedLoadout = 0;
+                return 0;
+            }
+            set
+            {
+                StorageManager.Save("WeaponDefaultSavedLoadout", value, true);
+            }
+        }
     }
 }

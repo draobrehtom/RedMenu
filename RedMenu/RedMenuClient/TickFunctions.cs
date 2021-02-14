@@ -21,13 +21,18 @@ namespace RedMenuClient
 
         private static async void OnSpawn()
         {
-            await Delay(1000);
+            await Delay(2000);
             if (PermissionsManager.IsAllowed(Permission.PMSavedPeds) && UserDefaults.PlayerDefaultSavedPed != 0)
             {
                 menus.PlayerMenu.LoadDefaultPed(UserDefaults.PlayerDefaultSavedPed);
             }
             await Delay(500);
             Update();
+            await Delay(500);
+            if (PermissionsManager.IsAllowed(Permission.WMSavedLoadouts) && UserDefaults.WeaponDefaultSavedLoadout != 0)
+            {
+                menus.WeaponsMenu.LoadSavedLoadout(UserDefaults.WeaponDefaultSavedLoadout);
+            }
         }
 
         private static void Update()

@@ -30,11 +30,29 @@ namespace RedMenuClient.menus
 
         }
     }
+
+    class SavedWeapon
+    {
+        public string Name { get;  }
+        public List<data.WeaponComponent> Components { get; }
+
+        public List<data.WeaponComponent> Colours { get; }
+
+        public SavedWeapon(string name, List<data.WeaponComponent> components, List<data.WeaponComponent> colours)
+        {
+            Name = name;
+            Components = components;
+            Colours = colours;
+        }
+    }
+
     class WeaponsMenu
     {
         private static Menu menu = new Menu("Weapons Menu", $"Weapon & Ammo Options");
         private static bool setupDone = false;
         private static Menu allWeaponsMenu = new Menu("All Weapons", "A list of all weapons");
+
+        private const int maxSavedLoadouts = 50;
 
         private static void AddWeaponsSubmenu(List<string> hashes, string title, string description)
         {
@@ -98,6 +116,167 @@ namespace RedMenuClient.menus
             MenuListItem listItem = new MenuListItem(name, items, 0);
             listItem.ItemData = category;
             menu.AddMenuItem(listItem);
+        }
+
+        private static List<data.WeaponComponent> GetKnownComponents()
+        {
+            var knownComponents = new List<data.WeaponComponent>();
+            knownComponents.AddRange(data.WeaponsData.Variants);
+            knownComponents.AddRange(data.WeaponsData.LongarmBarrelDecals);
+            knownComponents.AddRange(data.WeaponsData.SidearmBarrelDecals);
+            knownComponents.AddRange(data.WeaponsData.LongarmFrameDecals);
+            knownComponents.AddRange(data.WeaponsData.SidearmFrameDecals);
+            knownComponents.AddRange(data.WeaponsData.CarbineSights);
+            knownComponents.AddRange(data.WeaponsData.EvansSights);
+            knownComponents.AddRange(data.WeaponsData.LitchfieldSights);
+            knownComponents.AddRange(data.WeaponsData.LancasterSights);
+            knownComponents.AddRange(data.WeaponsData.BoltActionSights);
+            knownComponents.AddRange(data.WeaponsData.SpringfieldSights);
+            knownComponents.AddRange(data.WeaponsData.CarcanoSights);
+            knownComponents.AddRange(data.WeaponsData.RollingBlockSights);
+            knownComponents.AddRange(data.WeaponsData.DoubleBarrelShotgunSights);
+            knownComponents.AddRange(data.WeaponsData.RepeatingShotgunSights);
+            knownComponents.AddRange(data.WeaponsData.PumpShotgunSights);
+            knownComponents.AddRange(data.WeaponsData.SemiAutoShotgunSights);
+            knownComponents.AddRange(data.WeaponsData.SawedOffShotgunSights);
+            knownComponents.AddRange(data.WeaponsData.M1899Sights);
+            knownComponents.AddRange(data.WeaponsData.MauserSights);
+            knownComponents.AddRange(data.WeaponsData.SemiAutoSights);
+            knownComponents.AddRange(data.WeaponsData.VolcanicSights);
+            knownComponents.AddRange(data.WeaponsData.CattlemanSights);
+            knownComponents.AddRange(data.WeaponsData.DoubleActionSights);
+            knownComponents.AddRange(data.WeaponsData.LematSights);
+            knownComponents.AddRange(data.WeaponsData.SchofieldSights);
+            knownComponents.AddRange(data.WeaponsData.Scopes);
+            knownComponents.AddRange(data.WeaponsData.CarbineWraps);
+            knownComponents.AddRange(data.WeaponsData.EvansWraps);
+            knownComponents.AddRange(data.WeaponsData.LitchfieldWraps);
+            knownComponents.AddRange(data.WeaponsData.LancasterWraps);
+            knownComponents.AddRange(data.WeaponsData.BoltActionWraps);
+            knownComponents.AddRange(data.WeaponsData.SpringfieldWraps);
+            knownComponents.AddRange(data.WeaponsData.VarmintWraps);
+            knownComponents.AddRange(data.WeaponsData.CarcanoWraps);
+            knownComponents.AddRange(data.WeaponsData.RollingBlockWraps);
+            knownComponents.AddRange(data.WeaponsData.DoubleBarrelShotgunWraps);
+            knownComponents.AddRange(data.WeaponsData.RepeatingShotgunWraps);
+            knownComponents.AddRange(data.WeaponsData.PumpShotgunWraps);
+            knownComponents.AddRange(data.WeaponsData.SemiAutoShotgunWraps);
+            knownComponents.AddRange(data.WeaponsData.SawedOffShotgunWraps);
+            knownComponents.AddRange(data.WeaponsData.CarbineStocks);
+            knownComponents.AddRange(data.WeaponsData.EvansStocks);
+            knownComponents.AddRange(data.WeaponsData.LitchfieldStocks);
+            knownComponents.AddRange(data.WeaponsData.LancasterStocks);
+            knownComponents.AddRange(data.WeaponsData.BoltActionStocks);
+            knownComponents.AddRange(data.WeaponsData.SpringfieldStocks);
+            knownComponents.AddRange(data.WeaponsData.CarcanoStocks);
+            knownComponents.AddRange(data.WeaponsData.RollingBlockStocks);
+            knownComponents.AddRange(data.WeaponsData.DoubleBarrelShotgunStocks);
+            knownComponents.AddRange(data.WeaponsData.RepeatingShotgunStocks);
+            knownComponents.AddRange(data.WeaponsData.PumpShotgunStocks);
+            knownComponents.AddRange(data.WeaponsData.SemiAutoShotgunStocks);
+            knownComponents.AddRange(data.WeaponsData.SawedOffShotgunStocks);
+            knownComponents.AddRange(data.WeaponsData.GripCarvings);
+            knownComponents.AddRange(data.WeaponsData.Rifling);
+            knownComponents.AddRange(data.WeaponsData.M1899Grips);
+            knownComponents.AddRange(data.WeaponsData.MauserGrips);
+            knownComponents.AddRange(data.WeaponsData.SemiAutoGrips);
+            knownComponents.AddRange(data.WeaponsData.VolcanicGrips);
+            knownComponents.AddRange(data.WeaponsData.CattlemanGrips);
+            knownComponents.AddRange(data.WeaponsData.DoubleActionGrips);
+            knownComponents.AddRange(data.WeaponsData.LematGrips);
+            knownComponents.AddRange(data.WeaponsData.SchofieldGrips);
+            return knownComponents;
+        }
+
+        private static List<data.WeaponComponent> GetKnownComponentColours()
+        {
+            var knownColours = new List<data.WeaponComponent>();
+            knownColours.AddRange(data.WeaponsData.LongarmBarrelColours);
+            knownColours.AddRange(data.WeaponsData.SidearmBarrelColours);
+            knownColours.AddRange(data.WeaponsData.LongarmBarrelDecalColours);
+            knownColours.AddRange(data.WeaponsData.SidearmBarrelDecalColours);
+            knownColours.AddRange(data.WeaponsData.LongarmFrameColours);
+            knownColours.AddRange(data.WeaponsData.SidearmFrameColours);
+            knownColours.AddRange(data.WeaponsData.LongarmFrameDecalColours);
+            knownColours.AddRange(data.WeaponsData.SidearmFrameDecalColours);
+            knownColours.AddRange(data.WeaponsData.ScopeSightColours);
+            knownColours.AddRange(data.WeaponsData.WrapColours);
+            knownColours.AddRange(data.WeaponsData.LeverColours);
+            knownColours.AddRange(data.WeaponsData.LongarmHammerColours);
+            knownColours.AddRange(data.WeaponsData.SidearmHammerColours);
+            knownColours.AddRange(data.WeaponsData.TriggerColours);
+            return knownColours;
+        }
+
+        public static async void LoadSavedLoadout(int loadoutIndex)
+        {
+            int ped = PlayerPedId();
+
+            RemoveAllPedWeapons(ped, true, true);
+
+            if (!StorageManager.TryGet("SavedLoadouts_" + loadoutIndex + "_weapons", out string json))
+            {
+                json = "[]";
+            }
+
+            List<SavedWeapon> weapons = Newtonsoft.Json.JsonConvert.DeserializeObject<List<SavedWeapon>>(json);
+
+            foreach (var weapon in weapons)
+            {
+                uint weaponHash = (uint)GetHashKey(weapon.Name);
+
+                GiveWeaponToPed_2(ped, weaponHash, 500, true, false, 0, false, 0.5f, 1.0f, 0, false, 0f, false);
+
+                var knownComponents = GetKnownComponents();
+                var knownColours = GetKnownComponentColours();
+
+                foreach (var component in knownComponents)
+                {
+                    RemoveWeaponComponentFromPed(ped, component.Hash, weaponHash);
+                }
+
+                foreach (var component in weapon.Components)
+                {
+                    GiveWeaponComponentToEntity(ped, component.Hash, weaponHash, true);
+                }
+
+                foreach (var component in knownColours)
+                {
+                    RemoveWeaponComponentFromPed(ped, component.Hash, weaponHash);
+                }
+
+                foreach (var component in weapon.Colours)
+                {
+                    GiveWeaponComponentToEntity(ped, component.Hash, weaponHash, true);
+                }
+            }
+        }
+
+        private static async Task<string> GetUserInput(string windowTitle, string defaultText, int maxInputLength)
+        {
+            var spacer = "\t";
+            AddTextEntry($"{GetCurrentResourceName().ToUpper()}_WINDOW_TITLE", $"{windowTitle ?? "Enter"}:{spacer}(MAX {maxInputLength} Characters)");
+            DisplayOnscreenKeyboard(1, $"{GetCurrentResourceName().ToUpper()}_WINDOW_TITLE", "", defaultText ?? "", "", "", "", maxInputLength); await BaseScript.Delay(0);
+            while (true)
+            {
+                int keyboardStatus = UpdateOnscreenKeyboard();
+                switch (keyboardStatus)
+                {
+                    case 3:
+                    case 2:
+                        return null;
+                    case 1:
+                        return GetOnscreenKeyboardResult();
+                    default:
+                        await BaseScript.Delay(0);
+                        break;
+                }
+            }
+        }
+
+        private static bool HasPedGotWeaponComponent(int ped, int componentHash, int weaponHash)
+        {
+            return Function.Call<bool>((Hash)0xBBC67A6F965C688A, ped, componentHash, weaponHash);
         }
 
         private static void SetupMenu()
@@ -385,6 +564,157 @@ namespace RedMenuClient.menus
                     
                     ClearWeaponComponentCategory(ped, wep, item.ItemData);
                 };
+            }
+
+            if (PermissionsManager.IsAllowed(Permission.WMSavedLoadouts))
+            {
+                Menu savedLoadoutsMenu = new Menu("Saved Loadouts", "Save and load weapon loadouts");
+                MenuItem savedLoadouts = new MenuItem("Saved Loadouts", "Save and load weapon loadouts.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                menu.AddMenuItem(savedLoadouts);
+                MenuController.AddSubmenu(menu, savedLoadoutsMenu);
+                MenuController.BindMenuItem(menu, savedLoadoutsMenu, savedLoadouts);
+                List<MenuItem> savedLoadoutSlots = new List<MenuItem>();
+                List<MenuCheckboxItem> defaultSavedLoadoutCheckboxes = new List<MenuCheckboxItem>();
+
+                for (int i = 1; i <= maxSavedLoadouts; ++i)
+                {
+                    int loadoutIndex = i;
+
+                    if (!StorageManager.TryGet("SavedLoadouts_" + loadoutIndex + "_name", out string loadoutName))
+                    {
+                        loadoutName = "Loadout " + loadoutIndex;
+                    }
+
+                    MenuItem savedLoadout = new MenuItem(loadoutName) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                    if (loadoutIndex == UserDefaults.WeaponDefaultSavedLoadout)
+                    {
+                        savedLoadout.LeftIcon = MenuItem.Icon.STAR;
+                    }
+                    savedLoadoutsMenu.AddMenuItem(savedLoadout);
+                    savedLoadoutSlots.Add(savedLoadout);
+
+                    Menu savedLoadoutOptionsMenu = new Menu(loadoutName);
+                    MenuController.AddSubmenu(savedLoadoutsMenu, savedLoadoutOptionsMenu);
+                    MenuController.BindMenuItem(savedLoadoutsMenu, savedLoadoutOptionsMenu, savedLoadout);
+
+                    MenuItem load = new MenuItem("Load", "Load this loadout.");
+                    MenuItem save = new MenuItem("Save", "Save current loadout to this slot.");
+                    MenuCheckboxItem isDefault = new MenuCheckboxItem("Default", "Load this loadout automatically when you respawn.", loadoutIndex == UserDefaults.WeaponDefaultSavedLoadout);
+                    defaultSavedLoadoutCheckboxes.Add(isDefault);
+                    savedLoadoutOptionsMenu.AddMenuItem(load);
+                    savedLoadoutOptionsMenu.AddMenuItem(save);
+                    savedLoadoutOptionsMenu.AddMenuItem(isDefault);
+
+                    savedLoadoutOptionsMenu.OnItemSelect += async (m, item, index) =>
+                    {
+                        if (item == load)
+                        {
+                            LoadSavedLoadout(loadoutIndex);
+                        }
+                        else if (item == save)
+                        {
+                            string newName = await GetUserInput("Enter loadout name", loadoutName, 20);
+
+                            if (newName != null)
+                            {
+                                int ped = PlayerPedId();
+
+                                List<string> knownWeapons = new List<string>();
+                                knownWeapons.AddRange(data.WeaponsData.ItemHashes);
+                                knownWeapons.AddRange(data.WeaponsData.MeleeHashes);
+                                knownWeapons.AddRange(data.WeaponsData.RevolverHashes);
+                                knownWeapons.AddRange(data.WeaponsData.PistolHashes);
+                                knownWeapons.AddRange(data.WeaponsData.SniperHashes);
+                                knownWeapons.AddRange(data.WeaponsData.RifleHashes);
+                                knownWeapons.AddRange(data.WeaponsData.RepeaterHashes);
+                                knownWeapons.AddRange(data.WeaponsData.ThrownHashes);
+                                knownWeapons.AddRange(data.WeaponsData.ShotgunHashes);
+                                knownWeapons.AddRange(data.WeaponsData.BowHashes);
+
+                                var knownComponents = GetKnownComponents();
+                                var knownColours = GetKnownComponentColours();
+
+                                List <SavedWeapon> weapons = new List<SavedWeapon>();
+
+                                foreach (var weaponName in knownWeapons)
+                                {
+                                    int weaponHash = GetHashKey(weaponName);
+
+                                    if (HasPedGotWeapon(ped, weaponHash, 0, 0))
+                                    {
+                                        SetCurrentPedWeapon(ped, (uint)weaponHash, true, 0, false, false);
+
+                                        int weapon = GetCurrentPedWeaponEntityIndex(ped, 0);
+
+                                        var components = new List<data.WeaponComponent>();
+                                        var colours = new List<data.WeaponComponent>();
+
+                                        foreach (var component in knownComponents)
+                                        {
+                                            if (HasPedGotWeaponComponent(ped, component.Hash, weaponHash))
+                                            {
+                                                components.Add(component);
+                                            }
+                                        }
+
+                                        foreach (var component in knownColours)
+                                        {
+                                            if (HasWeaponGotWeaponComponent(weapon, (uint)component.Hash))
+                                            {
+                                                colours.Add(component);
+                                            }
+                                        }
+
+                                        weapons.Add(new SavedWeapon(weaponName, components, colours));
+                                    }
+                                }
+
+                                string json = Newtonsoft.Json.JsonConvert.SerializeObject(weapons);
+                                StorageManager.Save("SavedLoadouts_" + loadoutIndex + "_weapons", json, true);
+
+                                StorageManager.Save("SavedLoadouts_" + loadoutIndex + "_name", newName, true);
+                                savedLoadout.Text = newName;
+                                savedLoadoutOptionsMenu.MenuTitle = newName;
+                                loadoutName = newName;
+                            }
+                        }
+                    };
+
+                    savedLoadoutOptionsMenu.OnCheckboxChange += (m, item, index, _checked) =>
+                    {
+                        if (item == isDefault)
+                        {
+                            if (_checked)
+                            {
+                                UserDefaults.WeaponDefaultSavedLoadout = loadoutIndex;
+
+                                foreach (var cb in defaultSavedLoadoutCheckboxes)
+                                {
+                                    if (cb != item)
+                                    {
+                                        cb.Checked = false;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                UserDefaults.WeaponDefaultSavedLoadout = 0;
+                            }
+
+                            for (int slot = 0; slot < savedLoadoutSlots.Count; ++slot)
+                            {
+                                if (_checked && slot + 1 == loadoutIndex)
+                                {
+                                    savedLoadoutSlots[slot].LeftIcon = MenuItem.Icon.STAR;
+                                }
+                                else
+                                {
+                                    savedLoadoutSlots[slot].LeftIcon = MenuItem.Icon.NONE;
+                                }
+                            }
+                        }
+                    };
+                }
             }
 
             menu.OnItemSelect += (m, item, index) =>
