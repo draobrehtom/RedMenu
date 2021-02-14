@@ -62,6 +62,7 @@ namespace RedMenuShared
         WMCleanWeapon,
         WMDirtyWeapon,
         WMRemoveAmmo,
+        WMCustomize,
 
         // Mount Menu
         MMMenu,
