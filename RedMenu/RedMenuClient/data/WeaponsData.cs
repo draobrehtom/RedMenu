@@ -476,87 +476,87 @@ namespace RedMenuClient.data
 
         public static List<WeaponComponent> CarbineWraps = new List<WeaponComponent>()
         {
-            new WeaponComponent("Wrap Cloth", -2006479051),
-            new WeaponComponent("Wrap", -819094336)
+            new WeaponComponent("Cloth", -2006479051),
+            new WeaponComponent("Leather", -819094336)
         };
 
         public static List<WeaponComponent> EvansWraps = new List<WeaponComponent>()
         {
-            new WeaponComponent("Wrap Cloth", 1213912331),
-            new WeaponComponent("Wrap", -1013433120)
+            new WeaponComponent("Cloth", 1213912331),
+            new WeaponComponent("Leather", -1013433120)
         };
 
         public static List<WeaponComponent> LancasterWraps = new List<WeaponComponent>()
         {
             new WeaponComponent("Collector Wrap", 1799288707),
-            new WeaponComponent("Wrap Cloth", -974982909),
-            new WeaponComponent("Wrap", 1673079985)
+            new WeaponComponent("Cloth", -974982909),
+            new WeaponComponent("Leather", 1673079985)
         };
 
         public static List<WeaponComponent> LitchfieldWraps = new List<WeaponComponent>()
         {
-            new WeaponComponent("Wrap Cloth", 557684246),
-            new WeaponComponent("Wrap", 327383714)
+            new WeaponComponent("Cloth", 557684246),
+            new WeaponComponent("Leather", 327383714)
         };
 
         public static List<WeaponComponent> BoltActionWraps = new List<WeaponComponent>()
         {
-            new WeaponComponent("Wrap Cloth", -556684967),
-            new WeaponComponent("Wrap", 1419411400),
+            new WeaponComponent("Cloth", -556684967),
+            new WeaponComponent("Leather", 1419411400),
         };
 
         public static List<WeaponComponent> SpringfieldWraps = new List<WeaponComponent>()
         {
-            new WeaponComponent("Wrap Cloth", -722454818),
-            new WeaponComponent("Wrap", -960882062),
+            new WeaponComponent("Cloth", -722454818),
+            new WeaponComponent("Leather", -960882062),
         };
 
         public static List<WeaponComponent> VarmintWraps = new List<WeaponComponent>()
         {
-            new WeaponComponent("Wrap Cloth", 1800607228),
-            new WeaponComponent("Wrap", 1485926521),
+            new WeaponComponent("Cloth", 1800607228),
+            new WeaponComponent("Leather", 1485926521),
         };
 
         public static List<WeaponComponent> CarcanoWraps = new List<WeaponComponent>()
         {
-            new WeaponComponent("Wrap Cloth", 1958362959),
-            new WeaponComponent("Wrap", -1649438395),
+            new WeaponComponent("Cloth", 1958362959),
+            new WeaponComponent("Leather", -1649438395),
         };
 
         public static List<WeaponComponent> RollingBlockWraps = new List<WeaponComponent>()
         {
-            new WeaponComponent("Wrap Cloth", 627382224),
-            new WeaponComponent("Wrap", 1373106357),
+            new WeaponComponent("Cloth", 627382224),
+            new WeaponComponent("Leather", 1373106357),
         };
 
         public static List<WeaponComponent> DoubleBarrelShotgunWraps = new List<WeaponComponent>()
         {
-            new WeaponComponent("Wrap Cloth", -470655201),
-            new WeaponComponent("Wrap", -240387438),
+            new WeaponComponent("Cloth", -470655201),
+            new WeaponComponent("Leather", -240387438),
         };
 
         public static List<WeaponComponent> RepeatingShotgunWraps = new List<WeaponComponent>()
         {
-            new WeaponComponent("Wrap Cloth", -856257300),
-            new WeaponComponent("Wrap", -1356443316),
+            new WeaponComponent("Cloth", -856257300),
+            new WeaponComponent("Leather", -1356443316),
         };
 
         public static List<WeaponComponent> PumpShotgunWraps = new List<WeaponComponent>()
         {
-            new WeaponComponent("Wrap Cloth", 930176412),
-            new WeaponComponent("Wrap", 1509466794),
+            new WeaponComponent("Cloth", 930176412),
+            new WeaponComponent("Leather", 1509466794),
         };
 
         public static List<WeaponComponent> SemiAutoShotgunWraps = new List<WeaponComponent>()
         {
-            new WeaponComponent("Wrap Cloth", -1332582451),
-            new WeaponComponent("Wrap", 1680068337),
+            new WeaponComponent("Cloth", -1332582451),
+            new WeaponComponent("Leather", 1680068337),
         };
 
         public static List<WeaponComponent> SawedOffShotgunWraps = new List<WeaponComponent>()
         {
-            new WeaponComponent("Wrap Cloth", -221706764),
-            new WeaponComponent("Wrap", 635989042),
+            new WeaponComponent("Cloth", -221706764),
+            new WeaponComponent("Leather", 635989042),
         };
 
         public static List<WeaponComponent> WrapColours = new List<WeaponComponent>()

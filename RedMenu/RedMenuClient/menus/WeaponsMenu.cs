@@ -106,7 +106,7 @@ namespace RedMenuClient.menus
             }
         }
 
-        private static void CreateWeaponComponentCategoryListItem(Menu menu, string name, List<data.WeaponComponent> category)
+        private static MenuItem CreateWeaponComponentCategoryListItem(string name, List<data.WeaponComponent> category)
         {
             List<string> items = new List<string>();
             foreach (var component in category)
@@ -115,7 +115,7 @@ namespace RedMenuClient.menus
             }
             MenuListItem listItem = new MenuListItem(name, items, 0);
             listItem.ItemData = category;
-            menu.AddMenuItem(listItem);
+            return listItem;
         }
 
         private static List<data.WeaponComponent> GetKnownComponents()
@@ -208,7 +208,7 @@ namespace RedMenuClient.menus
             return knownColours;
         }
 
-        public static async void LoadSavedLoadout(int loadoutIndex)
+        public static void LoadSavedLoadout(int loadoutIndex)
         {
             int ped = PlayerPedId();
 
@@ -277,6 +277,36 @@ namespace RedMenuClient.menus
         private static bool HasPedGotWeaponComponent(int ped, int componentHash, int weaponHash)
         {
             return Function.Call<bool>((Hash)0xBBC67A6F965C688A, ped, componentHash, weaponHash);
+        }
+
+        private static bool IsWeaponRepeater(uint hash)
+        {
+            return Function.Call<bool>((Hash)0xDDB2578E95EF7138, hash);
+        }
+
+        private static bool IsWeaponRifle(uint hash)
+        {
+            return Function.Call<bool>((Hash)0x0A82317B7EBFC420, hash);
+        }
+
+        private static bool IsWeaponSniper(uint hash)
+        {
+            return Function.Call<bool>((Hash)0x6AD66548840472E5, hash);
+        }
+
+        private static bool IsWeaponShotgun(uint hash)
+        {
+            return Function.Call<bool>((Hash)0xC75386174ECE95D5, hash);
+        }
+
+        private static bool IsWeaponPistol(uint hash)
+        {
+            return Function.Call<bool>((Hash)0xDDC64F5E31EEDAB6, hash);
+        }
+
+        private static bool IsWeaponRevolver(uint hash)
+        {
+            return Function.Call<bool>((Hash)0xC212F1D05A8232BB, hash);
         }
 
         private static void SetupMenu()
@@ -465,84 +495,266 @@ namespace RedMenuClient.menus
                 MenuController.AddSubmenu(menu, customizationMenu);
                 MenuController.BindMenuItem(menu, customizationMenu, customization);
 
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Variants", data.WeaponsData.Variants);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Longarm Barrel Colour", data.WeaponsData.LongarmBarrelColours);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Longarm Barrel Decal", data.WeaponsData.LongarmBarrelDecals);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Longarm Barrel Decal Colour", data.WeaponsData.LongarmBarrelDecalColours);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Longarm Frame Colour", data.WeaponsData.LongarmFrameColours);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Longarm Frame Decal", data.WeaponsData.LongarmFrameDecals);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Longarm Frame Decal Colour", data.WeaponsData.LongarmFrameDecalColours);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Longarm Hammer Colour", data.WeaponsData.LongarmHammerColours);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Lever Colour", data.WeaponsData.LeverColours);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Trigger Colour", data.WeaponsData.TriggerColours);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sidearm Barrel Colour", data.WeaponsData.SidearmBarrelColours);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sidearm Barrel Decal", data.WeaponsData.SidearmBarrelDecals);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sidearm Barrel Decal Colour", data.WeaponsData.SidearmBarrelDecalColours);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sidearm Frame Colour", data.WeaponsData.SidearmFrameColours);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sidearm Frame Decal", data.WeaponsData.SidearmFrameDecals);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sidearm Frame Decal Colour", data.WeaponsData.SidearmFrameDecalColours);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sidearm Hammer Colour", data.WeaponsData.SidearmHammerColours);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Carbine)", data.WeaponsData.CarbineSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Evans)", data.WeaponsData.EvansSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Litchfield)", data.WeaponsData.LitchfieldSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Lancaster)", data.WeaponsData.LancasterSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Bolt-action)", data.WeaponsData.BoltActionSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Springfield)", data.WeaponsData.SpringfieldSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Carcano)", data.WeaponsData.CarcanoSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Rolling Block)", data.WeaponsData.RollingBlockSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Double-barrel Shotgun)", data.WeaponsData.DoubleBarrelShotgunSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Repeating Shotgun)", data.WeaponsData.RepeatingShotgunSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Pump Shotgun)", data.WeaponsData.PumpShotgunSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Semi-auto Shotgun)", data.WeaponsData.SemiAutoShotgunSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Sawed-off Shotgun)", data.WeaponsData.SawedOffShotgunSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (M1899)", data.WeaponsData.M1899Sights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Mauser)", data.WeaponsData.MauserSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Semi-auto)", data.WeaponsData.SemiAutoSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Volcanic)", data.WeaponsData.VolcanicSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Cattleman)", data.WeaponsData.CattlemanSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Double-action)", data.WeaponsData.DoubleActionSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (LeMat)", data.WeaponsData.LematSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Sights (Schofield)", data.WeaponsData.SchofieldSights);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Scope", data.WeaponsData.Scopes);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Scope/Sight Colour", data.WeaponsData.ScopeSightColours);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap (Carbine)", data.WeaponsData.CarbineWraps);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap (Evans)", data.WeaponsData.EvansWraps);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap (Litchfield)", data.WeaponsData.LitchfieldWraps);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap (Lancaster)", data.WeaponsData.LancasterWraps);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap (Bolt-action)", data.WeaponsData.BoltActionWraps);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap (Springfield)", data.WeaponsData.SpringfieldWraps);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap (Varmint)", data.WeaponsData.VarmintWraps);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap (Carcano)", data.WeaponsData.CarcanoWraps);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap (Rolling Block)", data.WeaponsData.RollingBlockWraps);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap (Double-barrel Shotgun)", data.WeaponsData.DoubleBarrelShotgunWraps);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap (Repeating Shotgun)", data.WeaponsData.RepeatingShotgunWraps);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap (Pump Shotgun)", data.WeaponsData.PumpShotgunWraps);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap (Semi-auto Shotgun)", data.WeaponsData.SemiAutoShotgunWraps);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap (Sawed-off Shotgun)", data.WeaponsData.SawedOffShotgunWraps);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Wrap Colour", data.WeaponsData.WrapColours);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Stock (Carbine)", data.WeaponsData.CarbineStocks);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Stock (Evans)", data.WeaponsData.EvansStocks);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Stock (Litchfield)", data.WeaponsData.LitchfieldStocks);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Stock (Lancaster)", data.WeaponsData.LancasterStocks);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Stock (Bolt-action)", data.WeaponsData.BoltActionStocks);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Stock (Springfield)", data.WeaponsData.SpringfieldStocks);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Stock (Carcano)", data.WeaponsData.CarcanoStocks);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Stock (Rolling Block)", data.WeaponsData.RollingBlockStocks);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Stock (Double-barrel Shotgun)", data.WeaponsData.DoubleBarrelShotgunStocks);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Stock (Repeating Shotgun)", data.WeaponsData.RepeatingShotgunStocks);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Stock (Pump Shotgun)", data.WeaponsData.PumpShotgunStocks);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Stock (Semi-auto Shotgun)", data.WeaponsData.SemiAutoShotgunStocks);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Stock (Sawed-off Shotgun)", data.WeaponsData.SawedOffShotgunStocks);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Grip (M1899)", data.WeaponsData.M1899Grips);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Grip (Mauser)", data.WeaponsData.MauserGrips);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Grip (Semi Auto)", data.WeaponsData.SemiAutoGrips);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Grip (Volcanic)", data.WeaponsData.VolcanicGrips);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Grip (Cattleman)", data.WeaponsData.CattlemanGrips);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Grip (Double-action)", data.WeaponsData.DoubleActionGrips);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Grip (LeMat)", data.WeaponsData.LematGrips);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Grip (Schofield)", data.WeaponsData.SchofieldGrips);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Grip Carving", data.WeaponsData.GripCarvings);
-                CreateWeaponComponentCategoryListItem(customizationMenu, "Rifling", data.WeaponsData.Rifling);
+                MenuItem variants = CreateWeaponComponentCategoryListItem("Variants", data.WeaponsData.Variants);
+                MenuItem longarmBarrelColour = CreateWeaponComponentCategoryListItem("Barrel Colour", data.WeaponsData.LongarmBarrelColours);
+                MenuItem longarmBarrelDecal = CreateWeaponComponentCategoryListItem("Barrel Decal", data.WeaponsData.LongarmBarrelDecals);
+                MenuItem longarmBarrelDecalColour = CreateWeaponComponentCategoryListItem("Barrel Decal Colour", data.WeaponsData.LongarmBarrelDecalColours);
+                MenuItem longarmFrameColour = CreateWeaponComponentCategoryListItem("Frame Colour", data.WeaponsData.LongarmFrameColours);
+                MenuItem longarmFrameDecal = CreateWeaponComponentCategoryListItem("Frame Decal", data.WeaponsData.LongarmFrameDecals);
+                MenuItem longarmFrameDecalColour = CreateWeaponComponentCategoryListItem("Frame Decal Colour", data.WeaponsData.LongarmFrameDecalColours);
+                MenuItem longarmHammerColour = CreateWeaponComponentCategoryListItem("Hammer Colour", data.WeaponsData.LongarmHammerColours);
+                MenuItem longarmLeverColour = CreateWeaponComponentCategoryListItem("Lever/Bolt Colour", data.WeaponsData.LeverColours);
+                MenuItem triggerColour = CreateWeaponComponentCategoryListItem("Trigger Colour", data.WeaponsData.TriggerColours);
+                MenuItem sidearmBarrelColour = CreateWeaponComponentCategoryListItem("Barrel Colour", data.WeaponsData.SidearmBarrelColours);
+                MenuItem sidearmBarrelDecal = CreateWeaponComponentCategoryListItem("Barrel Decal", data.WeaponsData.SidearmBarrelDecals);
+                MenuItem sidearmBarrelDecalColour = CreateWeaponComponentCategoryListItem("Barrel Decal Colour", data.WeaponsData.SidearmBarrelDecalColours);
+                MenuItem sidearmFrameColour = CreateWeaponComponentCategoryListItem("Frame Colour", data.WeaponsData.SidearmFrameColours);
+                MenuItem sidearmFrameDecal = CreateWeaponComponentCategoryListItem("Frame Decal", data.WeaponsData.SidearmFrameDecals);
+                MenuItem sidearmFrameDecalColour = CreateWeaponComponentCategoryListItem("Frame Decal Colour", data.WeaponsData.SidearmFrameDecalColours);
+                MenuItem sidearmHammerColour = CreateWeaponComponentCategoryListItem("Hammer Colour", data.WeaponsData.SidearmHammerColours);
+                MenuItem carbineSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.CarbineSights);
+                MenuItem evansSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.EvansSights);
+                MenuItem litchfieldSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.LitchfieldSights);
+                MenuItem lancasterSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.LancasterSights);
+                MenuItem boltActionSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.BoltActionSights);
+                MenuItem springfieldSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.SpringfieldSights);
+                MenuItem carcanoSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.CarcanoSights);
+                MenuItem rollingBlockSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.RollingBlockSights);
+                MenuItem doubleBarrelShotgunSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.DoubleBarrelShotgunSights);
+                MenuItem repeatingShotgunSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.RepeatingShotgunSights);
+                MenuItem pumpShotgunSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.PumpShotgunSights);
+                MenuItem semiAutoShotgunSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.SemiAutoShotgunSights);
+                MenuItem sawedOffShotgunSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.SawedOffShotgunSights);
+                MenuItem m1899Sights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.M1899Sights);
+                MenuItem mauserSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.MauserSights);
+                MenuItem semiAutoSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.SemiAutoSights);
+                MenuItem volcanicSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.VolcanicSights);
+                MenuItem cattlemanSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.CattlemanSights);
+                MenuItem doubleActionSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.DoubleActionSights);
+                MenuItem lematSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.LematSights);
+                MenuItem schofieldSights = CreateWeaponComponentCategoryListItem("Sights", data.WeaponsData.SchofieldSights);
+                MenuItem scope = CreateWeaponComponentCategoryListItem("Scope", data.WeaponsData.Scopes);
+                MenuItem scopeSightColour = CreateWeaponComponentCategoryListItem("Scope/Sight Colour", data.WeaponsData.ScopeSightColours);
+                MenuItem carbineWrap = CreateWeaponComponentCategoryListItem("Wrap", data.WeaponsData.CarbineWraps);
+                MenuItem evansWrap = CreateWeaponComponentCategoryListItem("Wrap", data.WeaponsData.EvansWraps);
+                MenuItem litchfieldWrap = CreateWeaponComponentCategoryListItem("Wrap", data.WeaponsData.LitchfieldWraps);
+                MenuItem lancasterWrap = CreateWeaponComponentCategoryListItem("Wrap", data.WeaponsData.LancasterWraps);
+                MenuItem boltActionWrap = CreateWeaponComponentCategoryListItem("Wrap", data.WeaponsData.BoltActionWraps);
+                MenuItem springfieldWrap = CreateWeaponComponentCategoryListItem("Wrap", data.WeaponsData.SpringfieldWraps);
+                MenuItem varmintWrap = CreateWeaponComponentCategoryListItem("Wrap", data.WeaponsData.VarmintWraps);
+                MenuItem carcanoWrap = CreateWeaponComponentCategoryListItem("Wrap", data.WeaponsData.CarcanoWraps);
+                MenuItem rollingBlockWrap = CreateWeaponComponentCategoryListItem("Wrap", data.WeaponsData.RollingBlockWraps);
+                MenuItem doubleBarrelShotgunWrap = CreateWeaponComponentCategoryListItem("Wrap", data.WeaponsData.DoubleBarrelShotgunWraps);
+                MenuItem repeatingShotgunWrap = CreateWeaponComponentCategoryListItem("Wrap", data.WeaponsData.RepeatingShotgunWraps);
+                MenuItem pumpShotgunWrap = CreateWeaponComponentCategoryListItem("Wrap", data.WeaponsData.PumpShotgunWraps);
+                MenuItem semiAutoShotgunWrap = CreateWeaponComponentCategoryListItem("Wrap", data.WeaponsData.SemiAutoShotgunWraps);
+                MenuItem sawedOffShotgunWrap = CreateWeaponComponentCategoryListItem("Wrap", data.WeaponsData.SawedOffShotgunWraps);
+                MenuItem wrapColour = CreateWeaponComponentCategoryListItem("Wrap Colour", data.WeaponsData.WrapColours);
+                MenuItem carbineStock = CreateWeaponComponentCategoryListItem("Stock", data.WeaponsData.CarbineStocks);
+                MenuItem evansStock = CreateWeaponComponentCategoryListItem("Stock", data.WeaponsData.EvansStocks);
+                MenuItem litchfieldStock = CreateWeaponComponentCategoryListItem("Stock", data.WeaponsData.LitchfieldStocks);
+                MenuItem lancasterStock = CreateWeaponComponentCategoryListItem("Stock", data.WeaponsData.LancasterStocks);
+                MenuItem boltActionStock = CreateWeaponComponentCategoryListItem("Stock", data.WeaponsData.BoltActionStocks);
+                MenuItem springfieldStock = CreateWeaponComponentCategoryListItem("Stock", data.WeaponsData.SpringfieldStocks);
+                MenuItem carcanoStock = CreateWeaponComponentCategoryListItem("Stock", data.WeaponsData.CarcanoStocks);
+                MenuItem rollingBlockStock = CreateWeaponComponentCategoryListItem("Stock", data.WeaponsData.RollingBlockStocks);
+                MenuItem doubleBarrelShotgunStock = CreateWeaponComponentCategoryListItem("Stock", data.WeaponsData.DoubleBarrelShotgunStocks);
+                MenuItem repeatingShotgunStock = CreateWeaponComponentCategoryListItem("Stock", data.WeaponsData.RepeatingShotgunStocks);
+                MenuItem pumpShotgunStock = CreateWeaponComponentCategoryListItem("Stock", data.WeaponsData.PumpShotgunStocks);
+                MenuItem semiAutoShotgunStock = CreateWeaponComponentCategoryListItem("Stock", data.WeaponsData.SemiAutoShotgunStocks);
+                MenuItem sawedOffShotgunStock = CreateWeaponComponentCategoryListItem("Stock", data.WeaponsData.SawedOffShotgunStocks);
+                MenuItem m1899Grip = CreateWeaponComponentCategoryListItem("Grip", data.WeaponsData.M1899Grips);
+                MenuItem mauserGrip = CreateWeaponComponentCategoryListItem("Grip", data.WeaponsData.MauserGrips);
+                MenuItem semiAutoGrip = CreateWeaponComponentCategoryListItem("Grip", data.WeaponsData.SemiAutoGrips);
+                MenuItem volcanicGrip = CreateWeaponComponentCategoryListItem("Grip", data.WeaponsData.VolcanicGrips);
+                MenuItem cattlemanGrip = CreateWeaponComponentCategoryListItem("Grip", data.WeaponsData.CattlemanGrips);
+                MenuItem doubleActionGrip = CreateWeaponComponentCategoryListItem("Grip", data.WeaponsData.DoubleActionGrips);
+                MenuItem lematGrip = CreateWeaponComponentCategoryListItem("Grip", data.WeaponsData.LematGrips);
+                MenuItem schofieldGrip = CreateWeaponComponentCategoryListItem("Grip", data.WeaponsData.SchofieldGrips);
+                MenuItem gripCarving = CreateWeaponComponentCategoryListItem("Grip Carving", data.WeaponsData.GripCarvings);
+                MenuItem rifling = CreateWeaponComponentCategoryListItem("Rifling", data.WeaponsData.Rifling);
+
+                customizationMenu.OnMenuOpen += (m) =>
+                {
+                    uint wep = 0;
+                    GetCurrentPedWeapon(PlayerPedId(), ref wep, true, 0, true);
+
+                    m.ClearMenuItems();
+
+                    m.AddMenuItem(variants);
+                    m.AddMenuItem(triggerColour);
+                    m.AddMenuItem(rifling);
+
+                    if (IsWeaponRepeater(wep) || IsWeaponRifle(wep) || IsWeaponSniper(wep) || IsWeaponShotgun(wep))
+                    {
+                        m.AddMenuItem(longarmBarrelColour);
+                        m.AddMenuItem(longarmBarrelDecal);
+                        m.AddMenuItem(longarmBarrelDecalColour);
+                        m.AddMenuItem(longarmFrameColour);
+                        m.AddMenuItem(longarmFrameDecal);
+                        m.AddMenuItem(longarmFrameDecalColour);
+                        m.AddMenuItem(longarmHammerColour);
+                        m.AddMenuItem(longarmLeverColour);
+                        m.AddMenuItem(scope);
+                        m.AddMenuItem(scopeSightColour);
+                        m.AddMenuItem(wrapColour);
+                    }
+                    
+                    if (IsWeaponPistol(wep) || IsWeaponRevolver(wep))
+                    {
+                        m.AddMenuItem(sidearmBarrelColour);
+                        m.AddMenuItem(sidearmBarrelDecal);
+                        m.AddMenuItem(sidearmBarrelDecalColour);
+                        m.AddMenuItem(sidearmFrameColour);
+                        m.AddMenuItem(sidearmFrameDecal);
+                        m.AddMenuItem(sidearmFrameDecalColour);
+                        m.AddMenuItem(sidearmHammerColour);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_REPEATER_CARBINE"))
+                    {
+                        m.AddMenuItem(carbineSights);
+                        m.AddMenuItem(carbineWrap);
+                        m.AddMenuItem(carbineStock);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_REPEATER_EVANS"))
+                    {
+                        m.AddMenuItem(evansSights);
+                        m.AddMenuItem(evansWrap);
+                        m.AddMenuItem(evansStock);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_REPEATER_HENRY"))
+                    {
+                        m.AddMenuItem(litchfieldSights);
+                        m.AddMenuItem(litchfieldWrap);
+                        m.AddMenuItem(litchfieldStock);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_REPEATER_WINCHESTER"))
+                    {
+                        m.AddMenuItem(lancasterSights);
+                        m.AddMenuItem(lancasterWrap);
+                        m.AddMenuItem(lancasterStock);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_RIFLE_BOLTACTION"))
+                    {
+                        m.AddMenuItem(boltActionSights);
+                        m.AddMenuItem(boltActionWrap);
+                        m.AddMenuItem(boltActionStock);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_RIFLE_SPRINGFIELD"))
+                    {
+                        m.AddMenuItem(springfieldSights);
+                        m.AddMenuItem(springfieldWrap);
+                        m.AddMenuItem(springfieldStock);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_RIFLE_VARMINT"))
+                    {
+                        m.AddMenuItem(varmintWrap);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_SNIPERRIFLE_CARCANO"))
+                    {
+                        m.AddMenuItem(carcanoSights);
+                        m.AddMenuItem(carcanoWrap);
+                        m.AddMenuItem(carcanoStock);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_SNIPERRIFLE_ROLLINGBLOCK"))
+                    {
+                        m.AddMenuItem(rollingBlockSights);
+                        m.AddMenuItem(rollingBlockWrap);
+                        m.AddMenuItem(rollingBlockStock);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_SHOTGUN_DOUBLEBARREL"))
+                    {
+                        m.AddMenuItem(doubleBarrelShotgunSights);
+                        m.AddMenuItem(doubleBarrelShotgunWrap);
+                        m.AddMenuItem(doubleBarrelShotgunStock);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_SHOTGUN_REPEATING"))
+                    {
+                        m.AddMenuItem(repeatingShotgunSights);
+                        m.AddMenuItem(repeatingShotgunWrap);
+                        m.AddMenuItem(repeatingShotgunStock);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_SHOTGUN_PUMP"))
+                    {
+                        m.AddMenuItem(pumpShotgunSights);
+                        m.AddMenuItem(pumpShotgunWrap);
+                        m.AddMenuItem(pumpShotgunStock);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_SHOTGUN_SEMIAUTO"))
+                    {
+                        m.AddMenuItem(semiAutoShotgunSights);
+                        m.AddMenuItem(semiAutoShotgunWrap);
+                        m.AddMenuItem(semiAutoShotgunStock);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_SHOTGUN_SAWEDOFF"))
+                    {
+                        m.AddMenuItem(sawedOffShotgunSights);
+                        m.AddMenuItem(sawedOffShotgunWrap);
+                        m.AddMenuItem(sawedOffShotgunStock);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_PISTOL_M1899"))
+                    {
+                        m.AddMenuItem(m1899Sights);
+                        m.AddMenuItem(m1899Grip);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_PISTOL_MAUSER"))
+                    {
+                        m.AddMenuItem(mauserSights);
+                        m.AddMenuItem(mauserGrip);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_PISTOL_SEMIAUTO"))
+                    {
+                        m.AddMenuItem(semiAutoSights);
+                        m.AddMenuItem(semiAutoGrip);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_PISTOL_VOLCANIC"))
+                    {
+                        m.AddMenuItem(volcanicSights);
+                        m.AddMenuItem(volcanicGrip);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_REVOLVER_CATTLEMAN"))
+                    {
+                        m.AddMenuItem(cattlemanSights);
+                        m.AddMenuItem(cattlemanGrip);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_REVOLVER_DOUBLEACTION"))
+                    {
+                        m.AddMenuItem(doubleActionSights);
+                        m.AddMenuItem(doubleActionGrip);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_REVOLVER_LEMAT"))
+                    {
+                        m.AddMenuItem(lematSights);
+                        m.AddMenuItem(lematGrip);
+                    }
+
+                    if (wep == GetHashKey("WEAPON_REVOLVER_SCHOFIELD"))
+                    {
+                        m.AddMenuItem(schofieldSights);
+                        m.AddMenuItem(schofieldGrip);
+                    }
+                };
 
                 customizationMenu.OnListIndexChange += (m, item, oldIndex, newIndex, listIndex) =>
                 {
