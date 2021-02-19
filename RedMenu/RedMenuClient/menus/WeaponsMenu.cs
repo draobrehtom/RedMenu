@@ -309,6 +309,16 @@ namespace RedMenuClient.menus
             return Function.Call<bool>((Hash)0xC212F1D05A8232BB, hash);
         }
 
+        private static bool IsWeaponOneHanded(uint hash)
+        {
+            return Function.Call<bool>((Hash)0xD955FEE4B87AFA07, hash);
+        }
+
+        private static bool IsWeaponTwoHanded(uint hash)
+        {
+            return Function.Call<bool>((Hash)0x0556E9D2ECF39D01, hash);
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -316,6 +326,7 @@ namespace RedMenuClient.menus
 
             MenuItem cleanWeapon = new MenuItem("Clean Weapon", "Clean the currently selected weapon.");
             MenuItem dirtyWeapon = new MenuItem("Dirty Weapon", "Dirty the currently selected weapon.");
+            MenuItem inspectWeapon = new MenuItem("Inspect Weapon", "Inspect the currently selected weapon.");
             MenuItem dropWeaponBtn = new MenuItem("Drop Weapon", "Remove the currently selected weapon from your inventory.");
             MenuItem dropAllWeaponsBtn = new MenuItem("Drop All Weapons", "Removes all weapons from your inventory.");
             MenuItem getAllWeapons = new MenuItem("Get All Weapons", "Add all the weapons you can carry to your inventory.");
@@ -328,6 +339,11 @@ namespace RedMenuClient.menus
             if (PermissionsManager.IsAllowed(Permission.WMDirtyWeapon))
             {
                 menu.AddMenuItem(dirtyWeapon);
+            }
+
+            if (PermissionsManager.IsAllowed(Permission.WMInspectWeapon))
+            {
+                menu.AddMenuItem(inspectWeapon);
             }
 
             if (PermissionsManager.IsAllowed(Permission.WMDropWeapon))
@@ -991,6 +1007,30 @@ namespace RedMenuClient.menus
                     Function.Call((Hash)0xA9EF4AD10BDDDB57, wep, 1.0);
                     Function.Call((Hash)0x812CE61DEBCAB948, wep, 1.0);
                     Function.Call((Hash)0xE22060121602493B, wep, 1.0);
+                }
+                else if (item == inspectWeapon)
+                {
+                    int ped = PlayerPedId();
+                    uint weaponHash = 0;
+
+                    GetCurrentPedWeapon(ped, ref weaponHash, true, 0, true);
+
+                    string interaction = null;
+
+                    if (IsWeaponOneHanded(weaponHash))
+                    {
+                        interaction = "SHORTARM_HOLD_ENTER";
+                    }
+                    else if (IsWeaponTwoHanded(weaponHash))
+                    {
+                        interaction = "LONGARM_HOLD_ENTER";
+                    }
+
+                    if (interaction != null)
+                    {
+                        TaskItemInteraction(ped, (int)weaponHash, GetHashKey(interaction), 0, 0, 0);
+                        MenuController.CloseAllMenus();
+                    }
                 }
             };
 
