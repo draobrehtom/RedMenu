@@ -621,145 +621,145 @@ namespace RedMenuClient.menus
                         m.AddMenuItem(sidearmHammerColour);
                     }
 
-                    if (wep == GetHashKey("WEAPON_REPEATER_CARBINE"))
+                    if (wep == (uint)GetHashKey("WEAPON_REPEATER_CARBINE"))
                     {
                         m.AddMenuItem(carbineSights);
                         m.AddMenuItem(carbineWrap);
                         m.AddMenuItem(carbineStock);
                     }
 
-                    if (wep == GetHashKey("WEAPON_REPEATER_EVANS"))
+                    if (wep == (uint)GetHashKey("WEAPON_REPEATER_EVANS"))
                     {
                         m.AddMenuItem(evansSights);
                         m.AddMenuItem(evansWrap);
                         m.AddMenuItem(evansStock);
                     }
 
-                    if (wep == GetHashKey("WEAPON_REPEATER_HENRY"))
+                    if (wep == (uint)GetHashKey("WEAPON_REPEATER_HENRY"))
                     {
                         m.AddMenuItem(litchfieldSights);
                         m.AddMenuItem(litchfieldWrap);
                         m.AddMenuItem(litchfieldStock);
                     }
 
-                    if (wep == GetHashKey("WEAPON_REPEATER_WINCHESTER"))
+                    if (wep == (uint)GetHashKey("WEAPON_REPEATER_WINCHESTER"))
                     {
                         m.AddMenuItem(lancasterSights);
                         m.AddMenuItem(lancasterWrap);
                         m.AddMenuItem(lancasterStock);
                     }
 
-                    if (wep == GetHashKey("WEAPON_RIFLE_BOLTACTION"))
+                    if (wep == (uint)GetHashKey("WEAPON_RIFLE_BOLTACTION"))
                     {
                         m.AddMenuItem(boltActionSights);
                         m.AddMenuItem(boltActionWrap);
                         m.AddMenuItem(boltActionStock);
                     }
 
-                    if (wep == GetHashKey("WEAPON_RIFLE_SPRINGFIELD"))
+                    if (wep == (uint)GetHashKey("WEAPON_RIFLE_SPRINGFIELD"))
                     {
                         m.AddMenuItem(springfieldSights);
                         m.AddMenuItem(springfieldWrap);
                         m.AddMenuItem(springfieldStock);
                     }
 
-                    if (wep == GetHashKey("WEAPON_RIFLE_VARMINT"))
+                    if (wep == (uint)GetHashKey("WEAPON_RIFLE_VARMINT"))
                     {
                         m.AddMenuItem(varmintWrap);
                     }
 
-                    if (wep == GetHashKey("WEAPON_SNIPERRIFLE_CARCANO"))
+                    if (wep == (uint)GetHashKey("WEAPON_SNIPERRIFLE_CARCANO"))
                     {
                         m.AddMenuItem(carcanoSights);
                         m.AddMenuItem(carcanoWrap);
                         m.AddMenuItem(carcanoStock);
                     }
 
-                    if (wep == GetHashKey("WEAPON_SNIPERRIFLE_ROLLINGBLOCK"))
+                    if (wep == (uint)GetHashKey("WEAPON_SNIPERRIFLE_ROLLINGBLOCK"))
                     {
                         m.AddMenuItem(rollingBlockSights);
                         m.AddMenuItem(rollingBlockWrap);
                         m.AddMenuItem(rollingBlockStock);
                     }
 
-                    if (wep == GetHashKey("WEAPON_SHOTGUN_DOUBLEBARREL"))
+                    if (wep == (uint)GetHashKey("WEAPON_SHOTGUN_DOUBLEBARREL"))
                     {
                         m.AddMenuItem(doubleBarrelShotgunSights);
                         m.AddMenuItem(doubleBarrelShotgunWrap);
                         m.AddMenuItem(doubleBarrelShotgunStock);
                     }
 
-                    if (wep == GetHashKey("WEAPON_SHOTGUN_REPEATING"))
+                    if (wep == (uint)GetHashKey("WEAPON_SHOTGUN_REPEATING"))
                     {
                         m.AddMenuItem(repeatingShotgunSights);
                         m.AddMenuItem(repeatingShotgunWrap);
                         m.AddMenuItem(repeatingShotgunStock);
                     }
 
-                    if (wep == GetHashKey("WEAPON_SHOTGUN_PUMP"))
+                    if (wep == (uint)GetHashKey("WEAPON_SHOTGUN_PUMP"))
                     {
                         m.AddMenuItem(pumpShotgunSights);
                         m.AddMenuItem(pumpShotgunWrap);
                         m.AddMenuItem(pumpShotgunStock);
                     }
 
-                    if (wep == GetHashKey("WEAPON_SHOTGUN_SEMIAUTO"))
+                    if (wep == (uint)GetHashKey("WEAPON_SHOTGUN_SEMIAUTO"))
                     {
                         m.AddMenuItem(semiAutoShotgunSights);
                         m.AddMenuItem(semiAutoShotgunWrap);
                         m.AddMenuItem(semiAutoShotgunStock);
                     }
 
-                    if (wep == GetHashKey("WEAPON_SHOTGUN_SAWEDOFF"))
+                    if (wep == (uint)GetHashKey("WEAPON_SHOTGUN_SAWEDOFF"))
                     {
                         m.AddMenuItem(sawedOffShotgunSights);
                         m.AddMenuItem(sawedOffShotgunWrap);
                         m.AddMenuItem(sawedOffShotgunStock);
                     }
 
-                    if (wep == GetHashKey("WEAPON_PISTOL_M1899"))
+                    if (wep == (uint)GetHashKey("WEAPON_PISTOL_M1899"))
                     {
                         m.AddMenuItem(m1899Sights);
                         m.AddMenuItem(m1899Grip);
                     }
 
-                    if (wep == GetHashKey("WEAPON_PISTOL_MAUSER"))
+                    if (wep == (uint)GetHashKey("WEAPON_PISTOL_MAUSER"))
                     {
                         m.AddMenuItem(mauserSights);
                         m.AddMenuItem(mauserGrip);
                     }
 
-                    if (wep == GetHashKey("WEAPON_PISTOL_SEMIAUTO"))
+                    if (wep == (uint)GetHashKey("WEAPON_PISTOL_SEMIAUTO"))
                     {
                         m.AddMenuItem(semiAutoSights);
                         m.AddMenuItem(semiAutoGrip);
                     }
 
-                    if (wep == GetHashKey("WEAPON_PISTOL_VOLCANIC"))
+                    if (wep == (uint)GetHashKey("WEAPON_PISTOL_VOLCANIC"))
                     {
                         m.AddMenuItem(volcanicSights);
                         m.AddMenuItem(volcanicGrip);
                     }
 
-                    if (wep == GetHashKey("WEAPON_REVOLVER_CATTLEMAN"))
+                    if (wep == (uint)GetHashKey("WEAPON_REVOLVER_CATTLEMAN"))
                     {
                         m.AddMenuItem(cattlemanSights);
                         m.AddMenuItem(cattlemanGrip);
                     }
 
-                    if (wep == GetHashKey("WEAPON_REVOLVER_DOUBLEACTION"))
+                    if (wep == (uint)GetHashKey("WEAPON_REVOLVER_DOUBLEACTION"))
                     {
                         m.AddMenuItem(doubleActionSights);
                         m.AddMenuItem(doubleActionGrip);
                     }
 
-                    if (wep == GetHashKey("WEAPON_REVOLVER_LEMAT"))
+                    if (wep == (uint)GetHashKey("WEAPON_REVOLVER_LEMAT"))
                     {
                         m.AddMenuItem(lematSights);
                         m.AddMenuItem(lematGrip);
                     }
 
-                    if (wep == GetHashKey("WEAPON_REVOLVER_SCHOFIELD"))
+                    if (wep == (uint)GetHashKey("WEAPON_REVOLVER_SCHOFIELD"))
                     {
                         m.AddMenuItem(schofieldSights);
                         m.AddMenuItem(schofieldGrip);
