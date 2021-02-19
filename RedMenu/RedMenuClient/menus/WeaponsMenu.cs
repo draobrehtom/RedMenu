@@ -331,6 +331,157 @@ namespace RedMenuClient.menus
             MenuItem dropAllWeaponsBtn = new MenuItem("Drop All Weapons", "Removes all weapons from your inventory.");
             MenuItem getAllWeapons = new MenuItem("Get All Weapons", "Add all the weapons you can carry to your inventory.");
 
+            if (PermissionsManager.IsAllowed(Permission.WMSavedLoadouts))
+            {
+                Menu savedLoadoutsMenu = new Menu("Saved Loadouts", "Save and load weapon loadouts");
+                MenuItem savedLoadouts = new MenuItem("Saved Loadouts", "Save and load weapon loadouts.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                menu.AddMenuItem(savedLoadouts);
+                MenuController.AddSubmenu(menu, savedLoadoutsMenu);
+                MenuController.BindMenuItem(menu, savedLoadoutsMenu, savedLoadouts);
+                List<MenuItem> savedLoadoutSlots = new List<MenuItem>();
+                List<MenuCheckboxItem> defaultSavedLoadoutCheckboxes = new List<MenuCheckboxItem>();
+
+                for (int i = 1; i <= maxSavedLoadouts; ++i)
+                {
+                    int loadoutIndex = i;
+
+                    if (!StorageManager.TryGet("SavedLoadouts_" + loadoutIndex + "_name", out string loadoutName))
+                    {
+                        loadoutName = "Loadout " + loadoutIndex;
+                    }
+
+                    MenuItem savedLoadout = new MenuItem(loadoutName) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                    if (loadoutIndex == UserDefaults.WeaponDefaultSavedLoadout)
+                    {
+                        savedLoadout.LeftIcon = MenuItem.Icon.STAR;
+                    }
+                    savedLoadoutsMenu.AddMenuItem(savedLoadout);
+                    savedLoadoutSlots.Add(savedLoadout);
+
+                    Menu savedLoadoutOptionsMenu = new Menu(loadoutName);
+                    MenuController.AddSubmenu(savedLoadoutsMenu, savedLoadoutOptionsMenu);
+                    MenuController.BindMenuItem(savedLoadoutsMenu, savedLoadoutOptionsMenu, savedLoadout);
+
+                    MenuItem load = new MenuItem("Load", "Load this loadout.");
+                    MenuItem save = new MenuItem("Save", "Save current loadout to this slot.");
+                    MenuCheckboxItem isDefault = new MenuCheckboxItem("Default", "Load this loadout automatically when you respawn.", loadoutIndex == UserDefaults.WeaponDefaultSavedLoadout);
+                    defaultSavedLoadoutCheckboxes.Add(isDefault);
+                    savedLoadoutOptionsMenu.AddMenuItem(load);
+                    savedLoadoutOptionsMenu.AddMenuItem(save);
+                    savedLoadoutOptionsMenu.AddMenuItem(isDefault);
+
+                    savedLoadoutOptionsMenu.OnItemSelect += async (m, item, index) =>
+                    {
+                        if (item == load)
+                        {
+                            LoadSavedLoadout(loadoutIndex);
+                        }
+                        else if (item == save)
+                        {
+                            string newName = await GetUserInput("Enter loadout name", loadoutName, 20);
+
+                            if (newName != null)
+                            {
+                                int ped = PlayerPedId();
+
+                                List<string> knownWeapons = new List<string>();
+                                knownWeapons.AddRange(data.WeaponsData.ItemHashes);
+                                knownWeapons.AddRange(data.WeaponsData.MeleeHashes);
+                                knownWeapons.AddRange(data.WeaponsData.RevolverHashes);
+                                knownWeapons.AddRange(data.WeaponsData.PistolHashes);
+                                knownWeapons.AddRange(data.WeaponsData.SniperHashes);
+                                knownWeapons.AddRange(data.WeaponsData.RifleHashes);
+                                knownWeapons.AddRange(data.WeaponsData.RepeaterHashes);
+                                knownWeapons.AddRange(data.WeaponsData.ThrownHashes);
+                                knownWeapons.AddRange(data.WeaponsData.ShotgunHashes);
+                                knownWeapons.AddRange(data.WeaponsData.BowHashes);
+
+                                var knownComponents = GetKnownComponents();
+                                var knownColours = GetKnownComponentColours();
+
+                                List<SavedWeapon> weapons = new List<SavedWeapon>();
+
+                                foreach (var weaponName in knownWeapons)
+                                {
+                                    int weaponHash = GetHashKey(weaponName);
+
+                                    if (HasPedGotWeapon(ped, weaponHash, 0, 0))
+                                    {
+                                        SetCurrentPedWeapon(ped, (uint)weaponHash, true, 0, false, false);
+
+                                        int weapon = GetCurrentPedWeaponEntityIndex(ped, 0);
+
+                                        var components = new List<data.WeaponComponent>();
+                                        var colours = new List<data.WeaponComponent>();
+
+                                        foreach (var component in knownComponents)
+                                        {
+                                            if (HasPedGotWeaponComponent(ped, component.Hash, weaponHash))
+                                            {
+                                                components.Add(component);
+                                            }
+                                        }
+
+                                        foreach (var component in knownColours)
+                                        {
+                                            if (HasWeaponGotWeaponComponent(weapon, (uint)component.Hash))
+                                            {
+                                                colours.Add(component);
+                                            }
+                                        }
+
+                                        weapons.Add(new SavedWeapon(weaponName, components, colours));
+                                    }
+                                }
+
+                                string json = Newtonsoft.Json.JsonConvert.SerializeObject(weapons);
+                                StorageManager.Save("SavedLoadouts_" + loadoutIndex + "_weapons", json, true);
+
+                                StorageManager.Save("SavedLoadouts_" + loadoutIndex + "_name", newName, true);
+                                savedLoadout.Text = newName;
+                                savedLoadoutOptionsMenu.MenuTitle = newName;
+                                loadoutName = newName;
+                            }
+                        }
+                    };
+
+                    savedLoadoutOptionsMenu.OnCheckboxChange += (m, item, index, _checked) =>
+                    {
+                        if (item == isDefault)
+                        {
+                            if (_checked)
+                            {
+                                UserDefaults.WeaponDefaultSavedLoadout = loadoutIndex;
+
+                                foreach (var cb in defaultSavedLoadoutCheckboxes)
+                                {
+                                    if (cb != item)
+                                    {
+                                        cb.Checked = false;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                UserDefaults.WeaponDefaultSavedLoadout = 0;
+                            }
+
+                            for (int slot = 0; slot < savedLoadoutSlots.Count; ++slot)
+                            {
+                                if (_checked && slot + 1 == loadoutIndex)
+                                {
+                                    savedLoadoutSlots[slot].LeftIcon = MenuItem.Icon.STAR;
+                                }
+                                else
+                                {
+                                    savedLoadoutSlots[slot].LeftIcon = MenuItem.Icon.NONE;
+                                }
+                            }
+                        }
+                    };
+                }
+            }
+
             if (PermissionsManager.IsAllowed(Permission.WMCleanWeapon))
             {
                 menu.AddMenuItem(cleanWeapon);
@@ -344,163 +495,6 @@ namespace RedMenuClient.menus
             if (PermissionsManager.IsAllowed(Permission.WMInspectWeapon))
             {
                 menu.AddMenuItem(inspectWeapon);
-            }
-
-            if (PermissionsManager.IsAllowed(Permission.WMDropWeapon))
-            {
-                menu.AddMenuItem(dropWeaponBtn);
-                menu.AddMenuItem(dropAllWeaponsBtn);
-            }
-
-            if (PermissionsManager.IsAllowed(Permission.WMGetAll))
-            {
-                menu.AddMenuItem(getAllWeapons);
-            }
-
-            Menu ammoMenu = new Menu("Ammo", "Get ammo.");
-            MenuItem ammo = new MenuItem("Ammo", "Get ammo.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
-            menu.AddMenuItem(ammo);
-            MenuController.AddSubmenu(menu, ammoMenu);
-            MenuController.BindMenuItem(menu, ammoMenu, ammo);
-
-            MenuItem refillAmmo = new MenuItem("Refill Ammo", "Get the maximum amount of ammo for the currently selected weapon.");
-            MenuItem refillAllAmmo = new MenuItem("Refill All Ammo", "Get the maximum amount of ammo for all weapons.");
-
-            MenuItem removeAmmo = new MenuItem("Remove Ammo", "Remove all ammo for the currently selected weapon.");
-            MenuItem removeAllAmmo = new MenuItem("Remove All Ammo", "Remove all ammo for all weapons.");
-
-            MenuCheckboxItem infiniteAmmo = new MenuCheckboxItem("Infinite Ammo", "Never run out of ammo.", UserDefaults.WeaponInfiniteAmmo);
-
-            if (PermissionsManager.IsAllowed(Permission.WMRefillAmmo))
-            {
-                ammoMenu.AddMenuItem(refillAmmo);
-                ammoMenu.AddMenuItem(refillAllAmmo);
-            }
-
-            if (PermissionsManager.IsAllowed(Permission.WMRemoveAmmo))
-            {
-                ammoMenu.AddMenuItem(removeAmmo);
-                ammoMenu.AddMenuItem(removeAllAmmo);
-            }
-
-            if (PermissionsManager.IsAllowed(Permission.WMInfiniteAmmo))
-            {
-                ammoMenu.AddMenuItem(infiniteAmmo);
-                if (UserDefaults.WeaponInfiniteAmmo)
-                {
-                    SetPedInfiniteAmmoClip(PlayerPedId(), true);
-                }
-            }
-
-            ammoMenu.OnItemSelect += (m, item, index) =>
-            {
-                if (item == refillAmmo)
-                {
-                    int ped = PlayerPedId();
-                    uint weapon = 0;
-                    GetCurrentPedWeapon(ped, ref weapon, true, 0, true);
-                    SetPedAmmo(ped, weapon, 500);
-                }
-                else if (item == refillAllAmmo)
-                {
-                    foreach (var name in data.WeaponsData.AmmoHashes)
-                    {
-                        SetPedAmmoByType(PlayerPedId(), GetHashKey(name), 500);
-                    }
-                }
-                else if (item == removeAmmo)
-                {
-                    int ped = PlayerPedId();
-                    uint weapon = 0;
-                    GetCurrentPedWeapon(ped, ref weapon, true, 0, true);
-                    int ammoType = GetPedAmmoTypeFromWeapon(ped, weapon);
-                    int amount = GetPedAmmoByType(ped, ammoType);
-                    RemoveAmmoFromPedByType(ped, ammoType, amount, 0x2188E0A3);
-
-                }
-                else if (item == removeAllAmmo)
-                {
-                    foreach (var name in data.WeaponsData.AmmoHashes)
-                    {
-                        int ped = PlayerPedId();
-                        int ammoType = GetHashKey(name);
-                        int amount = GetPedAmmoByType(ped, ammoType);
-                        RemoveAmmoFromPedByType(ped, ammoType, amount, 0x2188E0A3);
-                    }
-                }
-            };
-
-            ammoMenu.OnCheckboxChange += (m, item, index, _checked) =>
-            {
-                if (item == infiniteAmmo)
-                {
-                    UserDefaults.WeaponInfiniteAmmo = _checked;
-                    SetPedInfiniteAmmoClip(PlayerPedId(), _checked);
-                }
-            };
-
-            Menu ammoTypesMenu = new Menu("Ammo Types", "Get ammo by type");
-            MenuItem ammoTypes = new MenuItem("Ammo Types", "Get ammo by type.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
-            ammoMenu.AddMenuItem(ammoTypes);
-            MenuController.AddSubmenu(ammoMenu, ammoTypesMenu);
-            MenuController.BindMenuItem(ammoMenu, ammoTypesMenu, ammoTypes);
-
-            foreach (var name in data.WeaponsData.AmmoHashes)
-            {
-                MenuItem item = new MenuItem(name);
-                ammoTypesMenu.AddMenuItem(item);
-            }
-
-            ammoTypesMenu.OnItemSelect += (m, item, index) =>
-            {
-                int hash = GetHashKey(data.WeaponsData.AmmoHashes[index]);
-                SetPedAmmoByType(PlayerPedId(), hash, 500);
-            };
-
-            AddWeaponsSubmenu(data.WeaponsData.ItemHashes, "Items", "A list of equippable items.");
-            AddWeaponsSubmenu(data.WeaponsData.BowHashes, "Bows", "A list of bows.");
-            AddWeaponsSubmenu(data.WeaponsData.MeleeHashes, "Melee", "A list of melee weapons.");
-            AddWeaponsSubmenu(data.WeaponsData.PistolHashes, "Pistols", "A list of pistols.");
-            AddWeaponsSubmenu(data.WeaponsData.RepeaterHashes, "Repeaters", "A list of repeaters.");
-            AddWeaponsSubmenu(data.WeaponsData.RevolverHashes, "Revolvers", "A list of revolvers.");
-            AddWeaponsSubmenu(data.WeaponsData.RifleHashes, "Rifles", "A list of rifles.");
-            AddWeaponsSubmenu(data.WeaponsData.ShotgunHashes, "Shotguns", "A list of shotguns.");
-            AddWeaponsSubmenu(data.WeaponsData.SniperHashes, "Sniper Rifles", "A list of sniper rifles.");
-            AddWeaponsSubmenu(data.WeaponsData.ThrownHashes, "Throwables", "A list of throwable weapons.");
-
-            if (PermissionsManager.IsAllowed(Permission.WMDualWield))
-            {
-                Menu dualWieldMenu = new Menu("Dual Wield", "Dual wield weapons");
-                MenuItem dualWield = new MenuItem("Dual Wield", "Dual wield weapons") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
-                menu.AddMenuItem(dualWield);
-                MenuController.AddSubmenu(menu, dualWieldMenu);
-                MenuController.BindMenuItem(menu, dualWieldMenu, dualWield);
-
-                List<string> dualWieldWeapons = new List<string>();
-                dualWieldWeapons.AddRange(data.WeaponsData.PistolHashes);
-                dualWieldWeapons.AddRange(data.WeaponsData.RevolverHashes);
-                dualWieldWeapons.Add("WEAPON_SHOTGUN_SAWEDOFF");
-
-                MenuListItem rHandWeapon = new MenuListItem("Right Hand", dualWieldWeapons, 0, "Weapon held in right hand.");
-                MenuListItem lHandWeapon = new MenuListItem("Left Hand", dualWieldWeapons, 0, "Weapon held in left hand.");
-                MenuItem equip = new MenuItem("Equip", "Equip the selected weapons.");
-
-                dualWieldMenu.AddMenuItem(rHandWeapon);
-                dualWieldMenu.AddMenuItem(lHandWeapon);
-                dualWieldMenu.AddMenuItem(equip);
-
-                dualWieldMenu.OnItemSelect += (m, item, index) =>
-                {
-                    if (item == equip)
-                    {
-                        uint hash1 = (uint)GetHashKey(rHandWeapon.GetCurrentSelection());
-                        uint hash2 = (uint)GetHashKey(lHandWeapon.GetCurrentSelection());
-                        Function.Call((Hash)0x5E3BDDBCB83F3D84, PlayerPedId(), hash1, 500, 1, 1, 2, 0, 0, 0.5, 1.0, 752097756, 0, 0, 0, false);
-                        Function.Call((Hash)0x5E3BDDBCB83F3D84, PlayerPedId(), hash2, 500, 1, 1, 3, 0, 0, 0.5, 1.0, 752097756, 1, 0, 0, false);
-                        Function.Call((Hash)0xADF692B254977C0C, PlayerPedId(), hash1, false, 0, false, false);
-                        Function.Call((Hash)0xADF692B254977C0C, PlayerPedId(), hash2, false, 1, false, false);
-                    }
-                };
             }
 
             if (PermissionsManager.IsAllowed(Permission.WMCustomize))
@@ -615,7 +609,7 @@ namespace RedMenuClient.menus
                         m.AddMenuItem(scopeSightColour);
                         m.AddMenuItem(wrapColour);
                     }
-                    
+
                     if (IsWeaponPistol(wep) || IsWeaponRevolver(wep))
                     {
                         m.AddMenuItem(sidearmBarrelColour);
@@ -789,160 +783,166 @@ namespace RedMenuClient.menus
                     uint wep = 0;
 
                     GetCurrentPedWeapon(ped, ref wep, true, 0, true);
-                    
+
                     ClearWeaponComponentCategory(ped, wep, item.ItemData);
                 };
             }
 
-            if (PermissionsManager.IsAllowed(Permission.WMSavedLoadouts))
+            if (PermissionsManager.IsAllowed(Permission.WMDropWeapon))
             {
-                Menu savedLoadoutsMenu = new Menu("Saved Loadouts", "Save and load weapon loadouts");
-                MenuItem savedLoadouts = new MenuItem("Saved Loadouts", "Save and load weapon loadouts.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
-                menu.AddMenuItem(savedLoadouts);
-                MenuController.AddSubmenu(menu, savedLoadoutsMenu);
-                MenuController.BindMenuItem(menu, savedLoadoutsMenu, savedLoadouts);
-                List<MenuItem> savedLoadoutSlots = new List<MenuItem>();
-                List<MenuCheckboxItem> defaultSavedLoadoutCheckboxes = new List<MenuCheckboxItem>();
+                menu.AddMenuItem(dropWeaponBtn);
+                menu.AddMenuItem(dropAllWeaponsBtn);
+            }
 
-                for (int i = 1; i <= maxSavedLoadouts; ++i)
+            if (PermissionsManager.IsAllowed(Permission.WMGetAll))
+            {
+                menu.AddMenuItem(getAllWeapons);
+            }
+
+            Menu ammoMenu = new Menu("Ammo", "Get ammo.");
+            MenuItem ammo = new MenuItem("Ammo", "Get ammo.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+            menu.AddMenuItem(ammo);
+            MenuController.AddSubmenu(menu, ammoMenu);
+            MenuController.BindMenuItem(menu, ammoMenu, ammo);
+
+            MenuItem refillAmmo = new MenuItem("Refill Ammo", "Get the maximum amount of ammo for the currently selected weapon.");
+            MenuItem refillAllAmmo = new MenuItem("Refill All Ammo", "Get the maximum amount of ammo for all weapons.");
+
+            MenuItem removeAmmo = new MenuItem("Remove Ammo", "Remove all ammo for the currently selected weapon.");
+            MenuItem removeAllAmmo = new MenuItem("Remove All Ammo", "Remove all ammo for all weapons.");
+
+            MenuCheckboxItem infiniteAmmo = new MenuCheckboxItem("Infinite Ammo", "Never run out of ammo.", UserDefaults.WeaponInfiniteAmmo);
+
+            if (PermissionsManager.IsAllowed(Permission.WMRefillAmmo))
+            {
+                ammoMenu.AddMenuItem(refillAmmo);
+                ammoMenu.AddMenuItem(refillAllAmmo);
+            }
+
+            if (PermissionsManager.IsAllowed(Permission.WMRemoveAmmo))
+            {
+                ammoMenu.AddMenuItem(removeAmmo);
+                ammoMenu.AddMenuItem(removeAllAmmo);
+            }
+
+            if (PermissionsManager.IsAllowed(Permission.WMInfiniteAmmo))
+            {
+                ammoMenu.AddMenuItem(infiniteAmmo);
+                if (UserDefaults.WeaponInfiniteAmmo)
                 {
-                    int loadoutIndex = i;
-
-                    if (!StorageManager.TryGet("SavedLoadouts_" + loadoutIndex + "_name", out string loadoutName))
-                    {
-                        loadoutName = "Loadout " + loadoutIndex;
-                    }
-
-                    MenuItem savedLoadout = new MenuItem(loadoutName) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
-                    if (loadoutIndex == UserDefaults.WeaponDefaultSavedLoadout)
-                    {
-                        savedLoadout.LeftIcon = MenuItem.Icon.STAR;
-                    }
-                    savedLoadoutsMenu.AddMenuItem(savedLoadout);
-                    savedLoadoutSlots.Add(savedLoadout);
-
-                    Menu savedLoadoutOptionsMenu = new Menu(loadoutName);
-                    MenuController.AddSubmenu(savedLoadoutsMenu, savedLoadoutOptionsMenu);
-                    MenuController.BindMenuItem(savedLoadoutsMenu, savedLoadoutOptionsMenu, savedLoadout);
-
-                    MenuItem load = new MenuItem("Load", "Load this loadout.");
-                    MenuItem save = new MenuItem("Save", "Save current loadout to this slot.");
-                    MenuCheckboxItem isDefault = new MenuCheckboxItem("Default", "Load this loadout automatically when you respawn.", loadoutIndex == UserDefaults.WeaponDefaultSavedLoadout);
-                    defaultSavedLoadoutCheckboxes.Add(isDefault);
-                    savedLoadoutOptionsMenu.AddMenuItem(load);
-                    savedLoadoutOptionsMenu.AddMenuItem(save);
-                    savedLoadoutOptionsMenu.AddMenuItem(isDefault);
-
-                    savedLoadoutOptionsMenu.OnItemSelect += async (m, item, index) =>
-                    {
-                        if (item == load)
-                        {
-                            LoadSavedLoadout(loadoutIndex);
-                        }
-                        else if (item == save)
-                        {
-                            string newName = await GetUserInput("Enter loadout name", loadoutName, 20);
-
-                            if (newName != null)
-                            {
-                                int ped = PlayerPedId();
-
-                                List<string> knownWeapons = new List<string>();
-                                knownWeapons.AddRange(data.WeaponsData.ItemHashes);
-                                knownWeapons.AddRange(data.WeaponsData.MeleeHashes);
-                                knownWeapons.AddRange(data.WeaponsData.RevolverHashes);
-                                knownWeapons.AddRange(data.WeaponsData.PistolHashes);
-                                knownWeapons.AddRange(data.WeaponsData.SniperHashes);
-                                knownWeapons.AddRange(data.WeaponsData.RifleHashes);
-                                knownWeapons.AddRange(data.WeaponsData.RepeaterHashes);
-                                knownWeapons.AddRange(data.WeaponsData.ThrownHashes);
-                                knownWeapons.AddRange(data.WeaponsData.ShotgunHashes);
-                                knownWeapons.AddRange(data.WeaponsData.BowHashes);
-
-                                var knownComponents = GetKnownComponents();
-                                var knownColours = GetKnownComponentColours();
-
-                                List <SavedWeapon> weapons = new List<SavedWeapon>();
-
-                                foreach (var weaponName in knownWeapons)
-                                {
-                                    int weaponHash = GetHashKey(weaponName);
-
-                                    if (HasPedGotWeapon(ped, weaponHash, 0, 0))
-                                    {
-                                        SetCurrentPedWeapon(ped, (uint)weaponHash, true, 0, false, false);
-
-                                        int weapon = GetCurrentPedWeaponEntityIndex(ped, 0);
-
-                                        var components = new List<data.WeaponComponent>();
-                                        var colours = new List<data.WeaponComponent>();
-
-                                        foreach (var component in knownComponents)
-                                        {
-                                            if (HasPedGotWeaponComponent(ped, component.Hash, weaponHash))
-                                            {
-                                                components.Add(component);
-                                            }
-                                        }
-
-                                        foreach (var component in knownColours)
-                                        {
-                                            if (HasWeaponGotWeaponComponent(weapon, (uint)component.Hash))
-                                            {
-                                                colours.Add(component);
-                                            }
-                                        }
-
-                                        weapons.Add(new SavedWeapon(weaponName, components, colours));
-                                    }
-                                }
-
-                                string json = Newtonsoft.Json.JsonConvert.SerializeObject(weapons);
-                                StorageManager.Save("SavedLoadouts_" + loadoutIndex + "_weapons", json, true);
-
-                                StorageManager.Save("SavedLoadouts_" + loadoutIndex + "_name", newName, true);
-                                savedLoadout.Text = newName;
-                                savedLoadoutOptionsMenu.MenuTitle = newName;
-                                loadoutName = newName;
-                            }
-                        }
-                    };
-
-                    savedLoadoutOptionsMenu.OnCheckboxChange += (m, item, index, _checked) =>
-                    {
-                        if (item == isDefault)
-                        {
-                            if (_checked)
-                            {
-                                UserDefaults.WeaponDefaultSavedLoadout = loadoutIndex;
-
-                                foreach (var cb in defaultSavedLoadoutCheckboxes)
-                                {
-                                    if (cb != item)
-                                    {
-                                        cb.Checked = false;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                UserDefaults.WeaponDefaultSavedLoadout = 0;
-                            }
-
-                            for (int slot = 0; slot < savedLoadoutSlots.Count; ++slot)
-                            {
-                                if (_checked && slot + 1 == loadoutIndex)
-                                {
-                                    savedLoadoutSlots[slot].LeftIcon = MenuItem.Icon.STAR;
-                                }
-                                else
-                                {
-                                    savedLoadoutSlots[slot].LeftIcon = MenuItem.Icon.NONE;
-                                }
-                            }
-                        }
-                    };
+                    SetPedInfiniteAmmoClip(PlayerPedId(), true);
                 }
+            }
+
+            ammoMenu.OnItemSelect += (m, item, index) =>
+            {
+                if (item == refillAmmo)
+                {
+                    int ped = PlayerPedId();
+                    uint weapon = 0;
+                    GetCurrentPedWeapon(ped, ref weapon, true, 0, true);
+                    SetPedAmmo(ped, weapon, 500);
+                }
+                else if (item == refillAllAmmo)
+                {
+                    foreach (var name in data.WeaponsData.AmmoHashes)
+                    {
+                        SetPedAmmoByType(PlayerPedId(), GetHashKey(name), 500);
+                    }
+                }
+                else if (item == removeAmmo)
+                {
+                    int ped = PlayerPedId();
+                    uint weapon = 0;
+                    GetCurrentPedWeapon(ped, ref weapon, true, 0, true);
+                    int ammoType = GetPedAmmoTypeFromWeapon(ped, weapon);
+                    int amount = GetPedAmmoByType(ped, ammoType);
+                    RemoveAmmoFromPedByType(ped, ammoType, amount, 0x2188E0A3);
+
+                }
+                else if (item == removeAllAmmo)
+                {
+                    foreach (var name in data.WeaponsData.AmmoHashes)
+                    {
+                        int ped = PlayerPedId();
+                        int ammoType = GetHashKey(name);
+                        int amount = GetPedAmmoByType(ped, ammoType);
+                        RemoveAmmoFromPedByType(ped, ammoType, amount, 0x2188E0A3);
+                    }
+                }
+            };
+
+            ammoMenu.OnCheckboxChange += (m, item, index, _checked) =>
+            {
+                if (item == infiniteAmmo)
+                {
+                    UserDefaults.WeaponInfiniteAmmo = _checked;
+                    SetPedInfiniteAmmoClip(PlayerPedId(), _checked);
+                }
+            };
+
+            Menu ammoTypesMenu = new Menu("Ammo Types", "Get ammo by type");
+            MenuItem ammoTypes = new MenuItem("Ammo Types", "Get ammo by type.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+            ammoMenu.AddMenuItem(ammoTypes);
+            MenuController.AddSubmenu(ammoMenu, ammoTypesMenu);
+            MenuController.BindMenuItem(ammoMenu, ammoTypesMenu, ammoTypes);
+
+            foreach (var name in data.WeaponsData.AmmoHashes)
+            {
+                MenuItem item = new MenuItem(name);
+                ammoTypesMenu.AddMenuItem(item);
+            }
+
+            ammoTypesMenu.OnItemSelect += (m, item, index) =>
+            {
+                int hash = GetHashKey(data.WeaponsData.AmmoHashes[index]);
+                SetPedAmmoByType(PlayerPedId(), hash, 500);
+            };
+
+            AddWeaponsSubmenu(data.WeaponsData.ItemHashes, "Items", "A list of equippable items.");
+            AddWeaponsSubmenu(data.WeaponsData.BowHashes, "Bows", "A list of bows.");
+            AddWeaponsSubmenu(data.WeaponsData.MeleeHashes, "Melee", "A list of melee weapons.");
+            AddWeaponsSubmenu(data.WeaponsData.PistolHashes, "Pistols", "A list of pistols.");
+            AddWeaponsSubmenu(data.WeaponsData.RepeaterHashes, "Repeaters", "A list of repeaters.");
+            AddWeaponsSubmenu(data.WeaponsData.RevolverHashes, "Revolvers", "A list of revolvers.");
+            AddWeaponsSubmenu(data.WeaponsData.RifleHashes, "Rifles", "A list of rifles.");
+            AddWeaponsSubmenu(data.WeaponsData.ShotgunHashes, "Shotguns", "A list of shotguns.");
+            AddWeaponsSubmenu(data.WeaponsData.SniperHashes, "Sniper Rifles", "A list of sniper rifles.");
+            AddWeaponsSubmenu(data.WeaponsData.ThrownHashes, "Throwables", "A list of throwable weapons.");
+
+            if (PermissionsManager.IsAllowed(Permission.WMDualWield))
+            {
+                Menu dualWieldMenu = new Menu("Dual Wield", "Dual wield weapons");
+                MenuItem dualWield = new MenuItem("Dual Wield", "Dual wield weapons") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                menu.AddMenuItem(dualWield);
+                MenuController.AddSubmenu(menu, dualWieldMenu);
+                MenuController.BindMenuItem(menu, dualWieldMenu, dualWield);
+
+                List<string> dualWieldWeapons = new List<string>();
+                dualWieldWeapons.AddRange(data.WeaponsData.PistolHashes);
+                dualWieldWeapons.AddRange(data.WeaponsData.RevolverHashes);
+                dualWieldWeapons.Add("WEAPON_SHOTGUN_SAWEDOFF");
+
+                MenuListItem rHandWeapon = new MenuListItem("Right Hand", dualWieldWeapons, 0, "Weapon held in right hand.");
+                MenuListItem lHandWeapon = new MenuListItem("Left Hand", dualWieldWeapons, 0, "Weapon held in left hand.");
+                MenuItem equip = new MenuItem("Equip", "Equip the selected weapons.");
+
+                dualWieldMenu.AddMenuItem(rHandWeapon);
+                dualWieldMenu.AddMenuItem(lHandWeapon);
+                dualWieldMenu.AddMenuItem(equip);
+
+                dualWieldMenu.OnItemSelect += (m, item, index) =>
+                {
+                    if (item == equip)
+                    {
+                        uint hash1 = (uint)GetHashKey(rHandWeapon.GetCurrentSelection());
+                        uint hash2 = (uint)GetHashKey(lHandWeapon.GetCurrentSelection());
+                        Function.Call((Hash)0x5E3BDDBCB83F3D84, PlayerPedId(), hash1, 500, 1, 1, 2, 0, 0, 0.5, 1.0, 752097756, 0, 0, 0, false);
+                        Function.Call((Hash)0x5E3BDDBCB83F3D84, PlayerPedId(), hash2, 500, 1, 1, 3, 0, 0, 0.5, 1.0, 752097756, 1, 0, 0, false);
+                        Function.Call((Hash)0xADF692B254977C0C, PlayerPedId(), hash1, false, 0, false, false);
+                        Function.Call((Hash)0xADF692B254977C0C, PlayerPedId(), hash2, false, 1, false, false);
+                    }
+                };
             }
 
             menu.OnItemSelect += (m, item, index) =>
