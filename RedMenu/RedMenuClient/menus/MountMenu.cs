@@ -55,6 +55,11 @@ namespace RedMenuClient.menus
             return Function.Call<bool>((Hash)0x772A1969F649E902, ped);
         }
 
+        private static void SetPedAsSaddleHorseForPlayer(int player, int mount)
+        {
+            Function.Call((Hash)0xD2CB0FB0FDCB473D, player, mount);
+        }
+
         private static int GetTargetMount(int ped)
         {
             if (IsThisModelAHorse(GetEntityModel(ped)))
@@ -105,8 +110,10 @@ namespace RedMenuClient.menus
                 currentMount = CreatePed_2(model, x2, y2, coords.Z, 0.0f, true, true, true, true);
                 SetModelAsNoLongerNeeded(model);
                 SetPedOutfitPreset(currentMount, 0, 0);
+                SetPedAsSaddleHorseForPlayer(PlayerId(), currentMount);
                 SetPedConfigFlag(currentMount, 297, true); // Enable leading
                 SetPedConfigFlag(currentMount, 312, true); // Won't flee when shooting
+                SetPedConfigFlag(currentMount, 442, true); // Remove Flee prompt
                 BlipAddForEntity(-1230993421, currentMount);
             }
             else
