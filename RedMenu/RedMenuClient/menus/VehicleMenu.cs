@@ -330,6 +330,7 @@ namespace RedMenuClient.menus
 
                     if (veh != 0)
                     {
+                        NetworkRequestControlOfEntity(veh);
                         TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1);
                     }
                 }
