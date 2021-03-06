@@ -1375,6 +1375,7 @@ namespace RedMenuClient.menus
 
                 AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.BearScenarioHashes, "Bear Scenarios", "Scenarios for bear peds.");
                 AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.CatScenarioHashes, "Cat Scenarios", "Scenarios for cat peds.");
+                AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.CoyoteScenarioHashes, "Coyote Scenarios", "Scenarios for coyote peds.");
                 AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.DeerScenarioHashes, "Deer Scenarios", "Scenarios for deer peds.");
                 AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.DogScenarioHashes, "Dog Scenarios", "Scenarios for dog peds.");
                 AddScenarioSubmenu(animalScenariosMenu, data.ScenarioData.EagleScenarioHashes, "Eagle Scenarios", "Scenarios for eagle peds.");

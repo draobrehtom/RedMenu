@@ -1632,6 +1632,19 @@ namespace RedMenuClient.data
             "WORLD_ANIMAL_SKUNK_FLEE_HOLE"
         };
 
+        public static List<string> CoyoteScenarioHashes = new List<string>()
+        {
+            "WORLD_ANIMAL_COYOTE_DIGGING",
+            "WORLD_ANIMAL_COYOTE_DRINK_GROUND",
+            "WORLD_ANIMAL_COYOTE_EATING_GROUND",
+            "WORLD_ANIMAL_COYOTE_HOWLING",
+            "WORLD_ANIMAL_COYOTE_HOWLING_SITTING",
+            "WORLD_ANIMAL_COYOTE_INJURED_ON_GROUND",
+            "WORLD_ANIMAL_COYOTE_RESTING",
+            "WORLD_ANIMAL_COYOTE_SLEEPING",
+            "WORLD_ANIMAL_COYOTE_SNIFFING_GROUND"
+        };
+
         public static List<string> ReactionEmotes = new List<string>()
         {
             "KIT_EMOTE_REACTION_APPLAUSE_1",
