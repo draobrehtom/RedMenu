@@ -344,15 +344,15 @@ namespace RedMenuClient.menus
                 foreach (var k in data.MountData.StirrupHashes) { stirrups.Add($"({data.MountData.StirrupHashes.IndexOf(k) + 1}/{data.MountData.StirrupHashes.Count()}) 0x{k.ToString("X08")}"); }
                 foreach (var k in data.MountData.RollHashes) { rolls.Add($"({data.MountData.RollHashes.IndexOf(k) + 1}/{data.MountData.RollHashes.Count()}) 0x{k.ToString("X08")}"); }
                 foreach (var k in data.MountData.LanternHashes) { lanterns.Add($"({data.MountData.LanternHashes.IndexOf(k) + 1}/{data.MountData.LanternHashes.Count()}) 0x{k.ToString("X08")}"); }
-                tackMenu.AddMenuItem(new MenuListItem("Blanket", blankets, 0));
-                tackMenu.AddMenuItem(new MenuListItem("Grip", grips, 0));
-                tackMenu.AddMenuItem(new MenuListItem("Bag", bags, 0));
-                tackMenu.AddMenuItem(new MenuListItem("Tail", tails, 0));
-                tackMenu.AddMenuItem(new MenuListItem("Mane", manes, 0));
-                tackMenu.AddMenuItem(new MenuListItem("Saddle", saddles, 0));
+                tackMenu.AddMenuItem(new MenuListItem("Blankets", blankets, 0));
+                tackMenu.AddMenuItem(new MenuListItem("Horns", grips, 0));
+                tackMenu.AddMenuItem(new MenuListItem("Saddlebags", bags, 0));
+                tackMenu.AddMenuItem(new MenuListItem("Tails", tails, 0));
+                tackMenu.AddMenuItem(new MenuListItem("Manes", manes, 0));
+                tackMenu.AddMenuItem(new MenuListItem("Saddles", saddles, 0));
                 tackMenu.AddMenuItem(new MenuListItem("Stirrups", stirrups, 0));
-                tackMenu.AddMenuItem(new MenuListItem("Roll", rolls, 0));
-                tackMenu.AddMenuItem(new MenuListItem("Lantern", lanterns, 0));
+                tackMenu.AddMenuItem(new MenuListItem("Bedrolls", rolls, 0));
+                tackMenu.AddMenuItem(new MenuListItem("Lanterns", lanterns, 0));
 
                 tackMenu.OnListIndexChange += (m, item, oldIndex, newIndex, itemIndex) =>
                 {
