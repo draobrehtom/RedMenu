@@ -62,6 +62,7 @@ namespace RedMenuClient.data
             "WEAPON_REVOLVER_DOUBLEACTION_GAMBLER",
             "WEAPON_REVOLVER_LEMAT",
             "WEAPON_REVOLVER_NAVY",
+            "WEAPON_REVOLVER_NAVY_CROSSOVER",
             "WEAPON_REVOLVER_SCHOFIELD",
             //"WEAPON_REVOLVER_SCHOFIELD_CALLOWAY"
         };
@@ -99,6 +100,9 @@ namespace RedMenuClient.data
         public static List<string> ThrownHashes { get; } = new List<string>()
         {
             "WEAPON_THROWN_BOLAS",
+            "WEAPON_THROWN_BOLAS_HAWKMOTH",
+            "WEAPON_THROWN_BOLAS_IRONSPIKED",
+            "WEAPON_THROWN_BOLAS_INTERTWINED",
             "WEAPON_THROWN_DYNAMITE",
             "WEAPON_THROWN_MOLOTOV",
             "WEAPON_THROWN_POISONBOTTLE",
