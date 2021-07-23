@@ -1402,7 +1402,8 @@ namespace RedMenuClient.menus
                 AddEmotesSubmenu(emotesMenu, data.ScenarioData.ActionEmotes, 1, "Actions", "Action emotes.");
                 AddEmotesSubmenu(emotesMenu, data.ScenarioData.TauntEmotes, 2, "Taunts", "Taunt emotes.");
                 AddEmotesSubmenu(emotesMenu, data.ScenarioData.GreetEmotes, 3, "Greetings", "Greeting emotes.");
-                AddEmotesSubmenu(emotesMenu, data.ScenarioData.DanceEmotes, 4, "Dances", "Dance emotes.");
+                AddEmotesSubmenu(emotesMenu, data.ScenarioData.GunTwirlEmotes, 4, "Gun Twirls", "Gun twirl emotes.");
+                AddEmotesSubmenu(emotesMenu, data.ScenarioData.DanceEmotes, 5, "Dances", "Dance emotes.");
             }
 
             if (PermissionsManager.IsAllowed(Permission.PMWalkingStyle))
