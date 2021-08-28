@@ -244,6 +244,34 @@ namespace RedMenuClient.data
 			0xFDC114DC,
 		};
 
+		// Reins - 0x94B2E3AF
+		public static List<uint> ReinsHashes = new List<uint>()
+		{
+			0xC48F261,
+			0xCBA8E54,
+			0x1A7E09B0,
+			0x2F62D3A4,
+			0x433DE046,
+			0x5BC3AC4D,
+			0x63899BC6,
+			0x754C3F4B,
+			0x7956475F,
+			0x7E89F1D9,
+			0x874F0363,
+			0x880FE4D2,
+			0x95ADA020,
+			0xAAA9CA18,
+			0xB8F0E6A6,
+			0xCFFBF4B5,
+			0xD1D7988F,
+			0xE006B4ED,
+			0xE3139FF7,
+			0xF0D53B7A,
+			0xF18C3CE4,
+			0xFB2178EC,
+			0xFE8E56EC,
+		};
+
 		// Tails - 0xA63CAE10
 		public static List<uint> TailHashes = new List<uint>()
 		{
@@ -772,6 +800,62 @@ namespace RedMenuClient.data
 			0xFCE1D7A4,
 			0xFD4E14C5,
 			0xFDB0F237,
+		};
+
+		// Masks - 0xD3500E5D
+		public static List<uint> MaskHashes = new List<uint>()
+		{
+			0x8A78F53,
+			0x13AC6E51,
+			0x226B2F76,
+			0x2E776EE6,
+			0x30044BAC,
+			0x406FC6C7,
+			0x48099436,
+			0x4A992729,
+			0x4C8C83A4,
+			0x4E22622C,
+			0x4E312E61,
+			0x53EEEBD4,
+			0x5B22BA68,
+			0x61BEAE08,
+			0x62C5B02A,
+			0x68DB4FAD,
+			0x68FB97DE,
+			0x69CD996E,
+			0x6B355791,
+			0x702A4AF3,
+			0x75637CBD,
+			0x77987353,
+			0x7A773AC1,
+			0x7BFA791B,
+			0x872A0C5A,
+			0x8C471684,
+			0x8DB38601,
+			0x8DCC1CBE,
+			0x90A62272,
+			0x9946F874,
+			0x9A11B219,
+			0x9DB125FC,
+			0xA45049C6,
+			0xAD6DDEFD,
+			0xB0395F88,
+			0xB395D1C5,
+			0xB567EBF5,
+			0xBD887906,
+			0xC4886BDC,
+			0xC70D8F40,
+			0xC907FCA9,
+			0xD6E279B1,
+			0xD70C73EA,
+			0xDDCDB9A0,
+			0xE3278C28,
+			0xEC10D626,
+			0xEEF65F11,
+			0xF0ED62FF,
+			0xF17728C7,
+			0xF606EC4A,
+			0xFA5B72BB,
 		};
 
 		// Stirrups - 0xDA6DADCA

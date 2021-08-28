@@ -205,7 +205,7 @@ namespace RedMenuClient.menus
                 MenuController.AddSubmenu(menu, savedMountsMenu);
                 MenuController.BindMenuItem(menu, savedMountsMenu, savedMounts);
 
-                for (int i = 0; i <= 9; ++i)
+                for (int i = 0; i <= 11; ++i)
                 {
                     currentMountComponents[i] = 0;
                 }
@@ -255,9 +255,11 @@ namespace RedMenuClient.menus
                                         case 0x17CEB41A:
                                         case 0x5447332:
                                         case 0x80451C25:
+                                        case 0x94B2E3AF:
                                         case 0xA63CAE10:
                                         case 0xAA0217AB:
                                         case 0xBAA7E618:
+                                        case 0xD3500E5D:
                                         case 0xDA6DADCA:
                                         case 0xEFB31921:
                                         case 0x1530BE1C:
@@ -329,27 +331,33 @@ namespace RedMenuClient.menus
                 List<string> blankets = new List<string>();
                 List<string> grips = new List<string>();
                 List<string> bags = new List<string>();
+                List<string> reins = new List<string>();
                 List<string> tails = new List<string>();
                 List<string> manes = new List<string>();
                 List<string> saddles = new List<string>();
+                List<string> masks = new List<string>();
                 List<string> stirrups = new List<string>();
                 List<string> rolls = new List<string>();
                 List<string> lanterns = new List<string>();
                 foreach (var k in data.MountData.BlanketHashes) { blankets.Add($"({data.MountData.BlanketHashes.IndexOf(k) + 1}/{data.MountData.BlanketHashes.Count()}) 0x{k.ToString("X08")}"); }
                 foreach (var k in data.MountData.GripHashes) { grips.Add($"({data.MountData.GripHashes.IndexOf(k) + 1}/{data.MountData.GripHashes.Count()}) 0x{k.ToString("X08")}"); }
                 foreach (var k in data.MountData.BagHashes) { bags.Add($"({data.MountData.BagHashes.IndexOf(k) + 1}/{data.MountData.BagHashes.Count()}) 0x{k.ToString("X08")}"); }
+                foreach (var k in data.MountData.ReinsHashes) { reins.Add($"({data.MountData.ReinsHashes.IndexOf(k) + 1}/{data.MountData.ReinsHashes.Count()}) 0x{k.ToString("X08")}"); }
                 foreach (var k in data.MountData.TailHashes) { tails.Add($"({data.MountData.TailHashes.IndexOf(k) + 1}/{data.MountData.TailHashes.Count()}) 0x{k.ToString("X08")}"); }
                 foreach (var k in data.MountData.ManeHashes) { manes.Add($"({data.MountData.ManeHashes.IndexOf(k) + 1}/{data.MountData.ManeHashes.Count()}) 0x{k.ToString("X08")}"); }
                 foreach (var k in data.MountData.SaddleHashes) { saddles.Add($"({data.MountData.SaddleHashes.IndexOf(k) + 1}/{data.MountData.SaddleHashes.Count()}) 0x{k.ToString("X08")}"); }
+                foreach (var k in data.MountData.MaskHashes) { masks.Add($"({data.MountData.MaskHashes.IndexOf(k) + 1}/{data.MountData.MaskHashes.Count()}) 0x{k.ToString("X08")}"); }
                 foreach (var k in data.MountData.StirrupHashes) { stirrups.Add($"({data.MountData.StirrupHashes.IndexOf(k) + 1}/{data.MountData.StirrupHashes.Count()}) 0x{k.ToString("X08")}"); }
                 foreach (var k in data.MountData.RollHashes) { rolls.Add($"({data.MountData.RollHashes.IndexOf(k) + 1}/{data.MountData.RollHashes.Count()}) 0x{k.ToString("X08")}"); }
                 foreach (var k in data.MountData.LanternHashes) { lanterns.Add($"({data.MountData.LanternHashes.IndexOf(k) + 1}/{data.MountData.LanternHashes.Count()}) 0x{k.ToString("X08")}"); }
                 tackMenu.AddMenuItem(new MenuListItem("Blankets", blankets, 0));
                 tackMenu.AddMenuItem(new MenuListItem("Horns", grips, 0));
                 tackMenu.AddMenuItem(new MenuListItem("Saddlebags", bags, 0));
+                tackMenu.AddMenuItem(new MenuListItem("Reins", reins, 0));
                 tackMenu.AddMenuItem(new MenuListItem("Tails", tails, 0));
                 tackMenu.AddMenuItem(new MenuListItem("Manes", manes, 0));
                 tackMenu.AddMenuItem(new MenuListItem("Saddles", saddles, 0));
+                tackMenu.AddMenuItem(new MenuListItem("Masks", masks, 0));
                 tackMenu.AddMenuItem(new MenuListItem("Stirrups", stirrups, 0));
                 tackMenu.AddMenuItem(new MenuListItem("Bedrolls", rolls, 0));
                 tackMenu.AddMenuItem(new MenuListItem("Lanterns", lanterns, 0));
@@ -362,12 +370,14 @@ namespace RedMenuClient.menus
                         case 0: hash = data.MountData.BlanketHashes[newIndex]; break;
                         case 1: hash = data.MountData.GripHashes[newIndex]; break;
                         case 2: hash = data.MountData.BagHashes[newIndex]; break;
-                        case 3: hash = data.MountData.TailHashes[newIndex]; break;
-                        case 4: hash = data.MountData.ManeHashes[newIndex]; break;
-                        case 5: hash = data.MountData.SaddleHashes[newIndex]; break;
-                        case 6: hash = data.MountData.StirrupHashes[newIndex]; break;
-                        case 7: hash = data.MountData.RollHashes[newIndex]; break;
-                        case 8: hash = data.MountData.LanternHashes[newIndex]; break;
+                        case 3: hash = data.MountData.ReinsHashes[newIndex]; break;
+                        case 4: hash = data.MountData.TailHashes[newIndex]; break;
+                        case 5: hash = data.MountData.ManeHashes[newIndex]; break;
+                        case 6: hash = data.MountData.SaddleHashes[newIndex]; break;
+                        case 7: hash = data.MountData.MaskHashes[newIndex]; break;
+                        case 8: hash = data.MountData.StirrupHashes[newIndex]; break;
+                        case 9: hash = data.MountData.RollHashes[newIndex]; break;
+                        case 10: hash = data.MountData.LanternHashes[newIndex]; break;
                         default: hash = 0; break;
                     }
                     if (hash != 0)
@@ -385,12 +395,14 @@ namespace RedMenuClient.menus
                         case 0: hash = 0x17CEB41A; break;
                         case 1: hash = 0x5447332; break;
                         case 2: hash = 0x80451C25; break;
-                        case 3: hash = 0xA63CAE10; break;
-                        case 4: hash = 0xAA0217AB; break;
-                        case 5: hash = 0xBAA7E618; break;
-                        case 6: hash = 0xDA6DADCA; break;
-                        case 7: hash = 0xEFB31921; break;
-                        case 8: hash = 0x1530BE1C; break;
+                        case 3: hash = 0x94B2E3AF; break;
+                        case 4: hash = 0xA63CAE10; break;
+                        case 5: hash = 0xAA0217AB; break;
+                        case 6: hash = 0xBAA7E618; break;
+                        case 7: hash = 0xD3500E5D; break;
+                        case 8: hash = 0xDA6DADCA; break;
+                        case 9: hash = 0xEFB31921; break;
+                        case 10: hash = 0x1530BE1C; break;
                         default: hash = 0; break;
                     }
                     if (hash != 0)
