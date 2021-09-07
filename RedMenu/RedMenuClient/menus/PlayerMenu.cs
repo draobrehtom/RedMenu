@@ -24,6 +24,7 @@ namespace RedMenuClient.menus
         private static Menu scenarioMenu = new Menu("Scenarios", "Scenarios");
 
         private static Dictionary<int, uint> currentMpClothes = new Dictionary<int, uint>();
+        private static Dictionary<int, uint> currentSpClothes = new Dictionary<int, uint>();
         private static Dictionary<uint, float> currentFacialFeatures = new Dictionary<uint, float>();
         private static Dictionary<int, int> currentBodySettings = new Dictionary<int, int>();
 
@@ -101,6 +102,15 @@ namespace RedMenuClient.menus
             }
         }
 
+        private static void ResetCurrentSpClothes()
+        {
+            int[] keys = currentSpClothes.Keys.ToArray();
+            for (int i = 0; i < keys.Length; ++i)
+            {
+                currentSpClothes[keys[i]] = 0;
+            }
+        }
+
         private static void ResetCurrentFacialFeatures()
         {
             uint[] keys = currentFacialFeatures.Keys.ToArray();
@@ -157,6 +167,7 @@ namespace RedMenuClient.menus
             await BaseScript.Delay(500);
 
             ResetCurrentMpClothes();
+            ResetCurrentSpClothes();
             ResetCurrentFacialFeatures();
             ResetCurrentBodySettings();
 
@@ -220,6 +231,70 @@ namespace RedMenuClient.menus
                 else
                 {
                     currentMpClothes[keys[j]] = 0;
+                }
+            }
+
+            keys = currentSpClothes.Keys.ToArray();
+
+            for (int j = 0; j < keys.Length; ++j)
+            {
+                if (StorageManager.TryGet("SavedPeds_" + pedIndex + "_sp_" + keys[j], out int hash))
+                {
+                    switch ((uint)hash)
+                    {
+                        case 0x15D3C7F2: /* beards_chin */
+                        case 0x18729F39: /* spurs */
+                        case 0x1AECF7DC: /* talisman_belt */
+                        case 0x1D4C528A: /* pants */
+                        case 0x2026C46D: /* shirts_full */
+                        case 0x3107499B: /* chaps */
+                        case 0x378AD10C: /* heads */
+                        case 0x3C1A74CD: /* cloaks */
+                        case 0x3F1F01E5: /* ammo_pistols */
+                        case 0x3F7F3587: /* badges */
+                        case 0x485EE834: /* vests */
+                        case 0x49C89D9B: /* holsters_crossdraw */
+                        case 0x4A73515C: /* MASKS_LARGE */
+                        case 0x514ADCEA: /* spats */
+                        case 0x5FC29285: /* neckwear */
+                        case 0x76F0E272: /* aprons */
+                        case 0x777EC6EF: /* boots */
+                        case 0x79D7DF96: /* accessories */
+                        case 0x7A96FACA: /* neckties */
+                        case 0x7BE77792: /* holsters_knife */
+                        case 0x7C00A8F0: /* talisman_holster */
+                        case 0x823687F5: /* BODIES_LOWER */
+                        case 0x83887E88: /* loadouts */
+                        case 0x864B03AE: /* hair */
+                        case 0x877A2CF7: /* suspenders */
+                        case 0x8EFB276A: /* talisman_satchel */
+                        case 0x94504D26: /* satchel */
+                        case 0x96EDAE5C: /* teeth */
+                        case 0x9925C067: /* hats */
+                        case 0x9B2C8B89: /* gunbelts */
+                        case 0xA6D134C6: /* belts */
+                        case 0xB3966C9 :/* BODIES_UPPER */
+                        case 0xB6B6122D: /* holsters_left */
+                        case 0xB6B63737: /* beards_chops */
+                        case 0xB9E2FA01: /* holsters_right */
+                        case 0xDA0E2C55: /* ammo_rifles */
+                        case 0xDB64A390: /* talisman_wrist */
+                        case 0xE06D30CE: /* coats */
+                        case 0xEA24B45E: /* eyes */
+                        case 0xEABE0032: /* gloves */
+                        case 0xECC8B25A: /* beards_mustache */
+                            Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), hash, 0);
+                            Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
+                            break;
+                        default:
+                            Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), (uint)hash, true, false, false);
+                            break;
+                    }
+                    currentSpClothes[keys[j]] = (uint)hash;
+                }
+                else
+                {
+                    currentSpClothes[keys[j]] = 0;
                 }
             }
 
@@ -638,6 +713,7 @@ namespace RedMenuClient.menus
                             }
 
                             ResetCurrentMpClothes();
+                            ResetCurrentSpClothes();
                             ResetCurrentFacialFeatures();
                             ResetCurrentBodySettings();
                         }
@@ -658,12 +734,15 @@ namespace RedMenuClient.menus
                 {
                     MenuItem femaleCustom = new MenuItem("MP Female Customization", "Customize your MP female ped.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
                     MenuItem maleCustom = new MenuItem("MP Male Customization", "Customize your MP male ped.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                    MenuItem spCustom = new MenuItem("SP Customization", "Customize story mode peds.") { RightIcon = MenuItem.Icon.ARROW_RIGHT };
 
                     Menu femaleCustomMenu = new Menu("Customization", "MP Female Customization");
                     Menu maleCustomMenu = new Menu("Customization", "MP Male Customization");
+                    Menu spCustomMenu = new Menu("Customization", "SP Customization");
 
                     MenuController.AddSubmenu(appearanceMenu, femaleCustomMenu);
                     MenuController.AddSubmenu(appearanceMenu, maleCustomMenu);
+                    MenuController.AddSubmenu(appearanceMenu, spCustomMenu);
 
                     #region female
                     {
@@ -1144,12 +1223,260 @@ namespace RedMenuClient.menus
                     }
                     #endregion
 
+                    #region sp
+                    {
+                        List<string> beards = new List<string>();
+                        List<string> spurs = new List<string>();
+                        List<string> beltTalismans = new List<string>();
+                        List<string> pants = new List<string>();
+                        List<string> shirts = new List<string>();
+                        List<string> chaps = new List<string>();
+                        List<string> heads = new List<string>();
+                        List<string> cloaks = new List<string>();
+                        List<string> pistolAmmo = new List<string>();
+                        List<string> badges = new List<string>();
+                        List<string> vests = new List<string>();
+                        List<string> crossdrawHolsters = new List<string>();
+                        List<string> largeMasks = new List<string>();
+                        List<string> spats = new List<string>();
+                        List<string> neckwear = new List<string>();
+                        List<string> aprons = new List<string>();
+                        List<string> boots = new List<string>();
+                        List<string> accessories = new List<string>();
+                        List<string> neckties = new List<string>();
+                        List<string> knifeHolsters = new List<string>();
+                        List<string> holsterTalismans = new List<string>();
+                        List<string> lowerBodies = new List<string>();
+                        List<string> loadouts = new List<string>();
+                        List<string> hair = new List<string>();
+                        List<string> suspenders = new List<string>();
+                        List<string> satchelTalismans = new List<string>();
+                        List<string> satchels = new List<string>();
+                        List<string> teeth = new List<string>();
+                        List<string> hats = new List<string>();
+                        List<string> gunbelts = new List<string>();
+                        List<string> belts = new List<string>();
+                        List<string> upperBodies = new List<string>();
+                        List<string> holstersLeft = new List<string>();
+                        List<string> chops = new List<string>();
+                        List<string> holstersRight = new List<string>();
+                        List<string> rifleAmmo = new List<string>();
+                        List<string> wristTalismans = new List<string>();
+                        List<string> coats = new List<string>();
+                        List<string> eyes = new List<string>();
+                        List<string> gloves = new List<string>();
+                        List<string> mustaches = new List<string>();
+
+                        foreach (var k in data.StoryCustomization.beards) { beards.Add($"({data.StoryCustomization.beards.IndexOf(k) + 1}/{data.StoryCustomization.beards.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.spurs) { spurs.Add($"({data.StoryCustomization.spurs.IndexOf(k) + 1}/{data.StoryCustomization.spurs.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.beltTalismans) { beltTalismans.Add($"({data.StoryCustomization.beltTalismans.IndexOf(k) + 1}/{data.StoryCustomization.beltTalismans.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.pants) { pants.Add($"({data.StoryCustomization.pants.IndexOf(k) + 1}/{data.StoryCustomization.pants.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.shirts) { shirts.Add($"({data.StoryCustomization.shirts.IndexOf(k) + 1}/{data.StoryCustomization.shirts.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.chaps) { chaps.Add($"({data.StoryCustomization.chaps.IndexOf(k) + 1}/{data.StoryCustomization.chaps.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.heads) { heads.Add($"({data.StoryCustomization.heads.IndexOf(k) + 1}/{data.StoryCustomization.heads.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.cloaks) { cloaks.Add($"({data.StoryCustomization.cloaks.IndexOf(k) + 1}/{data.StoryCustomization.cloaks.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.pistolAmmo) { pistolAmmo.Add($"({data.StoryCustomization.pistolAmmo.IndexOf(k) + 1}/{data.StoryCustomization.pistolAmmo.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.badges) { badges.Add($"({data.StoryCustomization.badges.IndexOf(k) + 1}/{data.StoryCustomization.badges.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.vests) { vests.Add($"({data.StoryCustomization.vests.IndexOf(k) + 1}/{data.StoryCustomization.vests.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.crossdrawHolsters) { crossdrawHolsters.Add($"({data.StoryCustomization.crossdrawHolsters.IndexOf(k) + 1}/{data.StoryCustomization.crossdrawHolsters.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.largeMasks) { largeMasks.Add($"({data.StoryCustomization.largeMasks.IndexOf(k) + 1}/{data.StoryCustomization.largeMasks.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.spats) { spats.Add($"({data.StoryCustomization.spats.IndexOf(k) + 1}/{data.StoryCustomization.spats.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.neckwear) { neckwear.Add($"({data.StoryCustomization.neckwear.IndexOf(k) + 1}/{data.StoryCustomization.neckwear.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.aprons) { aprons.Add($"({data.StoryCustomization.aprons.IndexOf(k) + 1}/{data.StoryCustomization.aprons.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.boots) { boots.Add($"({data.StoryCustomization.boots.IndexOf(k) + 1}/{data.StoryCustomization.boots.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.accessories) { accessories.Add($"({data.StoryCustomization.accessories.IndexOf(k) + 1}/{data.StoryCustomization.accessories.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.neckties) { neckties.Add($"({data.StoryCustomization.neckties.IndexOf(k) + 1}/{data.StoryCustomization.neckties.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.knifeHolsters) { knifeHolsters.Add($"({data.StoryCustomization.knifeHolsters.IndexOf(k) + 1}/{data.StoryCustomization.knifeHolsters.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.holsterTalismans) { holsterTalismans.Add($"({data.StoryCustomization.holsterTalismans.IndexOf(k) + 1}/{data.StoryCustomization.holsterTalismans.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.lowerBodies) { lowerBodies.Add($"({data.StoryCustomization.lowerBodies.IndexOf(k) + 1}/{data.StoryCustomization.lowerBodies.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.loadouts) { loadouts.Add($"({data.StoryCustomization.loadouts.IndexOf(k) + 1}/{data.StoryCustomization.loadouts.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.hair) { hair.Add($"({data.StoryCustomization.hair.IndexOf(k) + 1}/{data.StoryCustomization.hair.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.suspenders) { suspenders.Add($"({data.StoryCustomization.suspenders.IndexOf(k) + 1}/{data.StoryCustomization.suspenders.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.satchelTalismans) { satchelTalismans.Add($"({data.StoryCustomization.satchelTalismans.IndexOf(k) + 1}/{data.StoryCustomization.satchelTalismans.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.satchels) { satchels.Add($"({data.StoryCustomization.satchels.IndexOf(k) + 1}/{data.StoryCustomization.satchels.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.teeth) { teeth.Add($"({data.StoryCustomization.teeth.IndexOf(k) + 1}/{data.StoryCustomization.teeth.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.hats) { hats.Add($"({data.StoryCustomization.hats.IndexOf(k) + 1}/{data.StoryCustomization.hats.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.gunbelts) { gunbelts.Add($"({data.StoryCustomization.gunbelts.IndexOf(k) + 1}/{data.StoryCustomization.gunbelts.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.belts) { belts.Add($"({data.StoryCustomization.belts.IndexOf(k) + 1}/{data.StoryCustomization.belts.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.upperBodies) { upperBodies.Add($"({data.StoryCustomization.upperBodies.IndexOf(k) + 1}/{data.StoryCustomization.upperBodies.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.holstersLeft) { holstersLeft.Add($"({data.StoryCustomization.holstersLeft.IndexOf(k) + 1}/{data.StoryCustomization.holstersLeft.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.chops) { chops.Add($"({data.StoryCustomization.chops.IndexOf(k) + 1}/{data.StoryCustomization.chops.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.holstersRight) { holstersRight.Add($"({data.StoryCustomization.holstersRight.IndexOf(k) + 1}/{data.StoryCustomization.holstersRight.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.rifleAmmo) { rifleAmmo.Add($"({data.StoryCustomization.rifleAmmo.IndexOf(k) + 1}/{data.StoryCustomization.rifleAmmo.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.wristTalismans) { wristTalismans.Add($"({data.StoryCustomization.wristTalismans.IndexOf(k) + 1}/{data.StoryCustomization.wristTalismans.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.coats) { coats.Add($"({data.StoryCustomization.coats.IndexOf(k) + 1}/{data.StoryCustomization.coats.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.eyes) { eyes.Add($"({data.StoryCustomization.eyes.IndexOf(k) + 1}/{data.StoryCustomization.eyes.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.gloves) { gloves.Add($"({data.StoryCustomization.gloves.IndexOf(k) + 1}/{data.StoryCustomization.gloves.Count()}) 0x{k.ToString("X08")}"); }
+                        foreach (var k in data.StoryCustomization.mustaches) { mustaches.Add($"({data.StoryCustomization.mustaches.IndexOf(k) + 1}/{data.StoryCustomization.mustaches.Count()}) 0x{k.ToString("X08")}"); }
+
+                        spCustomMenu.AddMenuItem(new MenuListItem("Beards", beards, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Spurs", spurs, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Belt Talisman", beltTalismans, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Pants", pants, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Shirts", shirts, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Chaps", chaps, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Heads", heads, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Cloaks", cloaks, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Pistol Ammo", pistolAmmo, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Badges", badges, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Vests", vests, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Crossdraw Holster", crossdrawHolsters, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Masks", largeMasks, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Spats", spats, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Neckwear", neckwear, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Apron", aprons, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Boots", boots, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Accessories", accessories, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Neckties", neckties, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Knife Holsters", knifeHolsters, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Holster Talisman", holsterTalismans, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Lower Bodies", lowerBodies, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Loadouts", loadouts, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Hair", hair, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Suspenders", suspenders, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Satchel Talisman", satchelTalismans, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Satchels", satchels, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Teeth", teeth, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Hats", hats, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Gunbelts", gunbelts, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Belts", belts, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Upper Bodies", upperBodies, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Holster (left)", holstersLeft, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Chops", chops, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Holster (right)", holstersRight, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Rifle Ammo", rifleAmmo, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Wrist Talisman", wristTalismans, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Coats", coats, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Eyes", eyes, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Gloves", gloves, 0));
+                        spCustomMenu.AddMenuItem(new MenuListItem("Mustaches", mustaches, 0));
+
+                        spCustomMenu.OnListIndexChange += (m, item, oldIndex, newIndex, itemIndex) =>
+                        {
+                            uint hash;
+                            switch (itemIndex)
+                            {
+                                case 0: hash = data.StoryCustomization.beards[newIndex]; break;
+                                case 1: hash = data.StoryCustomization.spurs[newIndex]; break;
+                                case 2: hash = data.StoryCustomization.beltTalismans[newIndex]; break;
+                                case 3: hash = data.StoryCustomization.pants[newIndex]; break;
+                                case 4: hash = data.StoryCustomization.shirts[newIndex]; break;
+                                case 5: hash = data.StoryCustomization.chaps[newIndex]; break;
+                                case 6: hash = data.StoryCustomization.heads[newIndex]; break;
+                                case 7: hash = data.StoryCustomization.cloaks[newIndex]; break;
+                                case 8: hash = data.StoryCustomization.pistolAmmo[newIndex]; break;
+                                case 9: hash = data.StoryCustomization.badges[newIndex]; break;
+                                case 10: hash = data.StoryCustomization.vests[newIndex]; break;
+                                case 11: hash = data.StoryCustomization.crossdrawHolsters[newIndex]; break;
+                                case 12: hash = data.StoryCustomization.largeMasks[newIndex]; break;
+                                case 13: hash = data.StoryCustomization.spats[newIndex]; break;
+                                case 14: hash = data.StoryCustomization.neckwear[newIndex]; break;
+                                case 15: hash = data.StoryCustomization.aprons[newIndex]; break;
+                                case 16: hash = data.StoryCustomization.boots[newIndex]; break;
+                                case 17: hash = data.StoryCustomization.accessories[newIndex]; break;
+                                case 18: hash = data.StoryCustomization.neckties[newIndex]; break;
+                                case 19: hash = data.StoryCustomization.knifeHolsters[newIndex]; break;
+                                case 20: hash = data.StoryCustomization.holsterTalismans[newIndex]; break;
+                                case 21: hash = data.StoryCustomization.lowerBodies[newIndex]; break;
+                                case 22: hash = data.StoryCustomization.loadouts[newIndex]; break;
+                                case 23: hash = data.StoryCustomization.hair[newIndex]; break;
+                                case 24: hash = data.StoryCustomization.suspenders[newIndex]; break;
+                                case 25: hash = data.StoryCustomization.satchelTalismans[newIndex]; break;
+                                case 26: hash = data.StoryCustomization.satchels[newIndex]; break;
+                                case 27: hash = data.StoryCustomization.teeth[newIndex]; break;
+                                case 28: hash = data.StoryCustomization.hats[newIndex]; break;
+                                case 29: hash = data.StoryCustomization.gunbelts[newIndex]; break;
+                                case 30: hash = data.StoryCustomization.belts[newIndex]; break;
+                                case 31: hash = data.StoryCustomization.upperBodies[newIndex]; break;
+                                case 32: hash = data.StoryCustomization.holstersLeft[newIndex]; break;
+                                case 33: hash = data.StoryCustomization.chops[newIndex]; break;
+                                case 34: hash = data.StoryCustomization.holstersRight[newIndex]; break;
+                                case 35: hash = data.StoryCustomization.rifleAmmo[newIndex]; break;
+                                case 36: hash = data.StoryCustomization.wristTalismans[newIndex]; break;
+                                case 37: hash = data.StoryCustomization.coats[newIndex]; break;
+                                case 38: hash = data.StoryCustomization.eyes[newIndex]; break;
+                                case 39: hash = data.StoryCustomization.gloves[newIndex]; break;
+                                case 40: hash = data.StoryCustomization.mustaches[newIndex]; break;
+                                default:
+                                    hash = 0;
+                                    break;
+                            }
+                            if (hash != 0)
+                            {
+                                Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), hash, true, false, false);
+                                currentSpClothes[itemIndex] = hash;
+                            }
+                        };
+
+                        spCustomMenu.OnListItemSelect += (m, listItem, selectedIndex, itemIndex) =>
+                        {
+                            uint hash;
+                            switch (itemIndex)
+                            {
+                                case 0: hash = 0x15D3C7F2 /* beards_chin */; break;
+                                case 1: hash = 0x18729F39 /* spurs */; break;
+                                case 2: hash = 0x1AECF7DC /* talisman_belt */; break;
+                                case 3: hash = 0x1D4C528A /* pants */; break;
+                                case 4: hash = 0x2026C46D /* shirts_full */; break;
+                                case 5: hash = 0x3107499B /* chaps */; break;
+                                case 6: hash = 0x378AD10C /* heads */; break;
+                                case 7: hash = 0x3C1A74CD /* cloaks */; break;
+                                case 8: hash = 0x3F1F01E5 /* ammo_pistols */; break;
+                                case 9: hash = 0x3F7F3587 /* badges */; break;
+                                case 10: hash = 0x485EE834 /* vests */; break;
+                                case 11: hash = 0x49C89D9B /* holsters_crossdraw */; break;
+                                case 12: hash = 0x4A73515C /* MASKS_LARGE */; break;
+                                case 13: hash = 0x514ADCEA /* spats */; break;
+                                case 14: hash = 0x5FC29285 /* neckwear */; break;
+                                case 15: hash = 0x76F0E272 /* aprons */; break;
+                                case 16: hash = 0x777EC6EF /* boots */; break;
+                                case 17: hash = 0x79D7DF96 /* accessories */; break;
+                                case 18: hash = 0x7A96FACA /* neckties */; break;
+                                case 19: hash = 0x7BE77792 /* holsters_knife */; break;
+                                case 20: hash = 0x7C00A8F0 /* talisman_holster */; break;
+                                case 21: hash = 0x823687F5 /* BODIES_LOWER */; break;
+                                case 22: hash = 0x83887E88 /* loadouts */; break;
+                                case 23: hash = 0x864B03AE /* hair */; break;
+                                case 24: hash = 0x877A2CF7 /* suspenders */; break;
+                                case 25: hash = 0x8EFB276A /* talisman_satchel */; break;
+                                case 26: hash = 0x94504D26 /* satchel */; break;
+                                case 27: hash = 0x96EDAE5C /* teeth */; break;
+                                case 28: hash = 0x9925C067 /* hats */; break;
+                                case 29: hash = 0x9B2C8B89 /* gunbelts */; break;
+                                case 30: hash = 0xA6D134C6 /* belts */; break;
+                                case 31: hash = 0xB3966C9 /* BODIES_UPPER */; break;
+                                case 32: hash = 0xB6B6122D /* holsters_left */; break;
+                                case 33: hash = 0xB6B63737 /* beards_chops */; break;
+                                case 34: hash = 0xB9E2FA01 /* holsters_right */; break;
+                                case 35: hash = 0xDA0E2C55 /* ammo_rifles */; break;
+                                case 36: hash = 0xDB64A390 /* talisman_wrist */; break;
+                                case 37: hash = 0xE06D30CE /* coats */; break;
+                                case 38: hash = 0xEA24B45E /* eyes */; break;
+                                case 39: hash = 0xEABE0032 /* gloves */; break;
+                                case 40: hash = 0xECC8B25A /* beards_mustache */; break;
+                                default:
+                                    hash = 0;
+                                    break;
+                            }
+
+                            if (hash != 0)
+                            {
+                                Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), hash, 0);
+                                Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
+                                currentSpClothes[itemIndex] = hash;
+                            }
+                        };
+                    }
+                    #endregion
+
 
                     appearanceMenu.AddMenuItem(femaleCustom);
                     appearanceMenu.AddMenuItem(maleCustom);
+                    appearanceMenu.AddMenuItem(spCustom);
 
                     MenuController.BindMenuItem(appearanceMenu, femaleCustomMenu, femaleCustom);
                     MenuController.BindMenuItem(appearanceMenu, maleCustomMenu, maleCustom);
+                    MenuController.BindMenuItem(appearanceMenu, spCustomMenu, spCustom);
 
 
                     Menu bodyCustomizationMenu = new Menu("Body", "Customize MP character body");
@@ -1236,6 +1563,11 @@ namespace RedMenuClient.menus
                         currentMpClothes[i] = 0;
                     }
 
+                    for (int i = 0; i < 40; ++i)
+                    {
+                        currentSpClothes[i] = 0;
+                    }
+
                     foreach (FacialFeature feature in data.FacialFeatureData.FacialFeatures)
                     {
                         currentFacialFeatures[feature.Index] = 0;
@@ -1292,6 +1624,10 @@ namespace RedMenuClient.menus
                                     foreach (KeyValuePair<int, uint> entry in currentMpClothes)
                                     {
                                         StorageManager.Save("SavedPeds_" + pedIndex + "_mp_" + entry.Key, (int)entry.Value, true);
+                                    }
+                                    foreach (KeyValuePair<int, uint> entry in currentSpClothes)
+                                    {
+                                        StorageManager.Save("SavedPeds_" + pedIndex + "_sp_" + entry.Key, (int)entry.Value, true);
                                     }
                                     foreach (KeyValuePair<uint, float> entry in currentFacialFeatures)
                                     {
