@@ -507,7 +507,7 @@ namespace RedMenuClient.menus
                 }
             };
 
-            menu.OnListItemSelect += async (m, item, listIndex, itemIndex) =>
+            menu.OnListItemSelect += (m, item, listIndex, itemIndex) =>
             {
                 if (item == mountPeds)
                 {
