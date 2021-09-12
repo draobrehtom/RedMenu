@@ -339,6 +339,33 @@ namespace RedMenuClient.menus
             Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
         }
 
+        private static async void SavePed(int pedIndex, string newName)
+        {
+            StorageManager.Save("SavedPeds_" + pedIndex + "_model", GetEntityModel(PlayerPedId()), true);
+            StorageManager.Save("SavedPeds_" + pedIndex + "_outfit", Int32.Parse(playerOutfit.CurrentItem), true);
+            foreach (KeyValuePair<int, uint> entry in currentMpClothes)
+            {
+                StorageManager.Save("SavedPeds_" + pedIndex + "_mp_" + entry.Key, (int)entry.Value, true);
+                await BaseScript.Delay(0);
+            }
+            foreach (KeyValuePair<int, uint> entry in currentSpClothes)
+            {
+                StorageManager.Save("SavedPeds_" + pedIndex + "_sp_" + entry.Key, (int)entry.Value, true);
+                await BaseScript.Delay(0);
+            }
+            foreach (KeyValuePair<uint, float> entry in currentFacialFeatures)
+            {
+                StorageManager.Save("SavedPeds_" + pedIndex + "_ff_" + entry.Key, entry.Value, true);
+                await BaseScript.Delay(0);
+            }
+            foreach (KeyValuePair<int, int> entry in currentBodySettings)
+            {
+                StorageManager.Save("SavedPeds_" + pedIndex + "_bc_" + entry.Key, entry.Value, true);
+                await BaseScript.Delay(0);
+            }
+            StorageManager.Save("SavedPeds_" + pedIndex + "_name", newName, true);
+        }
+
         private static void SetMood(string mood)
         {
             int ped = PlayerPedId();
@@ -1619,25 +1646,8 @@ namespace RedMenuClient.menus
 
                                 if (newName != null)
                                 {
-                                    StorageManager.Save("SavedPeds_" + pedIndex + "_model", GetEntityModel(PlayerPedId()), true);
-                                    StorageManager.Save("SavedPeds_" + pedIndex + "_outfit", Int32.Parse(playerOutfit.CurrentItem), true);
-                                    foreach (KeyValuePair<int, uint> entry in currentMpClothes)
-                                    {
-                                        StorageManager.Save("SavedPeds_" + pedIndex + "_mp_" + entry.Key, (int)entry.Value, true);
-                                    }
-                                    foreach (KeyValuePair<int, uint> entry in currentSpClothes)
-                                    {
-                                        StorageManager.Save("SavedPeds_" + pedIndex + "_sp_" + entry.Key, (int)entry.Value, true);
-                                    }
-                                    foreach (KeyValuePair<uint, float> entry in currentFacialFeatures)
-                                    {
-                                        StorageManager.Save("SavedPeds_" + pedIndex + "_ff_" + entry.Key, entry.Value, true);
-                                    }
-                                    foreach (KeyValuePair<int, int> entry in currentBodySettings)
-                                    {
-                                        StorageManager.Save("SavedPeds_" + pedIndex + "_bc_" + entry.Key, entry.Value, true);
-                                    }
-                                    StorageManager.Save("SavedPeds_" + pedIndex + "_name", newName, true);
+                                    SavePed(pedIndex, newName);
+
                                     savedPed.Text = newName;
                                     savedPedOptionsMenu.MenuTitle = newName;
                                     pedName = newName;
