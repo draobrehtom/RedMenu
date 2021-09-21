@@ -526,6 +526,97 @@ namespace RedMenuClient.menus
             }
         }
 
+        private static async void LoadSavedPeds(Menu savedPedsMenu, List<MenuItem> savedPedSlots, List<MenuCheckboxItem> defaultSavedPedCheckboxes)
+        {
+            for (int i = 1; i <= maxSavedPeds; ++i)
+            {
+                int pedIndex = i;
+
+                if (!StorageManager.TryGet("SavedPeds_" + pedIndex + "_name", out string pedName))
+                {
+                    pedName = "Ped " + pedIndex;
+                }
+
+                MenuItem savedPed = new MenuItem(pedName) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
+                if (pedIndex == UserDefaults.PlayerDefaultSavedPed)
+                {
+                    savedPed.LeftIcon = MenuItem.Icon.STAR;
+                }
+                savedPedsMenu.AddMenuItem(savedPed);
+                savedPedSlots.Add(savedPed);
+
+                Menu savedPedOptionsMenu = new Menu(pedName);
+                MenuController.AddSubmenu(savedPedsMenu, savedPedOptionsMenu);
+                MenuController.BindMenuItem(savedPedsMenu, savedPedOptionsMenu, savedPed);
+
+                MenuItem load = new MenuItem("Load", "Load this ped.");
+                MenuItem save = new MenuItem("Save", "Save current ped to this slot.");
+                MenuCheckboxItem isDefault = new MenuCheckboxItem("Default", "Load this ped automatically when you respawn.", pedIndex == UserDefaults.PlayerDefaultSavedPed);
+                defaultSavedPedCheckboxes.Add(isDefault);
+                savedPedOptionsMenu.AddMenuItem(load);
+                savedPedOptionsMenu.AddMenuItem(save);
+                savedPedOptionsMenu.AddMenuItem(isDefault);
+
+                savedPedOptionsMenu.OnItemSelect += async (m, item, index) =>
+                {
+                    if (item == load)
+                    {
+                        LoadDefaultPed(pedIndex);
+                    }
+                    else if (item == save)
+                    {
+                        string newName = await GetUserInput("Enter ped name", pedName, 20);
+
+                        if (newName != null)
+                        {
+                            SavePed(pedIndex, newName);
+
+                            savedPed.Text = newName;
+                            savedPedOptionsMenu.MenuTitle = newName;
+                            pedName = newName;
+                        }
+                    }
+                };
+
+                savedPedOptionsMenu.OnCheckboxChange += (m, item, index, _checked) =>
+                {
+                    if (item == isDefault)
+                    {
+                        if (_checked)
+                        {
+                            UserDefaults.PlayerDefaultSavedPed = pedIndex;
+
+                            foreach (var cb in defaultSavedPedCheckboxes)
+                            {
+                                if (cb != isDefault)
+                                {
+                                    cb.Checked = false;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            UserDefaults.PlayerDefaultSavedPed = 0;
+                        }
+
+                        for (int slot = 0; slot < savedPedSlots.Count; ++slot)
+                        {
+                            if (_checked && slot + 1 == pedIndex)
+                            {
+                                savedPedSlots[slot].LeftIcon = MenuItem.Icon.STAR;
+                            }
+                            else
+                            {
+                                savedPedSlots[slot].LeftIcon = MenuItem.Icon.NONE;
+                            }
+                        }
+                    }
+                };
+
+                await BaseScript.Delay(0);
+            }
+        }
+
         private static void SetupMenu()
         {
             if (setupDone) return;
@@ -1605,91 +1696,7 @@ namespace RedMenuClient.menus
                         currentBodySettings[i] = 0;
                     }
 
-                    for (int i = 1; i <= maxSavedPeds; ++i)
-                    {
-                        int pedIndex = i;
-
-                        if (!StorageManager.TryGet("SavedPeds_" + pedIndex + "_name", out string pedName))
-                        {
-                            pedName = "Ped " + pedIndex;
-                        }
-
-                        MenuItem savedPed = new MenuItem(pedName) { RightIcon = MenuItem.Icon.ARROW_RIGHT };
-                        if (pedIndex == UserDefaults.PlayerDefaultSavedPed)
-                        {
-                            savedPed.LeftIcon = MenuItem.Icon.STAR;
-                        }
-                        savedPedsMenu.AddMenuItem(savedPed);
-                        savedPedSlots.Add(savedPed);
-
-                        Menu savedPedOptionsMenu = new Menu(pedName);
-                        MenuController.AddSubmenu(savedPedsMenu, savedPedOptionsMenu);
-                        MenuController.BindMenuItem(savedPedsMenu, savedPedOptionsMenu, savedPed);
-
-                        MenuItem load = new MenuItem("Load", "Load this ped.");
-                        MenuItem save = new MenuItem("Save", "Save current ped to this slot.");
-                        MenuCheckboxItem isDefault = new MenuCheckboxItem("Default", "Load this ped automatically when you respawn.", pedIndex == UserDefaults.PlayerDefaultSavedPed);
-                        defaultSavedPedCheckboxes.Add(isDefault);
-                        savedPedOptionsMenu.AddMenuItem(load);
-                        savedPedOptionsMenu.AddMenuItem(save);
-                        savedPedOptionsMenu.AddMenuItem(isDefault);
-
-                        savedPedOptionsMenu.OnItemSelect += async (m, item, index) =>
-                        {
-                            if (item == load)
-                            {
-                                LoadDefaultPed(pedIndex);
-                            }
-                            else if (item == save)
-                            {
-                                string newName = await GetUserInput("Enter ped name", pedName, 20);
-
-                                if (newName != null)
-                                {
-                                    SavePed(pedIndex, newName);
-
-                                    savedPed.Text = newName;
-                                    savedPedOptionsMenu.MenuTitle = newName;
-                                    pedName = newName;
-                                }
-                            }
-                        };
-
-                        savedPedOptionsMenu.OnCheckboxChange += (m, item, index, _checked) =>
-                        {
-                            if (item == isDefault)
-                            {
-                                if (_checked)
-                                {
-                                    UserDefaults.PlayerDefaultSavedPed = pedIndex;
-
-                                    foreach (var cb in defaultSavedPedCheckboxes)
-                                    {
-                                        if (cb != isDefault)
-                                        {
-                                            cb.Checked = false;
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    UserDefaults.PlayerDefaultSavedPed = 0;
-                                }
-
-                                for (int slot = 0; slot < savedPedSlots.Count; ++slot)
-                                {
-                                    if (_checked && slot + 1 == pedIndex)
-                                    {
-                                        savedPedSlots[slot].LeftIcon = MenuItem.Icon.STAR;
-                                    }
-                                    else
-                                    {
-                                        savedPedSlots[slot].LeftIcon = MenuItem.Icon.NONE;
-                                    }
-                                }
-                            }
-                        };
-                    }
+                    LoadSavedPeds(savedPedsMenu, savedPedSlots, defaultSavedPedCheckboxes);
                 }
             }
 

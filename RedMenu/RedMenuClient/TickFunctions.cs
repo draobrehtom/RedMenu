@@ -21,7 +21,7 @@ namespace RedMenuClient
 
         private static async void OnSpawn()
         {
-            await Delay(2000);
+            await Delay(3000);
             if (PermissionsManager.IsAllowed(Permission.PMSavedPeds) && UserDefaults.PlayerDefaultSavedPed != 0)
             {
                 menus.PlayerMenu.LoadDefaultPed(UserDefaults.PlayerDefaultSavedPed);
@@ -97,7 +97,6 @@ namespace RedMenuClient
             }
 
             await Delay(1000);
-            await Task.FromResult(0);
         }
 
         [Tick]
@@ -140,7 +139,6 @@ namespace RedMenuClient
             }
 
             await Delay(1000);
-            await Task.FromResult(0);
         }
 
         /// <summary>
@@ -208,7 +206,6 @@ namespace RedMenuClient
             {
                 await Delay(1000);
             }
-            await Task.FromResult(0);
         }
     }
 }
