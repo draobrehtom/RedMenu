@@ -9,6 +9,12 @@ namespace RedMenuClient.data
 {
 	public static class MountData
 	{
+		// Lanterns - 0x1530BE1C
+		public static List<uint> LanternHashes = new List<uint>()
+		{
+			0x635E387C,
+		};
+
 		// Blankets - 0x17CEB41A
 		public static List<uint> BlanketHashes = new List<uint>()
 		{
@@ -802,6 +808,12 @@ namespace RedMenuClient.data
 			0xFDB0F237,
 		};
 
+		// Holsters - 0xAC106B30
+		public static List<uint> HolsterHashes = new List<uint>()
+		{
+			0xF772CED6,
+		};
+
 		// Masks - 0xD3500E5D
 		public static List<uint> MaskHashes = new List<uint>()
 		{
@@ -952,12 +964,7 @@ namespace RedMenuClient.data
 			0xFFB0391E,
 		};
 
-		public static List<uint> LanternHashes = new List<uint>()
-        {
-            0x635E387C
-        };
-
-        public static List<string> MountHashes = new List<string>()
+		public static List<string> MountHashes = new List<string>()
         {
             "A_C_Donkey_01",
             "A_C_HorseMulePainted_01",
