@@ -171,6 +171,8 @@ namespace RedMenuClient.menus
             ResetCurrentFacialFeatures();
             ResetCurrentBodySettings();
 
+            await BaseScript.Delay(0);
+
             int[] keys = currentMpClothes.Keys.ToArray();
 
             for (int j = 0; j < keys.Length; ++j)
@@ -222,6 +224,8 @@ namespace RedMenuClient.menus
                             Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), hash, 0);
                             Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
                             break;
+                        case 0:
+                            break;
                         default:
                             Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), (uint)hash, true, true, false);
                             break;
@@ -233,6 +237,8 @@ namespace RedMenuClient.menus
                     currentMpClothes[keys[j]] = 0;
                 }
             }
+
+            await BaseScript.Delay(0);
 
             keys = currentSpClothes.Keys.ToArray();
 
@@ -286,6 +292,8 @@ namespace RedMenuClient.menus
                             Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), hash, 0);
                             Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
                             break;
+                        case 0:
+                            break;
                         default:
                             Function.Call((Hash)0xD3A7B003ED343FD9, PlayerPedId(), (uint)hash, true, false, false);
                             break;
@@ -297,6 +305,8 @@ namespace RedMenuClient.menus
                     currentSpClothes[keys[j]] = 0;
                 }
             }
+
+            await BaseScript.Delay(0);
 
             uint[] ffkeys = currentFacialFeatures.Keys.ToArray();
 
@@ -316,6 +326,8 @@ namespace RedMenuClient.menus
                     currentFacialFeatures[ffkeys[j]] = 0;
                 }
             }
+
+            await BaseScript.Delay(0);
 
             int[] bckeys = currentBodySettings.Keys.ToArray();
 
