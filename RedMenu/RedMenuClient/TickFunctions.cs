@@ -17,6 +17,13 @@ namespace RedMenuClient
     {
         public TickFunctions() {
             EventHandlers["playerSpawned"] += new Action(OnSpawn);
+            EventHandlers["rm:CloseAllMenus"] += new Action(OnCloseAllMenus);
+        }
+
+        private static async void OnCloseAllMenus()
+        {
+            await Delay(0);
+            MenuController.CloseAllMenus();
         }
 
         private static async void OnSpawn()
