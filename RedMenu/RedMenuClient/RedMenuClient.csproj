@@ -20,7 +20,7 @@
 
   <ItemGroup>
 
-    <PackageReference Include="MenuAPI.RedM" Version="3.0.4" />
+    <PackageReference Include="MenuAPI.RedM" Version="3.2.2" />
 
     <Reference Include="Microsoft.CSharp" />
     

@@ -44,6 +44,10 @@ namespace RedMenuClient
             }
         }
 
+        public static void NotifyOnMenuOpened(Menu m)
+        {
+            TriggerEvent("rm:onMenuOpened");
+        }
 
         /// <summary>
         /// Delayed constructor waits for permissions to be setup before doing anything.
@@ -56,6 +60,8 @@ namespace RedMenuClient
             }
 
             menus.MainMenu.GetMenu();
+
+            menus.MainMenu.GetMenu().OnMenuOpen += NotifyOnMenuOpened;
 
             if (ConfigManager.UnlockFullMap)
             {

@@ -16,23 +16,47 @@ namespace RedMenuClient
     class TickFunctions : BaseScript
     {
         public TickFunctions() {
-            EventHandlers["playerSpawned"] += new Action(OnSpawn);
+            EventHandlers["rm:CloseAllMenus"] += new Action(OnCloseAllMenus);
+            EventHandlers["rm:OpenMenu"] += new Action(OnOpenMenu);
+            EventHandlers["rm:LoadPed"] += new Action(LoadPed);
+            EventHandlers["rm:LoadLoadout"] += new Action(LoadLoadout);
         }
 
-        private static async void OnSpawn()
+        private static async void LoadLoadout()
         {
-            await Delay(3000);
-            if (PermissionsManager.IsAllowed(Permission.PMSavedPeds) && UserDefaults.PlayerDefaultSavedPed != 0)
-            {
-                menus.PlayerMenu.LoadDefaultPed(UserDefaults.PlayerDefaultSavedPed);
-            }
-            await Delay(500);
-            Update();
-            await Delay(500);
             if (PermissionsManager.IsAllowed(Permission.WMSavedLoadouts) && UserDefaults.WeaponDefaultSavedLoadout != 0)
             {
                 menus.WeaponsMenu.LoadSavedLoadout(UserDefaults.WeaponDefaultSavedLoadout);
             }
+            await Delay(0);
+
+            TriggerEvent("rm:LoadLoadout_Completed");
+        }
+
+        private static async void OnCloseAllMenus()
+        {
+            await Delay(0);
+            MenuController.CloseAllMenus();
+        }
+
+        private static async void OnOpenMenu()
+        {
+            await Delay(0);
+            menus.MainMenu.GetMenu().OpenMenu();
+        }
+
+        private static async void LoadPed()
+        {
+            if (PermissionsManager.IsAllowed(Permission.PMSavedPeds) && UserDefaults.PlayerDefaultSavedPed != 0)
+            {
+                menus.PlayerMenu.LoadDefaultPed(UserDefaults.PlayerDefaultSavedPed);
+            }
+            await Delay(0);
+            
+            Update();
+            await Delay(0);
+
+            TriggerEvent("rm:LoadPed_Completed");
         }
 
         private static void Update()
