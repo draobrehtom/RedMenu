@@ -157,6 +157,7 @@ namespace RedMenuClient.menus
                         Function.Call((Hash)0xD710A5007C2AC539, PlayerPedId(), 0x3F1F01E5, 0);
                         Function.Call((Hash)0xCC8CA3E88256E58F, PlayerPedId(), false, true, true, true, false);
                     }
+                    Debug.WriteLine($"^2[SUCCESS] Ped model is loaded {model}.^7");
                 }
                 else
                 {
